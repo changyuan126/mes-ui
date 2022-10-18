@@ -252,7 +252,7 @@
               <el-card shadow="always" style="width:450px">
                 <div slot="header">
                   <span>设备资源</span>
-                  <el-button style="float:right; padding 3px 0" @click="handleMachineryAdd" v-if="optType !='view'" type="text">新增</el-button>
+                  <el-button style="float:right; padding: 3px 0" @click="handleMachineryAdd" v-if="optType !='view'" type="text">新增</el-button>
                 </div>
                 <WorkStationMachine ref="machineryList" :optType="optType" :workstationId="form.workstationId" style="align:center"></WorkStationMachine>                
               </el-card>
@@ -261,7 +261,7 @@
               <el-card shadow="always" style="width:400px">
                 <div slot="header">
                   <span>人力资源</span>
-                  <el-button style="float:right; padding 3px 0" @click="handlePostAdd" v-if="optType !='view'" type="text">新增</el-button>
+                  <el-button style="float:right; padding: 3px 0" @click="handlePostAdd" v-if="optType !='view'" type="text">新增</el-button>
                 </div>
                 <Workstationworker ref="postList" :optType="optType" :workstationId="form.workstationId"></Workstationworker>
               </el-card>
@@ -270,7 +270,7 @@
               <el-card shadow="always" style="width:400px">
                 <div slot="header">
                   <span>工装夹具</span>
-                  <el-button style="float:right; padding 5px 0" @click="handleToolTypeAdd" v-if="optType !='view'" type="text">新增</el-button>
+                  <el-button style="float:right; padding: 5px 0" @click="handleToolTypeAdd" v-if="optType !='view'" type="text">新增</el-button>
                 </div>
                 <WorkStationTool ref="toolList" :optType="optType" :workstationId="form.workstationId"></WorkStationTool>
               </el-card>
