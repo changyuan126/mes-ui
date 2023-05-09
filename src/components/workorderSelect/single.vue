@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="工作站选择"
+    <el-dialog title="工单选择"
     v-if="showFlag"
     :visible.sync="showFlag"
     :modal= false
@@ -159,7 +159,7 @@
             getList() {
                 this.loading = true;
                 listWorkorder(this.queryParams).then(response => {
-                    this.workorderList = response.data;
+                    this.workorderList = response.rows;
                     this.loading = false;
                 });
             },
