@@ -296,7 +296,11 @@ export default {
     },
     getWarehouseList(){
       getTreeList().then( response =>{        
-        this.warehouseOptions = response.data;
+        if(response.data){
+          this.warehouseOptions = response.data.filter((el) =>{
+              return el.warehouseCode.indexOf('VIR') == -1;
+          });;
+        }
         this.warehouseOptions.map(w =>{
           w.children.map(l =>{
                   let lstr =JSON.stringify(l.children).replace(/locationId/g,'lId').replace(/areaId/g, 'pId').replace(/areaName/g,'pName');                  

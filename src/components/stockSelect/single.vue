@@ -244,9 +244,13 @@ export default {
     getList() {
       this.loading = true;
       listWmstock(this.queryParams).then(response => {
-        this.wmstockList = response.rows;
-        this.total = response.total;
-        this.loading = false;
+        if(response.rows){
+          this.wmstockList = response.rows.filter((el) =>{
+            return el.warehouseCode.indexOf('VIR') == -1;
+          });
+          this.total = response.total;
+          this.loading = false;
+        }
       });
     },
     /** 查询分类下拉树结构 */
