@@ -3,7 +3,7 @@
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="规则名称" prop="ruleName">
         <el-input
-          v-model="queryParams.dictName"
+          v-model="queryParams.ruleName"
           placeholder="请输入规则名称"
           clearable
           style="width: 240px"
