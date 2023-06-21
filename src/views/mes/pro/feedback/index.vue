@@ -284,7 +284,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="cancel" v-if="optType =='view' || form.status !='PREPARE' ">返回</el-button>
         <el-button type="primary" @click="submitForm" v-if="form.status =='PREPARE' && optType !='view' ">保 存</el-button>
-        <el-button type="primary" @click="handleSubmit" v-if="form.status =='PREPARE' && optType !='view' ">提交审批</el-button>
+        <el-button type="primary" @click="handleSubmit" v-if="form.status =='PREPARE' && (optType == 'view' || optType == 'edit') ">提交审批</el-button>
         <el-button type="success" @click="handleExecute" v-if="form.status =='APPROVING'  && form.recordId !=null">审批通过</el-button>
         <el-button type="danger" @click="handleReject" v-if="form.status =='APPROVING'  && form.recordId !=null">审批不通过</el-button>
         <el-button @click="cancel">取 消</el-button>
