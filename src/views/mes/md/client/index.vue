@@ -565,7 +565,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('md/client/export', {
+      this.download('mes/md/client/export', {
         ...this.queryParams
       }, `client_${new Date().getTime()}.xlsx`)
     },
