@@ -339,7 +339,7 @@ export default {
         requestDate: null,
         parentId: null,
         ancestors: null,
-        status: 'CONFIRMED',
+        status: null,
       },
       tasks:{
         data: [],

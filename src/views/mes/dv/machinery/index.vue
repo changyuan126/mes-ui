@@ -16,7 +16,7 @@
         <div class="head-container">
           <el-tree
             :data="machineryTypeOptions"
-            :props="defaultProps"
+            :props="defaultPropss"
             :expand-on-click-node="false"
             :filter-node-method="filterNode"
             ref="tree"
@@ -27,7 +27,14 @@
       </el-col>
       <!--设备数据-->
       <el-col :span="20" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form
+          :model="queryParams"
+          ref="queryForm"
+          size="small"
+          :inline="true"
+          v-show="showSearch"
+          label-width="68px"
+        >
           <el-form-item label="设备编码" prop="machineryCode">
             <el-input
               v-model="queryParams.machineryCode"
@@ -47,8 +54,16 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              size="mini"
+              @click="handleQuery"
+              >搜索</el-button
+            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+              >重置</el-button
+            >
           </el-form-item>
         </el-form>
 
@@ -61,7 +76,8 @@
               size="mini"
               @click="handleAdd"
               v-hasPermi="['mes:dv:machinery:add']"
-            >新增</el-button>
+              >新增</el-button
+            >
           </el-col>
           <el-col :span="1.5">
             <el-button
@@ -72,7 +88,8 @@
               :disabled="single"
               @click="handleUpdate"
               v-hasPermi="['mes:dv:machinery:edit']"
-            >修改</el-button>
+              >修改</el-button
+            >
           </el-col>
           <el-col :span="1.5">
             <el-button
@@ -83,7 +100,8 @@
               :disabled="multiple"
               @click="handleDelete"
               v-hasPermi="['mes:dv:machinery:remove']"
-            >删除</el-button>
+              >删除</el-button
+            >
           </el-col>
           <el-col :span="1.5">
             <el-button
@@ -93,7 +111,8 @@
               size="mini"
               @click="handleImport"
               v-hasPermi="['mes:dv:machinery:import']"
-            >导入</el-button>
+              >导入</el-button
+            >
           </el-col>
           <el-col :span="1.5">
             <el-button
@@ -103,33 +122,86 @@
               size="mini"
               @click="handleExport"
               v-hasPermi="['mes:dv:machinery:export']"
-            >导出</el-button>
+              >导出</el-button
+            >
           </el-col>
-          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+          <right-toolbar
+            :showSearch.sync="showSearch"
+            @queryTable="getList"
+          ></right-toolbar>
         </el-row>
 
-        <el-table v-loading="loading" :data="machineryList" @selection-change="handleSelectionChange">
+        <el-table
+          v-loading="loading"
+          :data="machineryList"
+          @selection-change="handleSelectionChange"
+        >
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="设备编码" width = "120" align="center" key="machineryCode" prop="machineryCode">
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  type="text"
-                  @click="handleView(scope.row)"
-                  v-hasPermi="['mes:dv:machinery:query']"
-                >{{scope.row.machineryCode}}</el-button>
-              </template>
-          </el-table-column>
-          <el-table-column label="设备名称" min-width="120" align="left" key="machineryName" prop="machineryName" :show-overflow-tooltip="true" />
-          <el-table-column label="品牌" align="left" key="machineryBrand" prop="machineryBrand" :show-overflow-tooltip="true" />
-          <el-table-column label="规格型号" align="left" key="machinerySpec" prop="machinerySpec" :show-overflow-tooltip="true" />
-          <el-table-column label="所属车间" align="center" key="machineryTypeName" prop="machineryTypeName"  :show-overflow-tooltip="true" />
-          <el-table-column label="设备状态" align="center" key="status" prop="status" >
+          <el-table-column
+            label="设备编码"
+            width="120"
+            align="center"
+            key="machineryCode"
+            prop="machineryCode"
+          >
             <template slot-scope="scope">
-              <dict-tag :options="dict.type.mes_machinery_status" :value="scope.row.status"/>
+              <el-button
+                size="mini"
+                type="text"
+                @click="handleView(scope.row)"
+                v-hasPermi="['mes:dv:machinery:query']"
+                >{{ scope.row.machineryCode }}</el-button
+              >
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+          <el-table-column
+            label="设备名称"
+            min-width="120"
+            align="left"
+            key="machineryName"
+            prop="machineryName"
+            :show-overflow-tooltip="true"
+          />
+          <el-table-column
+            label="品牌"
+            align="left"
+            key="machineryBrand"
+            prop="machineryBrand"
+            :show-overflow-tooltip="true"
+          />
+          <el-table-column
+            label="规格型号"
+            align="left"
+            key="machinerySpec"
+            prop="machinerySpec"
+            :show-overflow-tooltip="true"
+          />
+          <el-table-column
+            label="所属车间"
+            align="center"
+            key="workshopName"
+            prop="workshopName"
+            :show-overflow-tooltip="true"
+          />
+          <el-table-column
+            label="设备状态"
+            align="center"
+            key="status"
+            prop="status"
+          >
+            <template slot-scope="scope">
+              <dict-tag
+                :options="dict.type.mes_machinery_status"
+                :value="scope.row.status"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="创建时间"
+            align="center"
+            prop="createTime"
+            width="160"
+          >
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
@@ -147,20 +219,22 @@
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
                 v-hasPermi="['mes:dv:machinery:edit']"
-              >修改</el-button>
+                >修改</el-button
+              >
               <el-button
                 size="mini"
                 type="text"
                 icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
                 v-hasPermi="['mes:dv:machinery:remove']"
-              >删除</el-button>              
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
 
         <pagination
-          v-show="total>0"
+          v-show="total > 0"
           :total="total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
@@ -174,79 +248,197 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="设备编码" prop="itemCode">
-              <el-input v-model="form.machineryCode" readonly="readonly" maxlength="64" v-if="optType == 'view'"/>
-              <el-input v-model="form.machineryCode" placeholder="请输入设备编码" maxlength="64" v-else/>
+            <el-form-item label="设备编码" prop="machineryCode">
+              <el-input
+                v-model="form.machineryCode"
+                readonly="readonly"
+                maxlength="64"
+                v-if="optType == 'view'"
+              />
+              <el-input
+                v-model="form.machineryCode"
+                placeholder="请输入设备编码"
+                maxlength="64"
+                v-else
+              />
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item  label-width="80">
-              <el-switch v-model="autoGenFlag"
-                  active-color="#13ce66"
-                  active-text="自动生成"
-                  @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view'">               
+            <el-form-item label-width="80">
+              <el-switch
+                v-model="autoGenFlag"
+                active-color="#13ce66"
+                active-text="自动生成"
+                @change="handleAutoGenChange(autoGenFlag)"
+                v-if="optType != 'view'"
+              >
               </el-switch>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="设备名称" prop="itemName">
-              <el-input v-model="form.machineryName"  maxlength="255" readonly="readonly" v-if="optType=='view'" />
-              <el-input v-model="form.machineryName" placeholder="请输入设备名称" maxlength="255" v-else/>
+            <el-form-item label="设备名称" prop="machineryName">
+              <el-input
+                v-model="form.machineryName"
+                maxlength="255"
+                readonly="readonly"
+                v-if="optType == 'view'"
+              />
+              <el-input
+                v-model="form.machineryName"
+                placeholder="请输入设备名称"
+                maxlength="255"
+                v-else
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="品牌" prop="machineryBrand">
-              <el-input v-model="form.machineryBrand"  maxlength="255" readonly="readonly" v-if="optType=='view'" />
-              <el-input v-model="form.machineryBrand"  placeholder="请输入品牌" maxlength="255" v-else/>
+              <el-input
+                v-model="form.machineryBrand"
+                maxlength="255"
+                readonly="readonly"
+                v-if="optType == 'view'"
+              />
+              <el-input
+                v-model="form.machineryBrand"
+                placeholder="请输入品牌"
+                maxlength="255"
+                v-else
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item  label="设备分类" prop="machineryTypeId">
-              <treeselect v-model="form.machineryTypeId" :options="machineryTypeOptions" :normalizer="normalizer" disabled v-if="optType=='view'"  />
-              <treeselect v-model="form.machineryTypeId" :options="machineryTypeOptions" :normalizer="normalizer" placeholder="请选择所属分类" v-else :disable-branch-nodes='true' />
+            <el-form-item label="设备分类" prop="machineryTypeId">
+              <treeselect
+                v-model="form.machineryTypeId"
+                :options="machineryTypeOptions"
+                :normalizer="normalizer"
+                disabled
+                v-if="optType == 'view'"
+              />
+              <treeselect
+                v-model="form.machineryTypeId"
+                :options="machineryTypeOptions"
+                :normalizer="normalizer"
+                placeholder="请选择所属分类"
+                v-else
+                :disable-branch-nodes="true"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="规格型号" prop="machinerySpec">
-              <el-input v-model="form.machinerySpec" type="textarea" maxlength="255" readonly="readonly" v-if="optType=='view'" />
-              <el-input v-model="form.machinerySpec" type="textarea" placeholder="请输入规格型号" maxlength="255" v-else/>
+              <el-input
+                v-model="form.machinerySpec"
+                type="textarea"
+                maxlength="255"
+                readonly="readonly"
+                v-if="optType == 'view'"
+              />
+              <el-input
+                v-model="form.machinerySpec"
+                type="textarea"
+                placeholder="请输入规格型号"
+                maxlength="255"
+                v-else
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="所属车间" prop="workshopId">
-            <el-select v-model="form.workshopId" placeholder="请选择车间">
-              <el-option
-                v-for="item in workshopOptions"
-                :key="item.workshopId"
-                :label="item.workshopName"
-                :value="item.workshopId"
-              ></el-option>
-            </el-select>
+            <el-form-item label="所属车间" prop="workshopName">
+              <el-select
+                v-model="form.workshopName"
+                placeholder="请选择车间"
+                style="width: 100%"
+                value-key="workshopId"
+                @change="handleAccompanyId"
+              >
+                <el-option
+                  v-for="item in workshopOptions"
+                  :key="item.workshopId"
+                  :label="item.workshopName"
+                  :value="item"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
+            <el-form-item label="关联代码程序" prop="idList">
+              <el-select
+                v-model="form.idList"
+                placeholder="请选择关联代码程序"
+                clearable
+                filterable
+                multiple
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="dict in listTypeArr"
+                  :key="dict.codeId"
+                  :label="dict.codeName"
+                  :value="dict.codeId"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="异常报警通知" prop="userName">
+              <el-input
+                style="width: 90%"
+                v-model="userName"
+                :readonly="true"
+              />
+              <el-button type="text" @click="addInvolvedUserId"
+                >&nbsp;选择通知人</el-button
+              >
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="24">
             <el-form-item label="备注">
-              <el-input v-model="form.remark" type="textarea" readonly v-if="optType=='view'"></el-input>
-              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" v-else></el-input>
+              <el-input
+                v-model="form.remark"
+                type="textarea"
+                readonly
+                v-if="optType == 'view'"
+              ></el-input>
+              <el-input
+                v-model="form.remark"
+                type="textarea"
+                placeholder="请输入内容"
+                v-else
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="cancel" v-if="optType =='view'">返回</el-button>
+        <el-button type="primary" @click="cancel" v-if="optType == 'view'"
+          >返回</el-button
+        >
         <el-button type="primary" @click="submitForm" v-else>确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
 
     <!-- 物料导入对话框 -->
-    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
+    <el-dialog
+      :title="upload.title"
+      :visible.sync="upload.open"
+      width="400px"
+      append-to-body
+    >
       <el-upload
         ref="upload"
         :limit="1"
@@ -263,10 +455,17 @@
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
           <div class="el-upload__tip" slot="tip">
-            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的设备数据
+            <el-checkbox v-model="upload.updateSupport" />
+            是否更新已经存在的设备数据
           </div>
           <span>仅允许导入xls、xlsx格式文件。</span>
-          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate">下载模板</el-link>
+          <el-link
+            type="primary"
+            :underline="false"
+            style="font-size: 12px; vertical-align: baseline"
+            @click="importTemplate"
+            >下载模板</el-link
+          >
         </div>
       </el-upload>
       <div slot="footer" class="dialog-footer">
@@ -274,26 +473,55 @@
         <el-button @click="upload.open = false">取 消</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog
+      title="添加"
+      :visible.sync="addInvolvedUserIdVisible"
+      center
+      width="70%"
+    >
+      <!-- 人员选择 -->
+      <personnelSelection
+        ref="checked"
+        :inputValue="inputName"
+        @getSelectList="getSelectList"
+      />
+      <div style="margin-top: -97px; text-align: center">
+        <el-button @click="addInvolvedUserIdVisible = false">取消</el-button>
+        <el-button type="primary" @click="saveInvolvedUserId">保存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listMachinery, getMachinery, delMachinery, addMachinery, updateMachinery } from "@/api/mes/dv/machinery";
+import {
+  listMachinery,
+  getMachinery,
+  delMachinery,
+  addMachinery,
+  updateMachinery,
+  listMes,
+  UserArr,
+  machineryUsers,
+} from "@/api/mes/dv/machinery";
 import { listMachinerytype } from "@/api/mes/dv/machinerytype";
 import { listAllWorkshop } from "@/api/mes/md/workshop";
-import {genCode} from "@/api/system/autocode/rule"
+import { genCode } from "@/api/system/autocode/rule";
 import { getToken } from "@/utils/auth";
+import { treeselect } from "@/api/system/dept";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import personnelSelection from "../../../components/personnelSelection.vue";
 
 export default {
   name: "Machinery",
-  dicts: ['sys_yes_no','mes_machinery_status'],
-  components: { Treeselect },
+  dicts: ["sys_yes_no", "mes_machinery_status"],
+  components: { Treeselect, personnelSelection },
   data() {
     return {
       //自动生成编码
-      autoGenFlag:false,
+      autoGenFlag: false,
       optType: undefined,
       // 遮罩层
       loading: true,
@@ -314,7 +542,7 @@ export default {
       // 设备类型树选项
       machineryTypeOptions: [],
       //车间选项
-      workshopOptions:[],
+      workshopOptions: [],
       // 是否显示弹出层
       open: false,
       // 设备类型名称
@@ -322,10 +550,15 @@ export default {
       //自动生成物料编码标识
       autoGenFlag: false,
       // 表单参数
-      form: {},
-      defaultProps: {
+      form: {
+        idList: "",
+        workshopCode: "",
+        workshopName: "",
+        workshopId: "",
+      },
+      defaultPropss: {
         children: "children",
-        label: "machineryTypeName"
+        label: "machineryTypeName",
       },
       // 用户导入参数
       upload: {
@@ -340,8 +573,10 @@ export default {
         // 设置上传的请求头部
         headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + "/mes/dv/machinery/importData"
+        url: process.env.VUE_APP_BASE_API + "/mes/dv/machinery/importData",
       },
+      machineryIdsArr: null,
+      listTypeArr: {},
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -356,51 +591,79 @@ export default {
         workshopId: null,
         workshopCode: null,
         workshopName: null,
-        status: null
+        status: null,
       },
+
+      addInvolvedUserIdVisible: false,
+      // 部门名称
+      deptName: undefined,
+      // 部门树选项
+      deptOptions: undefined,
+      defaultProps: {
+        children: "children",
+        label: "label",
+      },
+      userName: undefined,
+
+      UserAdd: {
+        userIds: [],
+        machineryId: "",
+      },
+
+      inputName: "",
 
       // 表单校验
       rules: {
         machineryCode: [
           { required: true, message: "设备编码不能为空", trigger: "blur" },
-          { max: 64, message: '设备编码长度必须小于64个字符', trigger: 'blur' }
+          { max: 64, message: "设备编码长度必须小于64个字符", trigger: "blur" },
         ],
         machineryName: [
-          { required: true, message: "设备名称不能为空", trigger: "blur" }
+          { required: true, message: "设备名称不能为空", trigger: "blur" },
         ],
         workshopId: [
-          { required: true, message: "车间不能为空",trigger: "blur"}
+          { required: true, message: "车间不能为空", trigger: "blur" },
         ],
         machineryTypeId: [
           { required: true, message: "设备分类不能为空", trigger: "blur" },
-        ]
-      }
+        ],
+        // idList: [
+        //   { required: true, message: "关联代码程序不能为空", trigger: "blur" },
+        // ],
+      },
     };
   },
   watch: {
     // 根据设备分类名称筛选分类树
     machineryTypeName(val) {
       this.$refs.tree.filter(val);
-    }
+    },
   },
   created() {
     this.getList();
     this.getTreeselect();
+    this.listMesArr();
   },
   methods: {
     /** 查询物料编码列表 */
     getList() {
       this.loading = true;
-      listMachinery(this.queryParams).then(response => {
-          this.machineryList = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        }
-      );
+      listMachinery(this.queryParams).then((response) => {
+        this.machineryList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
-    getWorkshops(){
-      listAllWorkshop().then( response => {
-        this.workshopOptions =response.data;
+    getWorkshops() {
+      listAllWorkshop().then((response) => {
+        this.workshopOptions = response.data;
+      });
+    },
+
+    listMesArr() {
+      listMes().then((response) => {
+        console.log(response);
+        this.listTypeArr = response.data;
       });
     },
     /** 转换设备类型数据结构 */
@@ -411,15 +674,18 @@ export default {
       return {
         id: node.machineryTypeId,
         label: node.machineryTypeName,
-        children: node.children
+        children: node.children,
       };
     },
-	/** 查询设备类型下拉树结构 */
+    /** 查询设备类型下拉树结构 */
     getTreeselect() {
-      listMachinerytype().then(response => {
-        debugger;
+      listMachinerytype().then((response) => {
         this.machineryTypeOptions = [];
-        const data = this.handleTree(response.data, "machineryTypeId", "parentTypeId")[0];
+        const data = this.handleTree(
+          response.data,
+          "machineryTypeId",
+          "parentTypeId"
+        )[0];
         this.machineryTypeOptions.push(data);
       });
     },
@@ -430,6 +696,7 @@ export default {
     },
     // 节点单击事件
     handleNodeClick(data) {
+      console.log(data);
       this.queryParams.machineryTypeId = data.machineryTypeId;
       this.handleQuery();
     },
@@ -457,7 +724,8 @@ export default {
         createBy: null,
         createTime: null,
         updateBy: null,
-        updateTime: null       
+        updateTime: null,
+        idList: "",
       };
       this.autoGenFlag = false;
       this.resetForm("form");
@@ -474,17 +742,17 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.machineryId);
+      this.ids = selection.map((item) => item.machineryId);
       this.single = selection.length != 1;
       this.multiple = !selection.length;
     },
     // 查询明细按钮操作
-    handleView(row){
+    handleView(row) {
       this.reset();
       this.getTreeselect();
       this.getWorkshops();
       const machineryId = row.machineryId || this.ids;
-      getMachinery(machineryId).then(response => {
+      getMachinery(machineryId).then((response) => {
         this.form = response.data;
         this.open = true;
         this.title = "查看设备信息";
@@ -493,46 +761,71 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-      debugger;
       this.reset();
       this.getTreeselect();
       this.getWorkshops();
-      if(this.queryParams.machineryTypeId != 0){
+      this.userName = "";
+      this.inputName = "";
+      if (this.queryParams.machineryTypeId != 0) {
         this.form.machineryTypeId = this.queryParams.machineryTypeId;
       }
       this.optType = "add";
       this.open = true;
       this.title = "新增设备";
     },
+
+    saveInvolvedUserId() {
+      this.addInvolvedUserIdVisible = false;
+
+      // this.$emit("getSelectList", this.selectList);
+    },
+
+    //选择关联的设备
+    handleAccompanyId(val) {
+      this.form.workshopCode = val.workshopCode;
+      this.form.workshopName = val.workshopName;
+      this.form.workshopId = val.workshopId;
+    },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       this.getTreeselect();
       this.getWorkshops();
-      const machineryId = row.machineryId || this.ids
-      getMachinery(machineryId).then(response => {
+      const machineryId = row.machineryId || this.ids;
+      getMachinery(machineryId).then((response) => {
         this.form = response.data;
+        let arr = response.data.cadCodeMachineryList.map((item) => item.codeId);
+        this.form.idList = arr;
         this.open = true;
         this.title = "修改设备";
         this.optType = "edit";
       });
+      this.UserAdd.machineryId = row.machineryId;
+      machineryUsers(this.UserAdd).then((response) => {
+        this.userName = response.data.map((item) => item.nickName);
+        this.inputName = response.data;
+      });
     },
     /** 提交按钮 */
-    submitForm: function() {
-      this.$refs["form"].validate(valid => {
+    submitForm: function () {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.machineryId != undefined) {
-            updateMachinery(this.form).then(response => {
+            updateMachinery(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
+              this.exceptionAlert();
               this.open = false;
               this.getList();
             });
           } else {
-            debugger;
-            addMachinery(this.form).then(response => {
+            addMachinery(this.form).then((response) => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
+              if (response.data != null) {
+                this.UserAdd.machineryId = response.data;
+                this.exceptionAlert();
+              }
             });
           }
         }
@@ -541,18 +834,26 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const machineryIds = row.machineryId || this.ids;
-      this.$modal.confirm('确认删除数据项？').then(function() {
-        return delMachinery(machineryIds);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      this.$modal
+        .confirm("确认删除数据项？")
+        .then(function () {
+          return delMachinery(machineryIds);
+        })
+        .then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('mes/dv/machinery/export', {
-        ...this.queryParams
-      }, `user_${new Date().getTime()}.xlsx`)
+      this.download(
+        "mes/dv/machinery/export",
+        {
+          ...this.queryParams,
+        },
+        `user_${new Date().getTime()}.xlsx`
+      );
     },
     /** 导入按钮操作 */
     handleImport() {
@@ -561,8 +862,11 @@ export default {
     },
     /** 下载模板操作 */
     importTemplate() {
-      this.download('mes/dv/machinery/importTemplate', {
-      }, `md_item_${new Date().getTime()}.xlsx`)
+      this.download(
+        "mes/dv/machinery/importTemplate",
+        {},
+        `md_item_${new Date().getTime()}.xlsx`
+      );
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
@@ -573,7 +877,13 @@ export default {
       this.upload.open = false;
       this.upload.isUploading = false;
       this.$refs.upload.clearFiles();
-      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+      this.$alert(
+        "<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" +
+          response.msg +
+          "</div>",
+        "导入结果",
+        { dangerouslyUseHTMLString: true }
+      );
       this.getList();
     },
     // 提交上传文件
@@ -581,15 +891,36 @@ export default {
       this.$refs.upload.submit();
     },
     //自动生成编码
-    handleAutoGenChange(autoGenFlag){
-      if(autoGenFlag){
-        genCode('MACHINERY_CODE').then(response =>{
+    handleAutoGenChange(autoGenFlag) {
+      if (autoGenFlag) {
+        genCode("MACHINERY_CODE").then((response) => {
           this.form.machineryCode = response;
         });
-      }else{
+      } else {
         this.form.machineryCode = null;
       }
-    }
-  }
+    },
+
+    // 添加授权使用人
+    addInvolvedUserId() {
+      this.addInvolvedUserIdVisible = true;
+      // this.$refs.checked.addInvolvedUserId(); // 这样可以直接访问子组件方法,用ref拿子组件方法
+    },
+
+    //子组件传的数据
+    getSelectList(value) {
+      console.log(value);
+      this.userName = "";
+      this.userName = value.map((item) => item.nickName);
+      this.UserAdd.userIds = value.map((item) => item.userId);
+    },
+
+    //新增设备关联通知人
+    exceptionAlert() {
+      UserArr(this.UserAdd).then((response) => {
+        // this.$modal.msgSuccess("新增设备关联通知人成功");
+      });
+    },
+  },
 };
 </script>

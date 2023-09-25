@@ -88,7 +88,7 @@
                       <el-button slot="append" @click="handleSelectStock" icon="el-icon-search"></el-button>
                     </el-input>
                 </el-form-item>
-                <StockSelect ref="stockSelect" :batchCode="form.batchCode" :vendorId="form.vendorId" @onSelected="onStockSelected"></StockSelect>
+                <StockSelect ref="stockSelect" :batchCode="batchCdoe" :vendorId="vendorId" @onSelected="onStockSelected"></StockSelect>
             </el-col>
             <el-col :span="8">
                 <el-form-item label="产品物料名称" prop="itemName">
@@ -302,8 +302,10 @@ export default {
       this.reset();
       const lineId = row.lineId || this.ids
       getIssueline(lineId).then(response => {
-        debugger;
         this.form = response.data;
+        this.warehouseInfo[0] = response.data.warehouseId;    
+        this.warehouseInfo[1] = response.data.locationId;    
+        this.warehouseInfo[2] = response.data.areaId;  
         this.open = true;
         this.title = "修改生产领料单行";
       });
