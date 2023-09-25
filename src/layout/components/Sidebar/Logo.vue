@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import logoImg from '@/assets/logo/logo.png'
+import logoImg from '@/assets/logo/favicon.png'
 import variables from '@/assets/styles/variables.scss'
 
 export default {
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: '苦糖果MES',
+      title: '智能工厂MES系统',
       logo: logoImg
     }
   }

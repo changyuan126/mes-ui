@@ -414,8 +414,6 @@ export default {
         workstationId: null,
         workstationCode: null,
         workstationName: null,
-        routeId: null,
-        routeCode: null,
         processId: null,
         processCode: null,
         processName: null,
@@ -593,8 +591,6 @@ export default {
         this.form.processId = row.processId;
         this.form.processCode = row.processCode;
         this.form.processName = row.processName;
-        this.form.routeId = row.routeId;
-        this.form.routeCode = row.routeCode;
         this.form.isCheck = row.isCheck;
       }
     },
