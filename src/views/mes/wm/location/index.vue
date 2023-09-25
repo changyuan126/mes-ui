@@ -71,7 +71,6 @@
             size="mini"
             type="text"
             icon="el-icon-s-shop"
-            v-if="scope.row.areaFlag =='Y'"
             @click="handleArea(scope.row.locationId)"
             v-hasPermi="['mes:wm:area:edit','mes:wm:area:list']"
           >库位</el-button>

@@ -296,7 +296,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="cancel" v-if="optType =='view' || form.status !='PREPARE' ">返回</el-button>
         <el-button type="primary" @click="submitForm" v-if="form.status =='PREPARE' && optType !='view' ">保 存</el-button>
-        <el-button type="primary" @click="handleSubmit" v-if="form.status =='PREPARE' && optType !='view' ">提交审批</el-button>
+        <el-button type="primary" @click="handleSubmit" v-if="form.status =='PREPARE' && optType !='view' && form.recordId !=null ">提交审批</el-button>
         <el-button type="success" @click="handleExecute" v-if="form.status =='APPROVING'  && form.recordId !=null">审批通过</el-button>
         <el-button type="danger" @click="handleReject" v-if="form.status =='APPROVING'  && form.recordId !=null">审批不通过</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -427,6 +427,7 @@ export default {
         itemName: null,
         specification: null,
         quantity: null,
+        quantityUncheck: null,
         quantityFeedback: null,
         quantityQualified: null,
         quantityUnquanlified: null,
@@ -592,6 +593,12 @@ export default {
         this.form.processCode = row.processCode;
         this.form.processName = row.processName;
         this.form.isCheck = row.isCheck;
+        if(row.isCheck == 'N'){
+          this.form.quantityUncheck = 0;
+        }else {
+          this.form.quantityQualified =0;
+          this.form.quantityUnquanlified = 0;
+        }
       }
     },
     //点击人员选择按钮
