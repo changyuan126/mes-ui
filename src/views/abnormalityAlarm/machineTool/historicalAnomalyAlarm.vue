@@ -25,7 +25,7 @@
           style="width: 150px"
         >
           <el-option
-            v-for="dict in dict.type.mes_dvsubject_type"
+            v-for="dict in dict.type.mes_alarm_type"
             :key="dict.value"
             :label="dict.label"
             :value="dict.value"
@@ -212,8 +212,8 @@
 import { list, edit } from "@/api/abnormalityAlarm/machineTool";
 import { getToken } from "@/utils/auth";
 export default {
-  name: "Dvsubject",
-  dicts: ["sys_yes_no", "mes_dvsubject_type"],
+  // name: "Dvsubject",
+  dicts: ["sys_yes_no", "mes_alarm_type"],
   components: {},
   data() {
     return {
