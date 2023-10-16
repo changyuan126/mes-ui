@@ -97,7 +97,6 @@
         </template>
       </el-table-column>
       <el-table-column label="出库单名称" width="150px" align="center" prop="salseName" />
-      <el-table-column label="出货检验单" width="150px" align="center" prop="oqcCode" />
       <el-table-column label="销售订单编号" width="120px" align="center" prop="soCode" />
       <el-table-column label="客户编码" align="center" prop="clientCode" />
       <el-table-column label="客户名称" align="center" prop="clientName" />   
@@ -176,14 +175,6 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="出货检验单" prop="oqcCode">
-              <el-input v-model="form.oqcCode" placeholder="请输入出货检验单" >
-                <el-button slot="append" @click="handleSelectOqc" icon="el-icon-search"></el-button>
-              </el-input>
-            </el-form-item>
-            <OqcSelectSingle ref="oqcSelect" @onSelected="onOqcSelected"></OqcSelectSingle>
-          </el-col>
-          <el-col :span="8">
             <el-form-item label="销售订单编号" prop="soCode">
               <el-input v-model="form.soCode" placeholder="请输入销售订单编号" />
             </el-form-item>
@@ -196,13 +187,14 @@
               <ClientSelect ref="clientSelect" @onSelected="onClientSelected" > </ClientSelect>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="8">
             <el-form-item label="客户名称" prop="clientName">
               <el-input v-model="form.clientName" readonly="readonly"/>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
+
           <el-col :span="8">
             <el-form-item label="出库日期" prop="salseDate">
               <el-date-picker clearable
