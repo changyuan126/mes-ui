@@ -192,7 +192,7 @@
                   <span v-if="tag.sex == 0" class="tagItem">男</span>
                   <span v-else-if="tag.sex == 1" class="tagItem">女</span>
                   <span v-else class="tagItem">未知</span>
-                  <!-- <span class="tagItem">{{ tag.deptName }}</span> -->
+                  <span class="tagItem">{{ tag.deptName }}</span>
                 </el-tag>
               </div>
             </el-main>

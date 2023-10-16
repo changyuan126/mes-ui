@@ -41,6 +41,12 @@
           <span>{{ parseTime(scope.row.expireDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="是否检验" align="center" prop="iqcCheck">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.iqcCheck"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="检验单编号" width="120" align="center" prop="iqcCode" />
       <el-table-column label="操作" align="center" width="100px" v-if="optType != 'view'" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -115,7 +121,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="入库仓库" prop="warehouseId">
               <el-cascader v-model="warehouseInfo"
                 :options="warehouseOptions"
@@ -123,6 +129,33 @@
                 @change="handleWarehouseChanged"
               >                  
               </el-cascader>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="是否检验">
+              <el-radio-group v-model="form.iqcCheck" disabled v-if="optType=='view'">
+                <el-radio
+                  v-for="dict in dict.type.sys_yes_no"
+                  :key="dict.value"
+                  :label="dict.value"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
+
+              <el-radio-group v-model="form.iqcCheck" v-else>
+                <el-radio
+                  v-for="dict in dict.type.sys_yes_no"
+                  :key="dict.value"
+                  :label="dict.value"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span ="8">
+            <el-form-item v-if="form.iqcCheck == 'Y'" label="来料检验单" prop="iqcCode">
+              <el-input v-model="form.iqcCode" readonly="readonly" placeholder="请选择来料检验单" >
+                <el-button slot="append" @click="handleSelectIqc" icon="el-icon-search"></el-button>
+              </el-input>
+              <IqcSelect ref="iqcSelect" @onSelected="onIqcSelected"></IqcSelect>
             </el-form-item>
           </el-col>
         </el-row>
@@ -145,10 +178,12 @@
 <script>
 import { listItemrecptline, getItemrecptline, delItemrecptline, addItemrecptline, updateItemrecptline } from "@/api/mes/wm/itemrecptline";
 import ItemSelect  from "@/components/itemSelect/single.vue";
+import IqcSelect from "@/components/iqcSelect/single.vue";
 import {getTreeList} from "@/api/mes/wm/warehouse"
 export default {
   name: "Itemrecptline",
-  components :{ItemSelect},
+  dicts: ['sys_yes_no'],
+  components :{ItemSelect,IqcSelect},
   props:{
     recptId: null,
     optType: null,
@@ -294,6 +329,9 @@ export default {
         areaId: this.areaId,
         areaCode: null,
         areaName: null,
+        iqcCheck: 'N',
+        iqcId: null,
+        iqcCode: null,
         expireDate: null,
         remark: null,
         attr1: null,
@@ -360,6 +398,17 @@ export default {
           this.form.itemName = obj.itemName;
           this.form.specification = obj.specification;
           this.form.unitOfMeasure = obj.unitOfMeasure;  
+        }
+    },
+    //IQC检验单选择
+    handleSelectIqc(){
+      this.$refs.iqcSelect.showFlag = true;
+    },
+    //IQC检验单选择弹出框
+    onIqcSelected(obj){
+        if(obj != undefined && obj != null){
+          this.form.iqcId = obj.iqcId;
+          this.form.iqcCode = obj.iqcCode;
         }
     },
     /** 提交按钮 */

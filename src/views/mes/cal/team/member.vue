@@ -48,7 +48,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['cal:teammember:remove']"
+            v-hasPermi="['mes:cal:team:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
