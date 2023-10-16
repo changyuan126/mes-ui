@@ -8,7 +8,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['mes:md:bom:add']"
+          v-hasPermi="['mes:md:mditem:add']"
         >新增</el-button>
         <ItemSelect ref="itemSelect" @onSelected="onItemSelected" > </ItemSelect>
       </el-col>
@@ -20,7 +20,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['mes:md:bom:remove']"
+          v-hasPermi="['mes:md:mditem:remove']"
         >删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -41,14 +41,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['mes:md:bom:edit']"
+            v-hasPermi="['mes:md:mditem:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['mes:md:bom:remove']"
+            v-hasPermi="['mes:md:mditem:remove']"
           >删除</el-button>
         </template>
       </el-table-column>

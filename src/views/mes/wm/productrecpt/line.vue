@@ -8,7 +8,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['wm:productrecptline:add']"
+          v-hasPermi="['mes:wm:productrecpt:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -57,7 +57,7 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-if="optType != 'view'"
-            v-hasPermi="['wm:productrecptline:edit']"
+            v-hasPermi="['mes:wm:productrecpt:edit']"
           >修改</el-button>
           <el-button
             size="mini"
@@ -65,7 +65,7 @@
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-if="optType != 'view'"
-            v-hasPermi="['wm:productrecptline:remove']"
+            v-hasPermi="['mes:wm:productrecpt:remove']"
           >删除</el-button>
         </template>
       </el-table-column>

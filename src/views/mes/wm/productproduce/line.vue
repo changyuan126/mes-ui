@@ -143,7 +143,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['wm:productproduceline:add']"
+          v-hasPermi="['mes:wm:productproduce:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -154,7 +154,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['wm:productproduceline:edit']"
+          v-hasPermi="['mes:wm:productproduce:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -165,7 +165,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['wm:productproduceline:remove']"
+          v-hasPermi="['mes:wm:productproduce:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -175,7 +175,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['wm:productproduceline:export']"
+          v-hasPermi="['mes:wm:productproduce:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -209,14 +209,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['wm:productproduceline:edit']"
+            v-hasPermi="['mes:wm:productproduce:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['wm:productproduceline:remove']"
+            v-hasPermi="['mes:wm:productproduce:remove']"
           >删除</el-button>
         </template>
       </el-table-column>

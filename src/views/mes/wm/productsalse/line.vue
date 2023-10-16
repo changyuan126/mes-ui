@@ -8,7 +8,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['mes:wm:productsalseline:add']"
+          v-hasPermi="['mes:wm:productsalse:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -19,7 +19,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['mes:wm:productsalseline:edit']"
+          v-hasPermi="['mes:wm:productsalse:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -30,7 +30,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['mes:wm:productsalseline:remove']"
+          v-hasPermi="['mes:wm:productsalse:remove']"
         >删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -62,7 +62,7 @@
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-if="optType != 'view'"
-            v-hasPermi="['mes:wm:productsalseline:remove']"
+            v-hasPermi="['mes:wm:productsalse:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
