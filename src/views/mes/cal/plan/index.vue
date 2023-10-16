@@ -91,7 +91,7 @@
                 <el-button              
                   type="text"
                   @click="handleView(scope.row)"
-                  v-hasPermi="['mes:cal:plan:query']"
+                  v-hasPermi="['mes:cal:calplan:query']"
                 >{{scope.row.planCode}}</el-button>
           </template>
       </el-table-column>

@@ -52,14 +52,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['cal:shift:edit']"
+            v-hasPermi="['mes:cal:shift:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['cal:shift:remove']"
+            v-hasPermi="['mes:cal:shift:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
