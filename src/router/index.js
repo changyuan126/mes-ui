@@ -217,6 +217,35 @@ export const dynamicRoutes = [
         meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
       }
     ]
+  },
+  {
+    path: '/mes/qc/pendinginspect/add',
+    component: Layout,
+    hidden: true,
+    permissions: ['mes:qc:pending'],
+    children: [
+      {
+        path: 'iqc',
+        component: () => import('@/views/mes/qc/iqc/iqc'),
+        name: 'iqcadd',
+        props: true,
+        meta: {title: '来料检验', activeMenu: '/mes/qc/pendinginspect/iqc'}
+      },
+      {
+        path: 'pqc',
+        component: () => import('@/views/mes/qc/pendinginspect/pqc'),
+        name: 'pqcadd',
+        props: true,
+        meta: {title: '过程检验', activeMenu: '/mes/qc/pendinginspect/pqc'}
+      },
+      {
+        path: 'oqc',
+        component: () => import('@/views/mes/qc/oqc/index'),
+        name: 'oqcadd',
+        props: true,
+        meta: {title: '出厂检验', activeMenu: '/mes/qc/pendinginspect/oqc'}
+      }
+    ]
   }
 ]
 
