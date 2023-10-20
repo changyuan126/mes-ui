@@ -9,7 +9,7 @@
           size="mini"
           @click="handleAdd"
           v-if="optType != 'view'"
-          v-hasPermi="['mes:wm:transferline:add']"
+          v-hasPermi="['mes:wm:transfer:add']"
         >新增</el-button>
       </el-col>
    
@@ -22,7 +22,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-if="optType != 'view'"
-          v-hasPermi="['mes:wm:transferline:remove']"
+          v-hasPermi="['mes:wm:transfer:remove']"
         >删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -52,14 +52,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['mes:wm:transferline:edit']"
+            v-hasPermi="['mes:wm:transfer:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['mes:wm:transferline:remove']"
+            v-hasPermi="['mes:wm:transfer:remove']"
           >删除</el-button>
         </template>
       </el-table-column>

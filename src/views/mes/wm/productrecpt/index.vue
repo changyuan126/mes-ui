@@ -47,7 +47,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['wm:productrecpt:add']"
+          v-hasPermi="['mes:wm:productrecpt:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -58,7 +58,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['wm:productrecpt:edit']"
+          v-hasPermi="['mes:wm:productrecpt:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -69,7 +69,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['wm:productrecpt:remove']"
+          v-hasPermi="['mes:wm:productrecpt:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -79,7 +79,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['wm:productrecpt:export']"
+          v-hasPermi="['mes:wm:productrecpt:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>

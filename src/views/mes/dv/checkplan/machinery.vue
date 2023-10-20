@@ -9,7 +9,7 @@
           size="mini"
           v-if="optType !='view'"
           @click="handleAdd"
-          v-hasPermi="['mes:dv:checkmachinery:add']"
+          v-hasPermi="['mes:dv:checkplan:add']"
         >新增</el-button>
       </el-col>     
       <el-col :span="1.5">
@@ -21,7 +21,7 @@
           v-if="optType !='view'"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['mes:dv:checkmachinery:remove']"
+          v-hasPermi="['mes:dv:checkplan:remove']"
         >删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -42,7 +42,7 @@
             icon="el-icon-delete"
             v-if="optType !='view'"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['mes:dv:checkmachinery:remove']"
+            v-hasPermi="['mes:dv:checkplan:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
