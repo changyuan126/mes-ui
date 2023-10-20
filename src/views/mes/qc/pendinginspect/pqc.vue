@@ -351,7 +351,7 @@ export default {
             this.$refs["form"].validate(valid => {
                     if (valid) {
                         this.$modal.confirm('是否完成检验单编制？【完成后将不能更改】').then(function(){
-                            that.form.status = 'CONFIRMED';
+                            that.form.status = 'FINISHED';
                             that.submitForm();
                             that.cancel();
                         });

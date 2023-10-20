@@ -177,7 +177,7 @@
       <el-form-item style="text-align: center;margin-left:-120px;margin-top:30px;">
         <el-button type="primary" @click="cancel" v-if="optType =='view' || form.status !='PREPARE' ">返回</el-button>
         <el-button type="primary" @click="submitForm" v-if="form.status =='PREPARE' && optType !='view' ">保 存</el-button>
-        <el-button type="success" @click="handleFinish" v-if="form.status =='PREPARE' && optType !='view'  && form.ipqcId !=null">完成</el-button>
+        <el-button type="success" @click="handleFinish" v-if="form.status =='PREPARE' && optType !='view'  && form.iqcId !=null">完成</el-button>
         <el-button @click="cancel">取 消</el-button>
       </el-form-item>
     </el-form>
@@ -231,13 +231,13 @@ export default {
         }
     },
     created() {
-      this.getList();
+      this.reset();
     },
     methods: {
       // 取消按钮
       cancel() {
-        this.open = false;
-        this.reset();
+        const obj = { path: "/mes/qc/pendinginspect" };
+        this.$tab.closeOpenPage(obj);
       },
       // 表单重置
       reset() {
@@ -272,7 +272,7 @@ export default {
           majQuantity: null,
           minQuantity: null,
           checkResult: null,
-          reciveDate: null,
+          reciveDate: this.$route.params.recordTime,
           inspectDate: null,
           inspector: null,
           status: "PREPARE",
@@ -317,9 +317,9 @@ export default {
         this.$refs["form"].validate(valid => {
           if (valid) {
             this.$modal.confirm('是否完成来料检验单编制？【完成后将不能更改】').then(function(){
-              that.form.status = 'CONFIRMED';
+              that.form.status = 'FINISHED';
               that.submitForm();
-              that.open = false;
+              that.cancel();
             });
           }
           });
