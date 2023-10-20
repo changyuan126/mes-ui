@@ -8,7 +8,7 @@
                 icon="el-icon-plus"
                 size="mini"
                 @click="handleAdd"
-                v-hasPermi="['mes:md:sop:add']"
+                v-hasPermi="['mes:md:mditem:add']"
                 >新增</el-button>
             </el-col>
         </el-row>

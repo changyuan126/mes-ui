@@ -10,7 +10,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['md:workstationmachine:remove']"
+            v-hasPermi="['mes:md:workstation:remove']"
           >删除</el-button>
         </template>
       </el-table-column>

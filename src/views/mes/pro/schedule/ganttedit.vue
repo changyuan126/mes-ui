@@ -9,7 +9,7 @@
           icon="el-icon-edit"
           size="mini"
           @click="handleUpdate"
-          v-hasPermi="['mes:pro:schedule:edit']"
+          v-hasPermi="['mes:pro:protask:edit']"
         >保存</el-button>
       </el-col>
       <el-col :span="1.5">
