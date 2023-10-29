@@ -322,6 +322,7 @@ export default {
         pageSize: 10,
         workorderCode: null,
         workorderName: null,
+        workorderType: 'SELF', //这里的排产要排除自产之外的外协和外购
         orderSource: null,
         sourceCode: null,
         productId: null,
