@@ -42,7 +42,7 @@
             type="text"
             icon="el-icon-edit"
             @click="handleAddSubWorkorder(scope.row)"
-            v-if="workorder.status == 'CONFIRMED' && scope.row.itemOrProduct=='PRODUCT'"
+            v-if="workorder.status == 'CONFIRMED' && scope.row.itemOrProduct=='PRODUCT' && workorder.workorderType =='SELF'"
             v-hasPermi="['mes:pro:workorder:edit']"
           >生成工单</el-button>
         </template>
@@ -143,7 +143,7 @@ export default {
   },
   props: {
       optType: undefined,
-      workorder: undefined
+      workorder: undefined,      
   },
   created() {
     this.getList();

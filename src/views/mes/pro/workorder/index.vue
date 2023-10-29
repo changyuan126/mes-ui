@@ -190,7 +190,7 @@
             size="mini"
             type="text"
             icon="el-icon-plus"
-            v-if="scope.row.status =='CONFIRMED'"
+            v-if="scope.row.status =='CONFIRMED' && scope.row.workorderType =='SELF'"
             @click="handleAdd(scope.row)"
             v-hasPermi="['mes:pro:workorder:update']"
           >新增</el-button>
