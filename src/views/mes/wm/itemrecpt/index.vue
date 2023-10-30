@@ -122,7 +122,7 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-delete"
+            icon="el-icon-video-play"
             v-if="scope.row.status =='PREPARE'"
             @click="handleExecute(scope.row)"
             v-hasPermi="['mes:wm:itemrecpt:edit']"
@@ -439,7 +439,6 @@ export default {
       this.reset();
       const recptIds = row.recptId
       getItemrecpt(recptIds).then(response => {
-        debugger;
         this.form = response.data;
         this.warehouseInfo[0] = response.data.warehouseId;    
         this.warehouseInfo[1] = response.data.locationId;    

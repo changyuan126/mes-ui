@@ -125,7 +125,7 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-delete"
+            icon="el-icon-video-play"
             v-if="scope.row.status =='PREPARE'"
             @click="handleExecute(scope.row)"
             v-hasPermi="['mes:wm:issueheader:edit']"

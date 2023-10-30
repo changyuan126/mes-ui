@@ -103,6 +103,9 @@
         name: 'WorkOrderSelectSingle',
         components: {},
         dicts: ['mes_order_status','mes_workorder_sourcetype'],
+        props:{
+          workorder: undefined //外部传入的工单过滤信息
+        },
         data() {
             return {
                 showFlag: false,
@@ -129,6 +132,7 @@
                 queryParams: {
                     workorderCode: null,
                     workorderName: null,
+                    workorderType: this.workorder.workorderType,
                     orderSource: null,
                     sourceCode: null,
                     productId: null,
