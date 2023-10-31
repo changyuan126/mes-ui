@@ -226,7 +226,7 @@ export const dynamicRoutes = [
     children: [
       {
         path: 'iqc',
-        component: () => import('@/views/mes/qc/iqc/iqc'),
+        component: () => import('@/views/mes/qc/pendinginspect/iqc'),
         name: 'iqcadd',
         props: true,
         meta: {title: '来料检验', activeMenu: '/mes/qc/pendinginspect/iqc'}

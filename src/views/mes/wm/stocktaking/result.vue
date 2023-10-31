@@ -212,6 +212,10 @@ import { listStocktakingresult, getStocktakingresult, delStocktakingresult, addS
 
 export default {
   name: "Stocktakingresult",
+  props:{
+    optType: null,
+    takingId: null,
+  },
   data() {
     return {
       // 遮罩层
@@ -236,7 +240,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        takingId: null,        itemId: null,        itemCode: null,        itemName: null,        specification: null,        unitOfMeasure: null,        unitName: null,        quantity: null,        takingQuantity: null,        takingStatus: null,      },
+        takingId: this.takingId,        itemId: null,        itemCode: null,        itemName: null,        specification: null,        unitOfMeasure: null,        unitName: null,        quantity: null,        takingQuantity: null,        takingStatus: null,      },
       // 表单参数
       form: {},
       // 表单校验

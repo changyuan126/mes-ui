@@ -117,6 +117,7 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
+            v-if="scope.row.status =='PREPARE'"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['mes:wm:outsourcerecpt:edit']"
           >修改</el-button>
@@ -124,6 +125,7 @@
             size="mini"
             type="text"
             icon="el-icon-delete"
+            v-if="scope.row.status =='PREPARE'"
             @click="handleDelete(scope.row)"
             v-hasPermi="['mes:wm:outsourcerecpt:remove']"
           >删除</el-button>
@@ -243,7 +245,7 @@
 </template>
 
 <script>
-import { listOutsourcerecpt, getOutsourcerecpt, delOutsourcerecpt, addOutsourcerecpt, updateOutsourcerecpt } from "@/api/mes/wm/outsourcerecpt";
+import { listOutsourcerecpt, getOutsourcerecpt, delOutsourcerecpt, addOutsourcerecpt, updateOutsourcerecpt, execute } from "@/api/mes/wm/outsourcerecpt";
 import {getTreeList} from "@/api/mes/wm/warehouse"
 import {genCode} from "@/api/system/autocode/rule"
 import WorkorderSelect from "@/components/workorderSelect/single.vue"
@@ -425,6 +427,16 @@ export default {
         this.title = "查看外协入库单信息";
         this.optType = "view";
       });
+    },
+    //执行入库
+    handleExecute(row){
+      const recptIds = row.recptId || this.ids;
+      this.$modal.confirm('确认执行入库？').then(function() {
+        return execute(recptIds)//执行入库
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("入库成功");
+      }).catch(() => {});
     },
     //选择生产工单
     handleWorkorderSelect(){

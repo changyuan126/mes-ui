@@ -336,6 +336,10 @@ import { listStocktakingline, getStocktakingline, delStocktakingline, addStockta
 
 export default {
   name: "Stocktakingline",
+  props:{
+    optType: null,
+    takingId: null,
+  },
   data() {
     return {
       // 遮罩层
@@ -360,7 +364,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        takingId: null,        materialStockId: null,        itemId: null,        itemCode: null,        itemName: null,        specification: null,        unitOfMeasure: null,        unitName: null,        quantity: null,        takingQuantity: null,        warehouseId: null,        warehouseCode: null,        warehouseName: null,        locationId: null,        locationCode: null,        locationName: null,        areaId: null,        areaCode: null,        areaName: null,        takingStatus: null,      },
+        takingId: this.takingId,        materialStockId: null,        itemId: null,        itemCode: null,        itemName: null,        specification: null,        unitOfMeasure: null,        unitName: null,        quantity: null,        takingQuantity: null,        warehouseId: null,        warehouseCode: null,        warehouseName: null,        locationId: null,        locationCode: null,        locationName: null,        areaId: null,        areaCode: null,        areaName: null,        takingStatus: null,      },
       // 表单参数
       form: {},
       // 表单校验

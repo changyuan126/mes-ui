@@ -42,3 +42,12 @@ export function delOutsourcerecpt(recptId) {
     method: 'delete'
   })
 }
+
+
+//执行入库
+export function execute(recptId) {
+  return request({
+    url: '/mes/wm/outsourcerecpt/' + recptId,
+    method: 'put'
+  })
+}

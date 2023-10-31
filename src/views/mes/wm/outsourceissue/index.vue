@@ -114,6 +114,7 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
+            v-if="scope.row.status =='PREPARE'"
             v-hasPermi="['mes:wm:outsourceissue:edit']"
           >修改</el-button>
           <el-button
@@ -121,6 +122,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
+            v-if="scope.row.status =='PREPARE'"
             v-hasPermi="['mes:wm:outsourceissue:remove']"
           >删除</el-button>
         </template>
