@@ -284,7 +284,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('wm/sn/export', {
+      this.download('/mes/wm/sn/export', {
         ...this.queryParams
       }, `sn_${new Date().getTime()}.xlsx`)
     },
