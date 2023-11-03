@@ -104,7 +104,11 @@
         components: {},
         dicts: ['mes_order_status','mes_workorder_sourcetype'],
         props:{
-          workorder: undefined //外部传入的工单过滤信息
+          workorder: {
+            type: Object, 
+            default: function(){
+              return {'workorderType': 'SELF'}
+            }} //外部传入的工单过滤信息
         },
         data() {
             return {
