@@ -56,7 +56,7 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-if="optType != 'view'"
-            v-hasPermi="['mes:wm:issueheader:edit']"
+            v-hasPermi="['mes:wm:outsourceissue:edit']"
           >修改</el-button>
           <el-button
             size="mini"
@@ -64,7 +64,7 @@
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-if="optType != 'view'"
-            v-hasPermi="['mes:wm:issueheader:remove']"
+            v-hasPermi="['mes:wm:outsourceissue:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
