@@ -90,7 +90,7 @@
           <el-button
             type="text"
             @click="handleView(scope.row)"
-            v-hasPermi="['mes:qc:template:query']"
+            v-hasPermi="['mes:qc:qctemplate:query']"
           >{{scope.row.templateCode}}</el-button>
         </template>
       </el-table-column>

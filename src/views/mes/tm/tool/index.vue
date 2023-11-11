@@ -126,15 +126,16 @@
     <el-table v-loading="loading" :data="toolList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="编号" align="center" prop="toolCode" >
+      </el-table-column>
+      <el-table-column label="名称" align="center" prop="toolName" :show-overflow-tooltip="true">
         <template slot-scope="scope">
           <el-button
             type="text"
             @click="handleView(scope.row)"
             v-hasPermi="['mes:tm:tool:query']"
-          >{{scope.row.toolCode}}</el-button>
+          >{{scope.row.toolName}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="名称" align="center" prop="toolName" :show-overflow-tooltip="true"/>
       <el-table-column label="品牌" align="center" prop="brand" :show-overflow-tooltip="true"/>
       <el-table-column label="型号" align="center" prop="spec" :show-overflow-tooltip="true"/>
       <el-table-column label="类型" align="center" prop="toolTypeName" />

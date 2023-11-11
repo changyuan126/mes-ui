@@ -47,14 +47,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['dv:machinerytype:edit']"
+            v-hasPermi="['mes:dv:machinerytype:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-plus"
             @click="handleAdd(scope.row)"
-            v-hasPermi="['dv:machinerytype:add']"
+            v-hasPermi="['mes:dv:machinerytype:add']"
           >新增</el-button>
           <el-button
             v-if="scope.row.parentTypeId != 0"
@@ -62,7 +62,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['dv:machinerytype:remove']"
+            v-hasPermi="['mes:dv:machinerytype:remove']"
           >删除</el-button>
         </template>
       </el-table-column>

@@ -86,7 +86,7 @@
             type="text"
             icon="el-icon-s-shop"
             @click="handleLocation(scope.row.warehouseId)"
-            v-hasPermi="['mes:wm:warehouse:edit','mes:wm:warehouse:list']"
+            v-hasPermi="['mes:wm:location:edit','mes:wm:location:list']"
           >库区</el-button>
           <el-button
             size="mini"

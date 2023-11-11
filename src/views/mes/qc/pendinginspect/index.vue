@@ -54,7 +54,7 @@
               icon="el-icon-edit"
               @click="handleAddIQC(scope.row)"
               v-if="scope.row.qcType == 'IQC'"
-              v-hasPermi="['mes:qc:qcindex:edit']"
+              v-hasPermi="['mes:qc:iqc:edit']"
             >来料检验</el-button>
             <el-button
               size="mini"
@@ -62,7 +62,7 @@
               icon="el-icon-edit"
               v-if="scope.row.qcType == 'PQC'"
               @click="handleAddPQC(scope.row)"
-              v-hasPermi="['mes:qc:qcindex:edit']"
+              v-hasPermi="['mes:qc:ipqc:edit']"
             >过程检验</el-button>
             <el-button
               size="mini"
@@ -70,7 +70,7 @@
               icon="el-icon-edit"
               v-if="scope.row.qcType == 'OQC'"
               @click="handleAddOQC(scope.row)"
-              v-hasPermi="['mes:qc:qcindex:edit']"
+              v-hasPermi="['mes:qc:oqc:edit']"
             >出货检验</el-button>
           </template>
         </el-table-column>
