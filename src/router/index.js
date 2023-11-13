@@ -180,7 +180,7 @@ export const dynamicRoutes = [
     path: '/mes/pro/schedule',
     component: Layout,
     hidden: true,
-    permissions: ['mes:pro:schedule:edit'],
+    permissions: ['mes:pro:protask:edit'],
     children: [
       {
         path: 'ganttedit',
