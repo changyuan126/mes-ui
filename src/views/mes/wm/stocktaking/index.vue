@@ -1,6 +1,16 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
+      <el-form-item label="盘点类型" prop="takingType">
+        <el-select v-model="queryParams.takingType" placeholder="请选择盘点类型" clearable>
+          <el-option
+            v-for="dict in dict.type.mes_stocktaking_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>     
       <el-form-item label="盘点单编号" prop="takingCode">
         <el-input
           v-model="queryParams.takingCode"
@@ -25,48 +35,6 @@
           placeholder="请选择盘点日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="盘点人用户名" prop="userName">
-        <el-input
-          v-model="queryParams.userName"
-          placeholder="请输入盘点人用户名"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="盘点人" prop="nickName">
-        <el-input
-          v-model="queryParams.nickName"
-          placeholder="请输入盘点人"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="盘点类型" prop="takingType">
-        <el-select v-model="queryParams.takingType" placeholder="请选择盘点类型" clearable>
-          <el-option
-            v-for="dict in dict.type.mes_stocktaking_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="仓库ID" prop="warehouseId">
-        <el-input
-          v-model="queryParams.warehouseId"
-          placeholder="请输入仓库ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="仓库编码" prop="warehouseCode">
-        <el-input
-          v-model="queryParams.warehouseCode"
-          placeholder="请输入仓库编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="仓库名称" prop="warehouseName">
         <el-input
           v-model="queryParams.warehouseName"
@@ -86,92 +54,31 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['wm:stocktaking:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['wm:stocktaking:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['wm:stocktaking:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['wm:stocktaking:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
     <el-table v-loading="loading" :data="stocktakingList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="盘点单ID" align="center" prop="takingId" />
-      <el-table-column label="盘点单编号" align="center" prop="takingCode" />
-      <el-table-column label="盘点单名称" align="center" prop="takingName" />
-      <el-table-column label="盘点日期" align="center" prop="takingDate" width="180">
+      <el-table-column label="盘点单编号" align="center" prop="takingCode" >
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.takingDate, '{y}-{m}-{d}') }}</span>
+          <el-button
+            type="text"
+            @click="handleView(scope.row)"
+            v-hasPermi="['mes:wm:stocktaking:query']"
+          >{{scope.row.takingCode}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="盘点人用户名" align="center" prop="userName" />
-      <el-table-column label="盘点人" align="center" prop="nickName" />
+      <el-table-column label="盘点单名称" align="center" prop="takingName" />
       <el-table-column label="盘点类型" align="center" prop="takingType">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.mes_stocktaking_type" :value="scope.row.takingType"/>
         </template>
       </el-table-column>
-      <el-table-column label="仓库ID" align="center" prop="warehouseId" />
-      <el-table-column label="仓库编码" align="center" prop="warehouseCode" />
-      <el-table-column label="仓库名称" align="center" prop="warehouseName" />
-      <el-table-column label="单据状态" align="center" prop="status" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="盘点日期" align="center" prop="takingDate" width="180">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['wm:stocktaking:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['wm:stocktaking:remove']"
-          >删除</el-button>
+          <span>{{ parseTime(scope.row.takingDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="盘点人" align="center" prop="nickName" />
+      <el-table-column label="仓库名称" align="center" prop="warehouseName" />
+      <el-table-column label="单据状态" align="center" prop="status" />
     </el-table>
     
     <pagination
@@ -233,6 +140,14 @@
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
       </el-form>
+      <el-tabs type="border-card" v-if="form.takingId != null">        
+        <el-tab-pane v-if="form.takingType=='OPEN'" label="盘点清单">
+          <TakingLine></TakingLine>
+        </el-tab-pane>
+        <el-tab-pane label="盘点结果">
+          <TakingResult></TakingResult>  
+        </el-tab-pane>
+      </el-tabs>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -242,10 +157,12 @@
 </template>
 
 <script>
-import { listStocktaking, getStocktaking, delStocktaking, addStocktaking, updateStocktaking } from "@/api/mes/wm/stocktaking";
-
+import { listStocktaking, getStocktaking, delStocktaking, addStocktaking, updateStocktaking ,execute} from "@/api/mes/wm/stocktaking";
+import TakingLine from './line.vue';
+import TakingResult from './result.vue';
 export default {
   name: "Stocktaking",
+  components: {TakingLine,TakingResult},
   dicts: ['mes_stocktaking_type'],
   data() {
     return {
@@ -376,7 +293,17 @@ export default {
       this.download('wm/stocktaking/export', {
         ...this.queryParams
       }, `stocktaking_${new Date().getTime()}.xlsx`)
-    }
+    },
+    //执行盘点
+    handleExecute(row){
+      const takingIds = row.takingId || this.ids;
+      this.$modal.confirm('确认执行盘点？').then(function() {
+        return execute(takingIds)//执行入库
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("盘点完成");
+      }).catch(() => {});
+    },
   }
 };
 </script>

@@ -76,12 +76,12 @@
             type="text"
             @click="handleView(scope.row)"
             v-hasPermi="['mes:wm:sn:query']"
-          >{{scope.row.genDate}}</el-button>
+          >{{scope.row.snNum}}</el-button>
         </template>
       </el-table-column>
       <el-table-column label="生成时间" align="center" prop="genDate" width="120">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.rtDate, '{y}-{m}-{d} {h}:{mi}:{s}') }}</span>
+          <span>{{ parseTime(scope.row.genDate, '{y}-{m}-{d} {h}:{mi}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -90,7 +90,7 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
+            @click="handleExport(scope.row)"
             v-hasPermi="['mes:wm:sn:edit']"
           >导出/打印</el-button>
           <el-button
@@ -208,6 +208,7 @@ export default {
     getList() {
       this.loading = true;
       listSn(this.queryParams).then(response => {
+        debugger;
         this.snList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -283,8 +284,10 @@ export default {
       }).catch(() => {});
     },
     /** 导出按钮操作 */
-    handleExport() {
-      this.download('wm/sn/export', {
+    handleExport(row) {      
+      this.queryParams.itemCode = row.itemCode;
+      this.queryParams.gen_date = row.genDate;
+      this.download('/mes/wm/sn/export', {
         ...this.queryParams
       }, `sn_${new Date().getTime()}.xlsx`)
     },

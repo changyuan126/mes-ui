@@ -72,8 +72,8 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>        
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-refresh" circle="" @click="getList"></el-button>
-        <el-button type="primary" icon="el-icon-edit" circle="" @click="handleOpenGantt"></el-button>
+        <el-button type="primary" icon="el-icon-refresh" v-hasPermi="['mes:pro:protask:list']" circle="" @click="getList"></el-button>
+        <el-button type="primary" icon="el-icon-edit" v-hasPermi="['mes:pro:protask:edit']" circle="" @click="handleOpenGantt"></el-button>
       </el-form-item>
     </el-form>
     <div class="wrapper">
@@ -94,7 +94,7 @@
             size="mini"
             type="text"
             @click="handleView(scope.row)"
-            v-hasPermi="['mes:pro:workorder:query']"
+            v-hasPermi="['mes:pro:protask:query']"
           >{{scope.row.workorderCode}}</el-button>
         </template>
       </el-table-column>
@@ -132,7 +132,7 @@
             icon="el-icon-edit"
             v-if="scope.row.status =='CONFIRMED'"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['mes:pro:workorder:edit']"
+            v-hasPermi="['mes:pro:protask:edit']"
           >排产</el-button>
         </template>
       </el-table-column>
@@ -322,6 +322,7 @@ export default {
         pageSize: 10,
         workorderCode: null,
         workorderName: null,
+        workorderType: 'SELF', //这里的排产要排除自产之外的外协和外购
         orderSource: null,
         sourceCode: null,
         productId: null,
