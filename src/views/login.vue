@@ -56,7 +56,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">      
-      <span @click="toIPC">陕ICP备2022002135号-1</span>
+      <span @click="toIPC">苏ICP备2021009988号-6</span>
     </div>
   </div>
 </template>
