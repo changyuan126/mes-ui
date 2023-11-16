@@ -160,9 +160,9 @@
       <el-table-column label="产品名称" width="200" align="center" prop="productName" :show-overflow-tooltip="true"/>
       <el-table-column label="规格型号" align="center" prop="productSpc" :show-overflow-tooltip="true"/>
       <el-table-column label="单位" align="center" prop="unitOfMeasure" />
-      <el-table-column label="工单数量" align="center" prop="quantity" />                 
+      <el-table-column label="工单数量" align="center" prop="quantity" />
       <el-table-column label="调整数量" align="center" prop="quantityChanged" />
-      <el-table-column label="已生产数量" align="center" width="100px" prop="quantityProduced" /> 
+      <el-table-column label="已生产数量" align="center" width="100px" prop="quantityProduced" />
       <el-table-column label="批次号" align="center" width="100px" prop="batchCode" />
       <el-table-column label="客户编码" align="center" prop="clientCode" />
       <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
@@ -227,7 +227,7 @@
               <el-switch v-model="autoGenFlag"
                   active-color="#13ce66"
                   active-text="自动生成"
-                  @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view' && form.status =='PREPARE'">               
+                  @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view' && form.status =='PREPARE'">
               </el-switch>
             </el-form-item>
           </el-col>
@@ -235,11 +235,11 @@
             <el-form-item label="工单名称" prop="workorderName">
               <el-input v-model="form.workorderName" placeholder="请输入工单名称" />
             </el-form-item>
-          </el-col>          
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="来源类型" prop="orderSource">              
+            <el-form-item label="来源类型" prop="orderSource">
               <el-radio-group v-model="form.orderSource" disabled v-if="optType=='view'">
                 <el-radio
                   v-for="dict in dict.type.mes_workorder_sourcetype"
@@ -255,12 +255,12 @@
                 >{{dict.label}}</el-radio>
               </el-radio-group>
             </el-form-item>
-          </el-col>                    
+          </el-col>
           <el-col :span="8" v-if="form.orderSource == 'ORDER'">
             <el-form-item label="订单编号" prop="sourceCode">
               <el-input v-model="form.sourceCode" placeholder="请输入订单编号" />
             </el-form-item>
-          </el-col>         
+          </el-col>
           <el-col :span="8">
             <el-form-item label="单据状态" prop="status">
               <el-select v-model="form.status" disabled placeholder="请选择单据状态">
@@ -272,7 +272,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-          </el-col> 
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
@@ -299,7 +299,7 @@
             <el-form-item label="产品名称" prop="productName">
               <el-input v-model="form.productName" placeholder="请选择产品" disabled/>
             </el-form-item>
-          </el-col>          
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
@@ -311,7 +311,7 @@
             <el-form-item label="单位" prop="unitOfMeasure">
               <el-input v-model="form.unitOfMeasure" placeholder="请选择产品" disabled/>
             </el-form-item>
-          </el-col>          
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
@@ -328,12 +328,12 @@
                 placeholder="请选择需求日期">
               </el-date-picker>
             </el-form-item>
-          </el-col>     
+          </el-col>
           <el-col :span="8">
             <el-form-item label="批次号" prop="batchCode">
               <el-input v-model="form.batchCode" placeholder="请输入批次号" />
             </el-form-item>
-          </el-col>     
+          </el-col>
         </el-row>
         <el-row v-if="form.orderSource == 'ORDER'">
           <el-col :span="12">
@@ -380,12 +380,12 @@
           </el-col>
         </el-row>
       </el-form>
-      <el-tabs type="border-card" v-if="form.workorderId != null">        
-        <el-tab-pane label="BOM组成"> 
-          <Workorderbom ref="bomlist" :optType="optType" :workorder="form" @handleAddSub="handleSubAdd" ></Workorderbom>        
+      <el-tabs type="border-card" v-if="form.workorderId != null">
+        <el-tab-pane label="BOM组成">
+          <Workorderbom ref="bomlist" :optType="optType" :workorder="form" @handleAddSub="handleSubAdd" ></Workorderbom>
         </el-tab-pane>
         <el-tab-pane label="物料需求">
-         
+
         </el-tab-pane>
       </el-tabs>
       <div slot="footer" class="dialog-footer">
@@ -641,6 +641,7 @@ export default {
       }
       getWorkorder(row.workorderId).then(response => {
         this.form = response.data;
+        this.form.workorderType = 'SELF'
         this.open = true;
         this.title = "修改生产工单";
         this.optType="edit";
@@ -703,7 +704,7 @@ export default {
           this.form.productCode = obj.itemCode;
           this.form.productName = obj.itemName;
           this.form.productSpc = obj.specification;
-          this.form.unitOfMeasure = obj.unitOfMeasure;  
+          this.form.unitOfMeasure = obj.unitOfMeasure;
         }
     },
     //客户选择弹出框
