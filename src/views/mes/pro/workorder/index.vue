@@ -59,6 +59,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="工单类型" prop="workorderType">
+        <el-input
+          v-model="queryParams.workorderType"
+          placeholder="请选择工单类型"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="需求日期" prop="requestDate">
         <el-date-picker clearable
           v-model="queryParams.requestDate"
@@ -137,6 +145,11 @@
         </template>
       </el-table-column>
       <el-table-column label="工单名称" width="200" align="center" prop="workorderName" :show-overflow-tooltip="true"/>
+      <el-table-column label="工单类型" align="center" prop="workorderType" >
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.mes_workorder_type" :value="scope.row.workorderType"/>
+        </template>
+      </el-table-column>
       <el-table-column label="工单来源" align="center" prop="orderSource" >
         <template slot-scope="scope">
           <dict-tag :options="dict.type.mes_workorder_sourcetype" :value="scope.row.orderSource"/>
@@ -177,7 +190,7 @@
             size="mini"
             type="text"
             icon="el-icon-plus"
-            v-if="scope.row.status =='CONFIRMED'"
+            v-if="scope.row.status =='CONFIRMED' && scope.row.workorderType =='SELF'"
             @click="handleAdd(scope.row)"
             v-hasPermi="['mes:pro:workorder:add']"
           >新增</el-button>
@@ -202,7 +215,7 @@
 
     <!-- 添加或修改生产工单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row>
           <el-col :span="8">
             <el-form-item label="工单编号" prop="workorderCode">
@@ -262,7 +275,19 @@
           </el-col> 
         </el-row>
         <el-row>
-          <el-col :span="12">
+          <el-col :span="8">
+            <el-form-item label="工单类型" prop="workorderType">
+              <el-select v-model="form.workorderType" placeholder="请选择类型">
+                <el-option
+                  v-for="dict in dict.type.mes_workorder_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
             <el-form-item label="产品编号" prop="productCode">
               <el-input v-model="form.productCode" placeholder="请选择产品" >
                 <el-button slot="append" @click="handleSelectProduct" icon="el-icon-search"></el-button>
@@ -270,7 +295,7 @@
               <ItemSelect ref="itemSelect" @onSelected="onItemSelected" > </ItemSelect>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="产品名称" prop="productName">
               <el-input v-model="form.productName" placeholder="请选择产品" disabled/>
             </el-form-item>
@@ -313,7 +338,7 @@
         <el-row v-if="form.orderSource == 'ORDER'">
           <el-col :span="12">
             <el-form-item label="客户编码" prop="clientCode">
-              <el-input v-model="form.clientCode" placeholder="请输入客户编码" >
+              <el-input v-model="form.clientCode" placeholder="请选择客户" >
                 <el-button slot="append" @click="handleSelectClient" icon="el-icon-search"></el-button>
               </el-input>
               <ClientSelect ref="clientSelect" @onSelected="onClientSelected" > </ClientSelect>
@@ -322,6 +347,22 @@
           <el-col :span="12">
             <el-form-item label="客户名称" prop="clientName">
               <el-input v-model="form.clientName" readonly="readonly" placeholder="请输入客户名称" />
+            </el-form-item>
+          </el-col>
+          <el-col></el-col>
+        </el-row>
+        <el-row v-if="form.workorderType == 'OUTSOURCE' || form.workorderType == 'PURCHASE'">
+          <el-col :span="12">
+            <el-form-item label="供应商编码" prop="vendorCode">
+              <el-input v-model="form.vendorCode" placeholder="请选择供应商" >
+                <el-button slot="append" @click="handleSelectVendor" icon="el-icon-search"></el-button>
+              </el-input>
+              <VendorSelect ref="vendorSelect" @onSelected="onVendorSelected" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="供应商名称" prop="vendorName">
+              <el-input v-model="form.vendorName" readonly="readonly" placeholder="请选择供应商" />
             </el-form-item>
           </el-col>
           <el-col></el-col>
@@ -349,8 +390,8 @@
       </el-tabs>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="cancel" v-if="optType =='view' || form.status !='PREPARE' ">返回</el-button>
-        <el-button type="primary" @click="submitForm" v-if="form.status =='PREPARE' && optType !='view' ">确 定</el-button>
-        <el-button type="success" @click="handleFinish" v-if="form.status =='PREPARE' && optType !='view'  && form.workorderId !=null">完成</el-button>
+        <el-button type="primary" @click="submitForm" v-if="form.status =='PREPARE' && optType !='view' ">保 存</el-button>
+        <el-button type="success" @click="handleConfirm" v-if="form.status =='PREPARE' && optType !='view'  && form.workorderId !=null">确 认</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -363,17 +404,19 @@ import Workorderbom from "./bom/bom.vue";
 import WorkorderItemList from "./items/item.vue";
 import ItemSelect  from "@/components/itemSelect/single.vue";
 import ClientSelect from "@/components/clientSelect/single.vue";
+import VendorSelect from "@/components/vendorSelect/single.vue";
 import {genCode} from "@/api/system/autocode/rule"
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Workorder",
-  dicts: ['mes_order_status','mes_workorder_sourcetype'],
+  dicts: ['mes_order_status','mes_workorder_sourcetype','mes_workorder_type'],
   components: {
     Treeselect,
     ItemSelect ,
     ClientSelect,
+    VendorSelect,
     Workorderbom,
     WorkorderItemList
   },
@@ -434,6 +477,9 @@ export default {
         ],
         workorderName: [
           { required: true, message: "工单名称不能为空", trigger: "blur" }
+        ],
+        workorderType: [
+          { required: true, message: "请选择生产工单类型", trigger: "blur" }
         ],
         orderSource: [
           { required: true, message: "来源类型不能为空", trigger: "blur" }
@@ -500,6 +546,7 @@ export default {
         workorderId: null,
         workorderCode: null,
         workorderName: null,
+        workorderType: 'SELF',
         orderSource: null,
         sourceCode: null,
         productId: null,
@@ -514,6 +561,9 @@ export default {
         clientId: null,
         clientCode: null,
         clientName: null,
+        vendorId: null,
+        vendorCode: null,
+        vendorName: null,
         requestDate: null,
         parentId: null,
         status: "PREPARE",
@@ -662,6 +712,19 @@ export default {
           this.form.clientId = obj.clientId;
           this.form.clientCode = obj.clientCode;
           this.form.clientName = obj.clientName;
+        }
+    },
+    //供应商选择
+    handleSelectVendor(){
+      this.$refs.vendorSelect.showFlag = true;
+    },
+    //供应商选择弹出框
+    onVendorSelected(obj){
+        debugger;
+        if(obj != undefined && obj != null){
+          this.form.vendorId = obj.vendorId;
+          this.form.vendorCode = obj.vendorCode;
+          this.form.vendorName = obj.vendorName;
         }
     },
     //自动生成编码

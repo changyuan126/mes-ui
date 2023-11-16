@@ -86,14 +86,14 @@
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
-              v-hasPermi="['pro:protask:edit']"
+              v-hasPermi="['mes:pro:protask:edit']"
             >修改</el-button>
             <el-button
               size="mini"
               type="text"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
-              v-hasPermi="['pro:protask:remove']"
+              v-hasPermi="['mes:pro:protask:remove']"
             >删除</el-button>
           </template>
         </el-table-column>

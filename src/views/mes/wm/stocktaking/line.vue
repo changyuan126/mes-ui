@@ -164,7 +164,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['wm:stocktakingline:add']"
+          v-hasPermi="['mes:wm:stocktaking:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -175,7 +175,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['wm:stocktakingline:edit']"
+          v-hasPermi="['mes:wm:stocktaking:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -186,7 +186,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['wm:stocktakingline:remove']"
+          v-hasPermi="['mes:wm:stocktaking:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -196,7 +196,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['wm:stocktakingline:export']"
+          v-hasPermi="['mes:wm:stocktaking:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -233,14 +233,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['wm:stocktakingline:edit']"
+            v-hasPermi="['mes:wm:stocktaking:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['wm:stocktakingline:remove']"
+            v-hasPermi="['mes:wm:stocktaking:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -336,6 +336,10 @@ import { listStocktakingline, getStocktakingline, delStocktakingline, addStockta
 
 export default {
   name: "Stocktakingline",
+  props:{
+    optType: null,
+    takingId: null,
+  },
   data() {
     return {
       // 遮罩层
@@ -360,7 +364,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        takingId: null,        materialStockId: null,        itemId: null,        itemCode: null,        itemName: null,        specification: null,        unitOfMeasure: null,        unitName: null,        quantity: null,        takingQuantity: null,        warehouseId: null,        warehouseCode: null,        warehouseName: null,        locationId: null,        locationCode: null,        locationName: null,        areaId: null,        areaCode: null,        areaName: null,        takingStatus: null,      },
+        takingId: this.takingId,        materialStockId: null,        itemId: null,        itemCode: null,        itemName: null,        specification: null,        unitOfMeasure: null,        unitName: null,        quantity: null,        takingQuantity: null,        warehouseId: null,        warehouseCode: null,        warehouseName: null,        locationId: null,        locationCode: null,        locationName: null,        areaId: null,        areaCode: null,        areaName: null,        takingStatus: null,      },
       // 表单参数
       form: {},
       // 表单校验
