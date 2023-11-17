@@ -486,9 +486,9 @@ export default {
         workorderName: [
           { required: true, message: "工单名称不能为空", trigger: "blur" }
         ],
-        workorderType: [
-          { required: true, message: "请选择生产工单类型", trigger: "blur" }
-        ],
+        // workorderType: [
+        //   { required: true, message: "请选择生产工单类型", trigger: "blur" }
+        // ],
         orderSource: [
           { required: true, message: "来源类型不能为空", trigger: "blur" }
         ],
