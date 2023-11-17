@@ -192,8 +192,16 @@
             icon="el-icon-plus"
             v-if="scope.row.status =='CONFIRMED' && scope.row.workorderType =='SELF'"
             @click="handleAdd(scope.row)"
-            v-hasPermi="['mes:pro:workorder:add']"
+            v-hasPermi="['mes:pro:workorder:update']"
           >新增</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-circle-check"
+            v-if="scope.row.status =='CONFIRMED'"
+            @click="handleFinish(scope.row)"
+            v-hasPermi="['mes:pro:workorder:update']"
+          >完成</el-button>
           <el-button
             size="mini"
             type="text"
@@ -399,7 +407,7 @@
 </template>
 
 <script>
-import { listWorkorder, getWorkorder, delWorkorder, addWorkorder, updateWorkorder } from "@/api/mes/pro/workorder";
+import { listWorkorder, getWorkorder, delWorkorder, addWorkorder, updateWorkorder ,dofinish} from "@/api/mes/pro/workorder";
 import Workorderbom from "./bom/bom.vue";
 import WorkorderItemList from "./items/item.vue";
 import ItemSelect  from "@/components/itemSelect/single.vue";
@@ -478,9 +486,9 @@ export default {
         workorderName: [
           { required: true, message: "工单名称不能为空", trigger: "blur" }
         ],
-        workorderType: [
-          { required: true, message: "请选择生产工单类型", trigger: "blur" }
-        ],
+        // workorderType: [
+        //   { required: true, message: "请选择生产工单类型", trigger: "blur" }
+        // ],
         orderSource: [
           { required: true, message: "来源类型不能为空", trigger: "blur" }
         ],
@@ -690,12 +698,21 @@ export default {
         ...this.queryParams
       }, `workorder_${new Date().getTime()}.xlsx`)
     },
-    handleFinish(){
+    handleConfirm(){
       let that = this;
-      this.$modal.confirm('是否完成工单编制？【完成后将不能更改】').then(function(){
+      this.$modal.confirm('是确认完成工单编制？【确认后将不能更改】').then(function(){
         that.form.status = 'CONFIRMED';
         that.submitForm();
       });
+    },
+    handleFinish(row){
+      const workorderIds = row.workorderId || this.ids;
+      this.$modal.confirm('确认完成工单？一旦完成，此工单将无法继续报工').then(function() {
+        return dofinish(workorderIds) //完成工单
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("更改成功");
+      }).catch(() => {});
     },
     //物料选择弹出框
     onItemSelected(obj){
