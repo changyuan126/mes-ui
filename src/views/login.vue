@@ -87,8 +87,8 @@
               ><i class="el-icon-phone" /> 手机号登录</span
             >
             <el-form
-              ref="loginPhoneForm"
-              :model="loginPhoneForm"
+              ref="loginForm"
+              :model="loginForm"
               :rules="loginPhoneRules"
               class="login-form"
               autocomplete="on"
@@ -106,7 +106,7 @@
                 </span>
                 <el-input
                   ref="phone"
-                  v-model="loginPhoneForm.phone"
+                  v-model="loginForm.username"
                   placeholder="请输入手机号码"
                   name="phone"
                   type="text"
@@ -127,7 +127,7 @@
                   <el-input
                     :key="passwordType"
                     ref="password"
-                    v-model="loginPhoneForm.password"
+                    v-model="loginForm.password"
                     :type="passwordType"
                     placeholder="请填写密码"
                     name="password"
@@ -150,7 +150,7 @@
                 style="margin: 0px 76px 0px -155px"
                 >记住密码</el-checkbox
               >
-              <el-button type="primary" @click.native.prevent="phoneLogin()"
+              <el-button type="primary" @click.native.prevent="handleLogin"
                 >登 录</el-button
               >
 
