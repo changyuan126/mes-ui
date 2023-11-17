@@ -1,22 +1,17 @@
 <template>
-  <div class="sidebar-logo-container" :class="{'collapse':collapse}" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
+  <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 v-else class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }} </h1>
+        <img src="../../../assets/images/logo-b.png" class="sidebar-logo-small">
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }} </h1>
+        <img src="../../../assets/images/logo-small.png" class="sidebar-logo">
       </router-link>
     </transition>
   </div>
 </template>
 
 <script>
-import logoImg from '@/assets/logo/favicon.png'
-import variables from '@/assets/styles/variables.scss'
-
 export default {
   name: 'SidebarLogo',
   props: {
@@ -25,18 +20,10 @@ export default {
       required: true
     }
   },
-  computed: {
-    variables() {
-      return variables;
-    },
-    sideTheme() {
-      return this.$store.state.settings.sideTheme
-    }
-  },
   data() {
     return {
-      title: '智能工厂MES系统',
-      logo: logoImg
+      title: 'Vue Element Admin',
+      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     }
   }
 }
@@ -54,10 +41,11 @@ export default {
 
 .sidebar-logo-container {
   position: relative;
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  background: #2b2f3a;
+  width: 85%;
+  margin-left: 5px;
+  height: 62px;
+  line-height: 62px;
+  background: #FFFFFF;
   text-align: center;
   overflow: hidden;
 
@@ -66,10 +54,17 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 100%;
+      height: 100%;
       vertical-align: middle;
       margin-right: 12px;
+    }
+
+    & .sidebar-logo-small{
+      width: 100%;
+      height: 70%;
+      vertical-align: middle;
+      margin-right: 0px;
     }
 
     & .sidebar-title {
