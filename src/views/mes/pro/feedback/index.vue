@@ -428,11 +428,11 @@ export default {
         itemCode: null,
         itemName: null,
         specification: null,
-        quantity: null,
-        quantityUncheck: null,
-        quantityFeedback: null,
-        quantityQualified: null,
-        quantityUnquanlified: null,
+        quantity: 0,
+        quantityUncheck: 0,
+        quantityFeedback: 0,
+        quantityQualified: 0,
+        quantityUnquanlified: 0,
         userName: null,
         nickName: null,
         feedbackChannel: null,
@@ -535,7 +535,7 @@ export default {
         }
       });
     },
-    //执行
+    //审批通过执行
     handleExecute(){
       const recordIds = this.form.recordId;
       this.$modal.confirm('确认执行报工？').then(function() {
@@ -545,6 +545,17 @@ export default {
         this.$modal.msgSuccess("执行成功");
         this.open = false;
       }).catch(() => {});
+    },
+    //审批不通过，拒绝
+    handleReject(){
+      this.form.status = "PREPARE";
+      if (this.form.recordId != null) {
+        updateFeedback(this.form).then(response => {
+          this.$modal.msgSuccess("提交成功");
+          this.open = false;
+          this.getList();
+        });
+      }
     },
     /** 删除按钮操作 */
     handleDelete(row) {

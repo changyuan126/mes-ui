@@ -6,7 +6,7 @@
     width="80%"
     center
   >
-    <el-row :gutter="10" class="mb8">
+    <el-row :gutter="10" v-if="optType !='view'" class="mb8">
       <el-col :span="1.5">
         <el-button
           type="primary"
@@ -14,7 +14,6 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['mes:qc:defectrecord:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -25,7 +24,6 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['mes:qc:defectrecord:edit']"
         >常见缺陷</el-button>
       </el-col>      
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -54,7 +52,7 @@
             <el-input-number :min="1" v-model="scope.row.defectQuantity" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" v-if="optType !='view'" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -62,7 +60,7 @@
             icon="el-icon-delete"
             v-if="optType !='view'"
             @click="handleDelete(scope.$index, scope.row)"
-            v-hasPermi="['mes:qc:defectrecord:remove']"
+
           >删除</el-button>
         </template>
       </el-table-column>
@@ -77,7 +75,7 @@
     />
     <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="cancel" v-if="optType =='view'">返回</el-button>
-        <el-button type="primary" v-hasPermi="['mes:qc:defectrecord:update']" v-else @click="confirm">确 定</el-button>
+        <el-button type="primary"  v-else @click="confirm">确 定</el-button>
         <el-button @click="showFlag=false">取 消</el-button>
     </div>
   </el-dialog>
