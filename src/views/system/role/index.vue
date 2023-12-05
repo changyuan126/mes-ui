@@ -255,7 +255,7 @@
 </template>
 
 <script>
-import { listRole, getRole, delRole, addRole, updateRole, dataScope, changeRoleStatus } from "@/api/system/role";
+import { listRole, getRole, delRole, addRole, updateRole, dataScope, changeRoleStatus,resetRole } from "@/api/system/role";
 import { treeselect as menuTreeselect, roleMenuTreeselect } from "@/api/system/menu";
 import { treeselect as deptTreeselect, roleDeptTreeselect } from "@/api/system/dept";
 
@@ -606,12 +606,13 @@ export default {
     },
     // 恢复默认菜单权限
     restoreRole(roleId) {
+      console.log(roleId);
       this.$confirm("确定恢复默认菜单权限吗?", '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        resetRole(roleId).then(result => {
+        resetRole({roleId:roleId}).then(result => {
           if (result.code === 200) {
             this.$notify({
               title: '成功',
