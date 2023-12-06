@@ -134,6 +134,7 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:role:remove']"
           >删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-s-help" v-if="scope.row.createBy === 'admin'" @click="restoreRole(scope.row.roleId)">恢复默认菜单权限</el-button>
           <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:role:edit']">
             <span class="el-dropdown-link">
               <i class="el-icon-d-arrow-right el-icon--right"></i>更多
@@ -254,7 +255,7 @@
 </template>
 
 <script>
-import { listRole, getRole, delRole, addRole, updateRole, dataScope, changeRoleStatus } from "@/api/system/role";
+import { listRole, getRole, delRole, addRole, updateRole, dataScope, changeRoleStatus,resetRole } from "@/api/system/role";
 import { treeselect as menuTreeselect, roleMenuTreeselect } from "@/api/system/menu";
 import { treeselect as deptTreeselect, roleDeptTreeselect } from "@/api/system/dept";
 
@@ -602,6 +603,32 @@ export default {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    // 恢复默认菜单权限
+    restoreRole(roleId) {
+      console.log(roleId);
+      this.$confirm("确定恢复默认菜单权限吗?", '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        resetRole({roleId:roleId}).then(result => {
+          if (result.code === 200) {
+            this.$notify({
+              title: '成功',
+              message: result.message,
+              type: 'success'
+            })
+            this.getList();
+          } else {
+            this.$notify({
+              title: '失败',
+              message: result.message,
+              type: 'error'
+            })
+          }
+        })
+      }).catch(() => {})
     },
     /** 导出按钮操作 */
     handleExport() {
