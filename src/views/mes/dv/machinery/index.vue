@@ -642,7 +642,6 @@ export default {
   created() {
     this.getList();
     this.getTreeselect();
-    this.listMesArr();
   },
   methods: {
     /** 查询物料编码列表 */
@@ -657,13 +656,6 @@ export default {
     getWorkshops() {
       listAllWorkshop().then((response) => {
         this.workshopOptions = response.data;
-      });
-    },
-
-    listMesArr() {
-      listMes().then((response) => {
-        console.log(response);
-        this.listTypeArr = response.data;
       });
     },
     /** 转换设备类型数据结构 */
