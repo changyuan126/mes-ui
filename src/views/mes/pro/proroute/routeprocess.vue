@@ -119,10 +119,10 @@
                 <el-form-item label="与下一道工序关系" prop="linkType">
                     <el-tooltip effect="dark" placement="right">
                     <div slot="content">
-                        S-to-S：当前工序开始生产，下一道工序才可开始生产 </br>
-                        F-to-F：当前工序结束生产，下一道工序才可结束生产 </br>
+                        F-to-S：当前工序结束生产，下一道工序才可开始生产 </br>
                         S-to-F：当前工序开始生产，下一道工序才可结束生产 </br>
-                        F-to-S：当前工序结束生产，下一道工序才可开始生产
+                        F-to-F：当前工序结束生产，下一道工序才可结束生产 </br>
+                        S-to-S：当前工序开始生产，下一道工序才可开始生产 </br>
                     </div>
                     <el-select v-model="form.linkType" placeholder="请选择与下一道工序关系">
                         <el-option
@@ -359,6 +359,8 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加工艺组成";
+      var arr = Object.values(this.routeprocessList).pop()
+      this.form.orderNum = arr.orderNum + 1;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

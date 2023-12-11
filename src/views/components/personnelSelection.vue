@@ -238,7 +238,7 @@ export default {
       // // 选中的人员
       // nowList: [],
       // 最终选中传给父组件的人员
-      selectList: this.inputValue,
+      selectList: [],
       // isshow=1,是单选，2是多选
       isshow: 2,
       // 遮罩层
@@ -275,14 +275,14 @@ export default {
     this.$nextTick(() => {});
   },
   mounted() {
-    // this.$nextTick(() => {
-    //   this.inputValue.forEach((item) => {
-    //     this.selectList.push(item);
-    //   });
-    //   if (this.show) {
-    //     this.isshow = this.show;
-    //   }
-    // });
+    this.$nextTick(() => {
+      this.inputValue.forEach((item) => {
+        this.selectList.push(item);
+      });
+      // if (this.show) {
+      //   this.isshow = this.show;
+      // }
+    });
   },
   computed: {
     user() {
@@ -394,7 +394,6 @@ export default {
           }
         }
       }
-
       this.$emit("getSelectList", this.selectList);
     },
     //表格全选事件
@@ -417,7 +416,6 @@ export default {
           this.selectList.splice(this.selectList.indexOf(item), 1);
         });
       }
-
       this.submit();
     },
     submit() {

@@ -253,7 +253,7 @@ export default {
   data() {
     return {
       //自动生成编码
-      autoGenFlag:false,
+      autoGenFlag:true,
       optType: undefined,
       locationId: undefined,
       // 遮罩层
@@ -345,7 +345,7 @@ export default {
         updateBy: null,
         updateTime: null
       };
-      this.autoGenFlag = false;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -370,6 +370,9 @@ export default {
       this.open = true;
       this.title = "添加库位";
       this.optType = "add";
+        genCode('AREA_CODE').then(response =>{
+          this.form.areaCode = response;
+        });
     },
     // 查询明细按钮操作
     handleView(row){

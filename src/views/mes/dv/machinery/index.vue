@@ -719,7 +719,7 @@ export default {
         updateTime: null,
         idList: "",
       };
-      this.autoGenFlag = false;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -764,11 +764,13 @@ export default {
       this.optType = "add";
       this.open = true;
       this.title = "新增设备";
+      genCode("MACHINERY_CODE").then((response) => {
+          this.form.machineryCode = response;
+        });
     },
 
     saveInvolvedUserId() {
       this.addInvolvedUserIdVisible = false;
-
       // this.$emit("getSelectList", this.selectList);
     },
 

@@ -320,7 +320,7 @@ export default {
                 updateBy: null,
                 updateTime: null
             };
-            this.autoGenFlag = false;
+            this.autoGenFlag = true;
             this.resetForm("form");
         },
         /** 提交按钮 */

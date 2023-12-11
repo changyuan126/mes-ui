@@ -464,7 +464,7 @@ export default {
         maxStock: 0,
         remark: undefined        
       };
-      this.autoGenFlag = false;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     /** 搜索按钮操作 */

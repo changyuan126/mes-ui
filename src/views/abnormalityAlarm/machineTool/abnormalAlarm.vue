@@ -396,7 +396,7 @@ export default {
         status: "",
         top: 0,
       };
-      this.autoGenFlag = false;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     /** 搜索按钮操作 */

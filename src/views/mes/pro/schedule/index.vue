@@ -293,7 +293,7 @@ export default {
   data() {
     return {
       //自动生成编码
-      autoGenFlag:false,
+      autoGenFlag:true,
       optType: undefined,
       activeProcess: 0,
       // 遮罩层
@@ -437,7 +437,7 @@ export default {
         updateTime: null        
       };
       this.activeProcess =0;
-      this.autoGenFlag = false;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     //甘特图按钮点击
@@ -491,6 +491,9 @@ export default {
       this.open = true;
       this.title = "添加生产工单";
       this.optType="add";
+        genCode('WORKORDER_CODE').then(response =>{
+          this.form.workorderCode = response;
+        });
     },
     // 查询明细按钮操作
     handleView(row){

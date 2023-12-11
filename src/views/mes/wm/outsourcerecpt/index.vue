@@ -258,7 +258,7 @@ export default {
   data() {
     return {
       //自动生成编码
-      autoGenFlag:false,
+      autoGenFlag:true,
       optType: undefined,
       warehouseInfo:[],
       warehouseOptions:[],
@@ -347,7 +347,7 @@ export default {
         areaId: null, areaCode: null, areaName: null, recptDate: new Date(), 
         status: "PREPARE", remark: null, attr1: null, attr2: null, attr3: null, attr4: null, createBy: null, createTime: null, updateBy: null, updateTime: null
       };
-        this.autoGenFlag = false;     
+        this.autoGenFlag = true;     
         this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -372,6 +372,9 @@ export default {
       this.open = true;
       this.title = "添加外协入库单";
       this.optType = "add";
+        genCode('OUTSOURCE_RECPT_CODE').then(response =>{
+          this.form.recptCode = response;
+        });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
