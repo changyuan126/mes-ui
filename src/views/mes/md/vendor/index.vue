@@ -539,7 +539,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('md/vendor/export', {
+      this.download('mes/md/vendor/export', {
         ...this.queryParams
       }, `vendor_${new Date().getTime()}.xlsx`)
     },
