@@ -19,11 +19,11 @@
                 <el-input v-model="contractForm.organPhone" style="width: 350pxpx" maxlength="15" placeholder="请录入工厂联系方式" />
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <!-- <el-col :span="12">
               <el-form-item prop="userName" label="用户名:" >
                 <el-input v-model="contractForm.userName" style="width: 350pxpx" maxlength="30" placeholder="请录入用户名" />
               </el-form-item>
-            </el-col>
+            </el-col> -->
             <el-col :span="12">
               <el-form-item prop="taxNumber" label="统一社会信用代码:" label-width="165px">
                 <el-input v-model="contractForm.taxNumber" :disabled="isEdit" style="width: 350pxpx" maxlength="20" placeholder="请录入统一社会信用代码" />
