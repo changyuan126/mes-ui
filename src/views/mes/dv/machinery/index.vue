@@ -331,6 +331,40 @@
         </el-row>
         <el-row>
           <el-col :span="12">
+            <el-form-item label="ip地址" prop="ip">
+              <el-input
+                v-model="form.ip"
+                maxlength="255"
+                readonly="readonly"
+                v-if="optType == 'view'"
+              />
+              <el-input
+                v-model="form.ip"
+                placeholder="请输入ip地址"
+                maxlength="255"
+                v-else
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="端口号" prop="port">
+              <el-input
+                v-model="form.port"
+                maxlength="255"
+                readonly="readonly"
+                v-if="optType == 'view'"
+              />
+              <el-input
+                v-model="form.port"
+                placeholder="请输入端口号"
+                maxlength="255"
+                v-else
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
             <el-form-item label="规格型号" prop="machinerySpec">
               <el-input
                 v-model="form.machinerySpec"
@@ -765,8 +799,8 @@ export default {
       this.open = true;
       this.title = "新增设备";
       genCode("MACHINERY_CODE").then((response) => {
-          this.form.machineryCode = response;
-        });
+        this.form.machineryCode = response;
+      });
     },
 
     saveInvolvedUserId() {
