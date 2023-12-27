@@ -27,16 +27,20 @@
           </div>
         </div></el-col
       >
-      <el-col :span="18"
+      <el-col :span="18" class="myfont"
         ><div class="content">
           <div style="height: 100px">
             <div style="width: 31px; margin-left: 9%">
-              <el-image v-if="imgdata" :src="img" style="margin-top: 25px"></el-image>
-              <el-image v-else :src="imgs" style="margin-top: 25px;"></el-image>
+              <el-image
+                v-if="imgdata"
+                :src="img"
+                style="margin-top: 25px"
+              ></el-image>
+              <el-image v-else :src="imgs" style="margin-top: 25px"></el-image>
             </div>
           </div>
           <div style="height: 440px">
-            <div style="height: 108px">
+            <div style="height: 105px">
               <el-row
                 type="flex"
                 class="row-bg"
@@ -450,6 +454,7 @@
 
 <script>
 import axios from "axios";
+import "@/assets/font/font.css";
 export default {
   data() {
     return {
@@ -458,7 +463,7 @@ export default {
       // 遮罩层
       loading: true,
       id: "",
-      imgdata:true,
+      imgdata: true,
       timer: null,
       img: require("../../../assets/images/close.png"),
       imgs: require("../../../assets/images/open.png"),
@@ -516,11 +521,14 @@ export default {
             },
           })
           .then((res) => {
-            this.imgdata = true
+            this.imgdata = true;
             this.$modal.msgSuccess("停止成功");
           });
       } else {
-        this.$modal.msgSuccess("请选择设备");
+        this.$message({
+          message: "请选择设备",
+          type: "warning",
+        });
       }
     },
     on() {
@@ -533,18 +541,25 @@ export default {
             },
           })
           .then((res) => {
-            this.imgdata = false
+            this.imgdata = false;
             this.$modal.msgSuccess("启动成功");
           });
       } else {
-        this.$modal.msgSuccess("请选择设备");
+        this.$message({
+          message: "请选择设备",
+          type: "warning",
+        });
       }
     },
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.myfont {
+  font-family: "Ayuthaya"; // 这里的 Ayuthaya 是引入时的自定义名字
+}
+
 .app-containers ::-webkit-scrollbar {
   display: none;
 }
