@@ -646,6 +646,8 @@ export default {
 
       inputName: "",
 
+      queryParamsdata:{},
+
       // 表单校验
       rules: {
         machineryCode: [
@@ -724,6 +726,7 @@ export default {
     handleNodeClick(data) {
       console.log(data);
       this.queryParams.machineryTypeId = data.machineryTypeId;
+      this.queryParamsdata = data;
       this.handleQuery();
     },
     // 取消按钮
@@ -792,8 +795,8 @@ export default {
       this.getWorkshops();
       this.userName = "";
       this.inputName = "";
-      if (this.queryParams.machineryTypeId != 0) {
-        this.form.machineryTypeId = this.queryParams.machineryTypeId;
+      if (this.queryParamsdata.machineryTypeId != 0) {
+        this.form = this.queryParamsdata;
       }
       this.optType = "add";
       this.open = true;
@@ -937,7 +940,6 @@ export default {
 
     //子组件传的数据
     getSelectList(value) {
-      console.log(value);
       this.userName = "";
       this.userName = value.map((item) => item.nickName);
       this.UserAdd.userIds = value.map((item) => item.userId);

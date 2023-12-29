@@ -245,7 +245,8 @@ export default {
       colorCode: null,
       routeId: null,
       processId: null,
-      optType: null
+      optType: null,
+      recordId:null
   },
   created() {
     this.getList();
@@ -295,6 +296,7 @@ export default {
     reset() {
       this.form = {
         taskId: null,
+        recordId: this.recordId,
         taskCode: null,
         taskName: null,
         workorderId: this.workorderId,
