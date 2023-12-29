@@ -4,7 +4,7 @@
       <el-col :span="5"
         ><div class="grid-content bg-purple">
           <div class="grid-content three" style="height: 750px">
-            <!-- 已选人员 -->
+            <!-- 选择设备 -->
             <el-container style="padding: 0">
               <el-header
                 class="smallHeader"
@@ -453,6 +453,8 @@
 </template>
 
 <script>
+import { listMachinery } from "@/api/mes/dv/machinery";
+import { listMachinerytype } from "@/api/mes/dv/machinerytype";
 import axios from "axios";
 import "@/assets/font/font.css";
 export default {
@@ -467,6 +469,12 @@ export default {
       timer: null,
       img: require("../../../assets/images/close.png"),
       imgs: require("../../../assets/images/open.png"),
+      machineryTypeOptions: [],
+      machinerydata: {
+        pageNum: 1,
+        pageSize: 10,
+        machineryTypeId: "",
+      },
     };
   },
   created() {
@@ -479,18 +487,43 @@ export default {
         this.setInterval();
       }
     }, 1500);
+    // 通过$once来监听定时器，在beforeDestroy钩子可以被清除。
+    this.$once("hook:beforeDestroy", () => {
+      clearInterval(this.timer);
+    });
   },
   methods: {
     /** 查询列表 */
     getList() {
       this.loading = true;
-      axios
-        .get("http://192.168.3.53:8077/manage/device/devices")
-        .then((res) => {
-          console.log(res);
-          this.intelligent = res.data.data;
-          this.loading = false;
+      // axios
+      //   .get("http://192.168.3.53:8077/manage/device/devices")
+      //   .then((res) => {
+      //     this.intelligent = res.data.data;
+      //     this.loading = false;
+      //   });
+
+      listMachinerytype().then((response) => {
+        var data = "";
+        response.data.forEach((item) => {
+          if (item.machineryTypeCode == "M_TYPE_001") {
+            data = item.machineryTypeId;
+          }
         });
+        this.machinerydata.machineryTypeId = data;
+        this.listMachineryitem();
+      });
+    },
+
+    listMachineryitem() {
+      listMachinery(this.machinerydata).then((response) => {
+        response.rows.forEach((item) => {
+          if (item.ip != null) {
+            this.intelligent.push(item);
+          }
+        });
+        this.loading = false;
+      });
     },
 
     handleClose(item) {
@@ -506,7 +539,6 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data.data);
           this.intelligentData = res.data.data;
         });
     },
@@ -558,6 +590,17 @@ export default {
 <style lang="scss" scoped>
 .myfont {
   font-family: "Ayuthaya"; // 这里的 Ayuthaya 是引入时的自定义名字
+}
+::-webkit-scrollbar {
+  width: 0 !important;
+}
+::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0;
+}
+
+.el-button + .el-button {
+  margin-left: 0px !important;
 }
 
 .app-containers ::-webkit-scrollbar {

@@ -261,7 +261,7 @@
         </el-step>
       </el-steps>
       <el-card v-for=" (item,index) in processOptions " :key="index" v-if="activeProcess == index && form.workorderId !=null">
-        <ProTask :workorderId="form.workorderId" :routeId="item.routeId" :processId="item.processId" :colorCode="item.colorCode" :optType="optType"></ProTask>
+        <ProTask :workorderId="form.workorderId" :routeId="item.routeId" :processId="item.processId" :colorCode="item.colorCode" :optType="optType" :recordId="item.recordId"></ProTask>
       </el-card>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="cancel" v-if="optType =='view' || form.status !='PREPARE' ">返回</el-button>
