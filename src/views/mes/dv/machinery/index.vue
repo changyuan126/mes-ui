@@ -331,6 +331,40 @@
         </el-row>
         <el-row>
           <el-col :span="12">
+            <el-form-item label="ip地址" prop="ip">
+              <el-input
+                v-model="form.ip"
+                maxlength="255"
+                readonly="readonly"
+                v-if="optType == 'view'"
+              />
+              <el-input
+                v-model="form.ip"
+                placeholder="请输入ip地址"
+                maxlength="255"
+                v-else
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="端口号" prop="port">
+              <el-input
+                v-model="form.port"
+                maxlength="255"
+                readonly="readonly"
+                v-if="optType == 'view'"
+              />
+              <el-input
+                v-model="form.port"
+                placeholder="请输入端口号"
+                maxlength="255"
+                v-else
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
             <el-form-item label="规格型号" prop="machinerySpec">
               <el-input
                 v-model="form.machinerySpec"
@@ -612,6 +646,8 @@ export default {
 
       inputName: "",
 
+      queryParamsdata:{},
+
       // 表单校验
       rules: {
         machineryCode: [
@@ -690,6 +726,7 @@ export default {
     handleNodeClick(data) {
       console.log(data);
       this.queryParams.machineryTypeId = data.machineryTypeId;
+      this.queryParamsdata = data;
       this.handleQuery();
     },
     // 取消按钮
@@ -719,7 +756,7 @@ export default {
         updateTime: null,
         idList: "",
       };
-      this.autoGenFlag = false;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -758,17 +795,19 @@ export default {
       this.getWorkshops();
       this.userName = "";
       this.inputName = "";
-      if (this.queryParams.machineryTypeId != 0) {
-        this.form.machineryTypeId = this.queryParams.machineryTypeId;
+      if (this.queryParamsdata.machineryTypeId != 0) {
+        this.form = this.queryParamsdata;
       }
       this.optType = "add";
       this.open = true;
       this.title = "新增设备";
+      genCode("MACHINERY_CODE").then((response) => {
+        this.form.machineryCode = response;
+      });
     },
 
     saveInvolvedUserId() {
       this.addInvolvedUserIdVisible = false;
-
       // this.$emit("getSelectList", this.selectList);
     },
 
@@ -901,7 +940,6 @@ export default {
 
     //子组件传的数据
     getSelectList(value) {
-      console.log(value);
       this.userName = "";
       this.userName = value.map((item) => item.nickName);
       this.UserAdd.userIds = value.map((item) => item.userId);

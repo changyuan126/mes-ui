@@ -260,3 +260,8 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes,
 });
+
+export function resetRouter() {
+  const newRouter = createRouter()
+  Router.matcher = newRouter.matcher // 重制 router
+}

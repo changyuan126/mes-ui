@@ -294,7 +294,7 @@ export default {
   components: {Repairline,MachinerySelectSingle},
   data() {
     return {
-      autoGenFlag:false,
+      autoGenFlag:true,
       optType: undefined,
       // 遮罩层
       loading: true,
@@ -427,6 +427,9 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加设备维修单";
+      genCode('REPAIR_CODE').then(response =>{
+        this.form.repairCode = response;
+      });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

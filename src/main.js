@@ -40,6 +40,13 @@ import DictData from '@/components/DictData'
 import webSite from '@/config/website'
 Vue.prototype.website = webSite
 
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css' // 默认主题
+
+//全局修改默认配置，点击空白处不能关闭弹窗
+ElementUI.Dialog.props.closeOnClickModal.default = false
+Vue.use(ElementUI)
+
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
