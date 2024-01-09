@@ -126,7 +126,7 @@
         </template>
       </el-table-column>
       <el-table-column label="AGV站点名称" align="center" prop="siteName" />
-      <el-table-column label="所属线路" align="center" prop="workshopName" />
+      <el-table-column label="所属线路" align="center" prop="agvlineName" />
       <el-table-column label="是否启用" align="center" prop="enableFlag">
         <template slot-scope="scope">
           <span class="el-table-column-span" v-if="scope.row.enableFlag == 'Y'"
@@ -151,7 +151,6 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['mes:dv:dvsubject:edit']"
             >修改</el-button
           >
           <el-button
@@ -159,7 +158,6 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['mes:dv:dvsubject:remove']"
             >删除</el-button
           >
         </template>
@@ -213,19 +211,18 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="所属线路" prop="lineName">
+            <el-form-item label="所属线路" prop="agvlineId">
               <el-select
-                v-model="form.lineName"
+                v-model="form.agvlineId"
                 placeholder="请选择所属线路"
                 style="width: 100%"
                 value-key="proAgvlineId"
-                @change="handleAccompanyId"
               >
                 <el-option
                   v-for="item in workshopOptions"
                   :key="item.proAgvlineId"
                   :label="item.lineName"
-                  :value="item"
+                  :value="item.proAgvlineId"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -294,7 +291,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 设备点检保养项目表格数据
+      // 列表
       dvsubjectList: [],
       // 弹出层标题
       title: "",
@@ -311,11 +308,11 @@ export default {
       workshopOptions: [],
       // 表单参数
       form: {
-        proAgvlineId: "",
+        proAgvsiteId: "",
         siteCode: "",
         siteName: "",
         agvlineId: "",
-        lineName: "",
+        agvlineName: "",
         enableFlag: "Y",
         remark: "",
       },
@@ -334,7 +331,7 @@ export default {
         siteCode: [
           { required: true, message: "AGV站点编码不能为空", trigger: "blur" },
         ],
-        lineName: [
+        agvlineId: [
           { required: true, message: "所属线路不能为空", trigger: "blur" },
         ],
         siteName: [
@@ -367,19 +364,21 @@ export default {
     },
     // 取消按钮
     cancel() {
-      this.open = false;
       this.reset();
+      this.getList();
+      this.open = false;
     },
     // 表单重置
     reset() {
       this.form = {
-        proAgvlineId: "",
-        siteCode: "",
-        siteName: "",
-        agvlineId: "",
+        subjectId: null,
+        proAgvsiteId: null,
+        siteCode: null,
+        siteName: null,
+        agvlineId: null,
         enableFlag: "Y",
-        remark: "",
-        lineName: "",
+        remark: null,
+        agvlineName: null,
       };
       this.autoGenFlag = true;
       this.resetForm("form");
@@ -396,7 +395,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.id = selection.map((item) => item.proAgvlineId);
+      this.id = selection.map((item) => item.proAgvsiteId);
       this.single = selection.length !== 1;
       this.multiple = !selection.length;
     },
@@ -405,17 +404,11 @@ export default {
       this.reset();
       this.getWorkshops();
       this.open = true;
-      this.title = "新增AGV线路";
+      this.title = "新增AGV站点";
       findSiteCode().then((response) => {
         console.log(response);
         this.form.siteCode = response.data.siteCode;
       });
-    },
-    //选择线路
-    handleAccompanyId(val) {
-      console.log(val);
-      this.form.lineName = val.lineName;
-      this.form.agvlineId = val.proAgvlineId;
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -423,9 +416,9 @@ export default {
       this.reset();
       this.getWorkshops();
       this.form = row;
-      this.form.subjectId = row.proAgvlineId;
+      this.form.subjectId = row.proAgvsiteId;
       this.open = true;
-      this.title = "修改代码";
+      this.title = "修改AGV站点";
     },
     /** 提交按钮 */
     submitForm() {
@@ -461,7 +454,8 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      deleteProAgvsite({ proAgvlineId: row.proAgvlineId }).then((response) => {
+      console.log(row);
+      deleteProAgvsite({ proAgvsiteId: row.proAgvsiteId }).then((response) => {
         this.$modal
           .confirm("是否确认删除当前的数据项？")
           .then(() => {

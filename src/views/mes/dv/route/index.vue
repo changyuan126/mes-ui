@@ -111,20 +111,8 @@
         label="AGV线路编码"
         width="120"
         align="center"
-        key="lineCode"
         prop="lineCode"
-        v-if="1"
-      >
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            @click="handleView(scope.row)"
-            v-hasPermi="['mes:dv:route']"
-            >{{ scope.row.lineCode }}</el-button
-          >
-        </template>
-      </el-table-column>
+      />
       <el-table-column label="AGV线路名称" align="center" prop="lineName" />
       <el-table-column label="所属车间" align="center" prop="workshopName" />
       <el-table-column label="是否启用" align="center" prop="enableFlag">
@@ -213,19 +201,18 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="所属车间" prop="workshopName">
+            <el-form-item label="所属车间" prop="workshopId">
               <el-select
-                v-model="form.workshopName"
+                v-model="form.workshopId"
                 placeholder="请选择车间"
                 style="width: 100%"
                 value-key="workshopId"
-                @change="handleAccompanyId"
               >
                 <el-option
                   v-for="item in workshopOptions"
                   :key="item.workshopId"
                   :label="item.workshopName"
-                  :value="item"
+                  :value="item.workshopId"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -300,14 +287,7 @@ export default {
       //车间选项
       workshopOptions: [],
       // 表单参数
-      form: {
-        proAgvlineId: "",
-        lineCode: "",
-        lineName: "",
-        workshopId: "",
-        enableFlag: "Y",
-        remark: "",
-      },
+      form: {},
       whetherEnabled: [
         {
           value: "Y",
@@ -323,7 +303,7 @@ export default {
         lineCode: [
           { required: true, message: "AGV线路编码不能为空", trigger: "blur" },
         ],
-        workshopName: [
+        workshopId: [
           { required: true, message: "所属车间不能为空", trigger: "blur" },
         ],
         lineName: [
@@ -356,18 +336,20 @@ export default {
     },
     // 取消按钮
     cancel() {
-      this.open = false;
       this.reset();
+      this.getList();
+      this.open = false;
     },
     // 表单重置
     reset() {
       this.form = {
-        proAgvlineId: "",
-        lineCode: "",
-        lineName: "",
-        workshopId: "",
+        subjectId: null,
+        proAgvlineId: null,
+        lineCode: null,
+        lineName: null,
+        workshopId: null,
         enableFlag: "Y",
-        remark: "",
+        remark: null,
       };
       this.autoGenFlag = true;
       this.resetForm("form");
@@ -399,12 +381,6 @@ export default {
         this.form.lineCode = response.data.lineCode;
       });
     },
-    //选择车间
-    handleAccompanyId(val) {
-      this.form.workshopCode = val.workshopCode;
-      this.form.workshopName = val.workshopName;
-      this.form.workshopId = val.workshopId;
-    },
     /** 修改按钮操作 */
     handleUpdate(row) {
       console.log(row);
@@ -413,7 +389,7 @@ export default {
       this.form = row;
       this.form.subjectId = row.proAgvlineId;
       this.open = true;
-      this.title = "修改代码";
+      this.title = "修改AGV线路";
     },
     /** 提交按钮 */
     submitForm() {
@@ -449,19 +425,6 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      //   console.log(row);
-      //   const subjectIds = row.proAgvlineId || this.id;
-      //   this.$modal
-      //     .confirm("是否确认删除当前的数据项？")
-      //     .then(function () {
-      //       return deleteProAgvline(subjectIds);
-      //     })
-      //     .then(() => {
-      //       this.getList();
-      //       this.$modal.msgSuccess("删除成功");
-      //     })
-      //     .catch(() => {});
-
       deleteProAgvline({ proAgvlineId: row.proAgvlineId }).then((response) => {
         this.$modal
           .confirm("是否确认删除当前的数据项？")
