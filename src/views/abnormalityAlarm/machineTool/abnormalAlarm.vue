@@ -17,9 +17,9 @@
         />
       </el-form-item>
 
-      <el-form-item label="异常报警类型" label-width="100px" prop="subjectType">
+      <el-form-item label="异常报警类型" label-width="100px" prop="warnType">
         <el-select
-          v-model="queryParams.subjectType"
+          v-model="queryParams.warnType"
           placeholder="请选择"
           clearable
           style="width: 150px"
@@ -336,6 +336,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        machineryTypeId: 227,
       },
       // 表单参数
       form: {

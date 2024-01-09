@@ -336,6 +336,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        machineryTypeId: 228,
       },
       // 表单参数
       form: {

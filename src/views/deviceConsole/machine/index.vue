@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="5"
         ><div class="grid-content bg-purple">
-          <div class="grid-content three" style="height: 750px">
+          <div class="grid-content three" style="height: 750px;border-radius: 10px">
             <!-- 选择设备 -->
             <el-container style="padding: 0">
               <el-header

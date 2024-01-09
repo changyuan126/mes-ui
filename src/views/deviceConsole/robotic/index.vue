@@ -1,9 +1,12 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <el-col :span="5"
+      <el-col :span="4"
         ><div class="grid-content bg-purple">
-          <div class="grid-content three" style="height: 750px">
+          <div
+            class="grid-content three"
+            style="height: 750px; border-radius: 10px"
+          >
             <!-- 选择设备 -->
             <el-container style="padding: 0">
               <el-header
@@ -40,7 +43,30 @@
               border-radius: 30px;
               margin-left: 32%;
             "
-          ></div>
+          >
+            <p
+              v-if="Powersupply"
+              style="
+                font-size: 20px;
+                color: rgb(158, 158, 158);
+                margin: 19px;
+                text-align: center;
+              "
+            >
+              Power down
+            </p>
+            <p
+              v-else
+              style="
+                font-size: 20px;
+                color: rgb(158, 158, 158);
+                margin: 19px;
+                text-align: center;
+              "
+            >
+              Power on
+            </p>
+          </div>
           <div
             style="
               border: 1px solid rgb(217, 216, 216);
@@ -52,12 +78,22 @@
               background: rgba(204, 204, 221, 0.2);
             "
           >
-            <div style="margin-top: 9%">
+            <p
+              style="
+                font-size: 14px;
+                color: rgb(158, 158, 158);
+                margin: 0px;
+                text-align: center;
+              "
+            >
+              Control
+            </p>
+            <div style="margin-top: 2%">
               <el-row type="flex" class="row-bg" justify="center">
                 <el-col :span="4"
                   ><div class="grid-content bg-purple">
                     <div v-if="elimage">
-                      <el-button @click="elbutton"
+                      <el-button @click="upbutton"
                         ><el-image
                           :src="sd"
                           style="width: 20px; height: 20px"
@@ -75,7 +111,7 @@
                       </p>
                     </div>
                     <div v-else>
-                      <el-button @click="buttonto">
+                      <el-button @click="downbutton">
                         <el-image
                           :src="xd"
                           style="width: 20px; height: 20px"
@@ -124,7 +160,123 @@
           </div>
         </div></el-col
       >
-      <el-col :span="4"><div class="grid-content bg-purple">2</div></el-col>
+      <el-col :span="5"
+        ><div class="grid-content bg-purple">
+          <div
+            class="grid-content three"
+            style="width: 330px; height: 335px; border-radius: 10px"
+          >
+            <el-header
+              class="smallHeader"
+              style="height: 40px; line-height: 40px"
+              >Robot Operation Panel
+            </el-header>
+            <div style="margin: 6px">
+              <el-radio-group
+                v-model="radio4"
+                size="mini"
+                style="display: flex"
+              >
+                <el-radio-button :label="1">j1轴</el-radio-button>
+                <el-radio-button :label="2">j2轴</el-radio-button>
+                <el-radio-button :label="3">j3轴</el-radio-button>
+                <el-radio-button :label="4">j4轴</el-radio-button>
+                <el-radio-button :label="5">j5轴</el-radio-button>
+                <el-radio-button :label="6">j6轴</el-radio-button>
+              </el-radio-group>
+            </div>
+            <div
+              style="
+                width: 90%;
+                height: 120px;
+                margin: auto;
+                border-radius: 10px;
+                box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+              "
+            >
+              <el-header
+                class="smallHeader"
+                style="height: 30px; line-height: 30px"
+                >Coordinate
+              </el-header>
+              <div style="margin: 20px 10px">
+                <el-row type="flex" class="row-bg" justify="space-around">
+                  <el-col :span="6"
+                    ><div
+                      class="grid-content bg-purple"
+                      style="text-align: center"
+                    >
+                      X:{{ 123 }}
+                    </div></el-col
+                  >
+                  <el-col :span="6"
+                    ><div
+                      class="grid-content bg-purple-light"
+                      style="text-align: center"
+                    >
+                      Y:{{ 123 }}
+                    </div></el-col
+                  >
+                  <el-col :span="6"
+                    ><div
+                      class="grid-content bg-purple"
+                      style="text-align: center"
+                    >
+                      Z:{{ 123 }}
+                    </div></el-col
+                  >
+                </el-row>
+              </div>
+              <div style="margin: 20px 10px">
+                <el-row type="flex" class="row-bg" justify="space-around">
+                  <el-col :span="6"
+                    ><div
+                      class="grid-content bg-purple"
+                      style="text-align: center"
+                    >
+                      A:{{ 123 }}
+                    </div></el-col
+                  >
+                  <el-col :span="6"
+                    ><div
+                      class="grid-content bg-purple-light"
+                      style="text-align: center"
+                    >
+                      B:{{ 123 }}
+                    </div></el-col
+                  >
+                  <el-col :span="6"
+                    ><div
+                      class="grid-content bg-purple"
+                      style="text-align: center"
+                    >
+                      C:{{ 123 }}
+                    </div></el-col
+                  >
+                </el-row>
+              </div>
+            </div>
+            <div
+              style="
+                width: 90%;
+                height: 88px;
+                margin: auto;
+                margin-top: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+              "
+            >
+              <el-header
+                class="smallHeader"
+                style="height: 30px; line-height: 30px"
+              >
+                Standard
+              </el-header>
+              <div style="margin: 20px 20px">Speed limit:{{ 1 }}</div>
+            </div>
+          </div>
+        </div></el-col
+      >
     </el-row>
   </div>
 </template>
@@ -150,6 +302,8 @@ export default {
         machineryTypeId: "",
       },
       elimage: true,
+      Powersupply: true,
+      radio4: "1",
       img: require("../../../assets/images/robotic.png"),
       sd: require("../../../assets/images/shangdian.png"),
       xd: require("../../../assets/images/weishangdian.png"),
@@ -175,13 +329,6 @@ export default {
     /** 查询列表 */
     getList() {
       this.loading = true;
-      // axios
-      //   .get("http://192.168.3.53:8077/manage/device/devices")
-      //   .then((res) => {
-      //     this.intelligent = res.data.data;
-      //     this.loading = false;
-      //   });
-
       listMachinerytype().then((response) => {
         var data = "";
         response.data.forEach((item) => {
@@ -201,7 +348,6 @@ export default {
             this.intelligent.push(item);
           }
         });
-        console.log(this.intelligent);
         this.loading = false;
       });
     },
@@ -212,65 +358,67 @@ export default {
     },
 
     setInterval() {
-      //   axios
-      //     .get("http://192.168.3.53:8077/manage/modbus/data", {
-      //       params: {
-      //         id: this.id,
-      //       },
-      //     })
-      //     .then((res) => {
-      //       console.log(res.data.data);
-      //       this.intelligentData = res.data.data;
-      //     });
+      // axios
+      //   .get("http://192.168.3.53:8077/manage/modbus/data", {
+      //     params: {
+      //       id: this.id,
+      //     },
+      //   })
+      //   .then((res) => {
+      //     this.intelligentData = res.data.data;
+      //   });
     },
 
-    elbutton() {
-      this.elimage = false;
+    upbutton() {
+      if (this.id != "") {
+        axios
+          .get("http://192.168.3.53:8077/manage/robot/powerOn", {
+            params: {
+              id: this.id,
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            if (res.data.code === 200) {
+              this.elimage = false;
+              this.Powersupply = false;
+              this.$modal.msgSuccess("上电成功");
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          });
+      } else {
+        this.$message({
+          message: "请选择设备",
+          type: "warning",
+        });
+      }
     },
 
-    buttonto() {
-      this.elimage = true;
-    },
-
-    off() {
-      //   if (this.id != "") {
-      //     axios
-      //       .get("http://192.168.3.53:8077/manage/modbus/operate", {
-      //         params: {
-      //           id: this.id,
-      //           type: 2,
-      //         },
-      //       })
-      //       .then((res) => {
-      //         this.imgdata = true;
-      //         this.$modal.msgSuccess("停止成功");
-      //       });
-      //   } else {
-      //     this.$message({
-      //       message: "请选择设备",
-      //       type: "warning",
-      //     });
-      //   }
-    },
-    on() {
-      //   if (this.id != "") {
-      //     axios
-      //       .get("http://192.168.3.53:8077/manage/modbus/operate", {
-      //         params: {
-      //           id: this.id,
-      //           type: 1,
-      //         },
-      //       })
-      //       .then((res) => {
-      //         this.imgdata = false;
-      //         this.$modal.msgSuccess("启动成功");
-      //       });
-      //   } else {
-      //     this.$message({
-      //       message: "请选择设备",
-      //       type: "warning",
-      //     });
-      //   }
+    downbutton() {
+      if (this.id != "") {
+        axios
+          .get("http://192.168.3.53:8077/manage/robot/powerOff", {
+            params: {
+              id: this.id,
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            if (res.data.code === 200) {
+              this.elimage = true;
+              this.Powersupply = true;
+              this.$modal.msgSuccess("下电成功");
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          });
+      } else {
+        this.$message({
+          message: "请选择设备",
+          type: "warning",
+        });
+      }
     },
   },
 };
