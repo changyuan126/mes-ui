@@ -17,15 +17,31 @@
         />
       </el-form-item>
 
-      <el-form-item label="异常报警类型" label-width="100px" prop="subjectType">
+      <el-form-item label="异常报警类型" label-width="100px" prop="warnType">
         <el-select
-          v-model="queryParams.subjectType"
+          v-model="queryParams.warnType"
           placeholder="请选择"
           clearable
           style="width: 150px"
         >
           <el-option
             v-for="dict in dict.type.mes_alarm_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="处理状态" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          placeholder="请选择"
+          clearable
+          style="width: 150px"
+        >
+          <el-option
+            v-for="dict in statusArr"
             :key="dict.value"
             :label="dict.label"
             :value="dict.value"
@@ -143,6 +159,20 @@
             v-hasPermi="['mes:dv:dvsubject:edit']"
             >查看</el-button
           >
+          <el-button
+            size="mini"
+            type="text"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['mes:dv:dvsubject:edit']"
+            >处理</el-button
+          >
+          <el-button
+            size="mini"
+            type="text"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['mes:dv:dvsubject:remove']"
+            >置顶</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -155,6 +185,68 @@
       @pagination="getList"
     />
 
+    <!-- 添加或修改对话框 -->
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      center
+      width="400px"
+      append-to-body
+    >
+      <el-form ref="form" :model="form" :rules="rules" label-width="130px">
+        <el-row>
+          <el-col>
+            <el-form-item prop="abnormal" label="设备是否异常:">
+              <el-radio-group v-model="form.abnormal">
+                <el-radio :label="1">异常</el-radio>
+                <el-radio :label="2">无异常</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
+            <el-form-item prop="status" label="是否解决:">
+              <el-radio-group v-model="form.status">
+                <el-radio :label="1">已解决</el-radio>
+                <el-radio :label="2">未解决</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 置顶 -->
+    <el-dialog
+      title="置顶"
+      :visible.sync="openTop"
+      center
+      width="400px"
+      append-to-body
+    >
+      <el-form ref="form" :model="form" :rules="rules" label-width="130px">
+        <el-row>
+          <el-col>
+            <el-form-item prop="top" label="设备是否异常:">
+              <el-radio-group v-model="form.top">
+                <el-radio :label="0">不置顶</el-radio>
+                <el-radio :label="1">置顶</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="handleForm">确 定</el-button>
+        <el-button @click="openopenTop">取 消</el-button>
+      </div>
+    </el-dialog>
+
     <!-- 查看 -->
     <el-dialog
       :title="title"
@@ -166,36 +258,36 @@
       <el-form ref="form" :model="formQuery" label-width="130px">
         <el-row>
           <el-col :span="11">
-            <el-form-item prop="abnormal" label="设备编码:">
+            <el-form-item prop="" label="设备编码:">
               {{ formQuery.machineryCode }}
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item prop="abnormal" label="设备名称:">
+            <el-form-item prop="" label="设备名称:">
               {{ formQuery.machineryName }}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="11">
-            <el-form-item prop="abnormal" label="设备类型:">
+            <el-form-item prop="" label="设备类型:">
               {{ formQuery.machineryTypeName }}
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item prop="abnormal" label="异常报警类型:">
+            <el-form-item prop="" label="异常报警类型:">
               {{ formQuery.warnType }}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="11">
-            <el-form-item prop="abnormal" label="异常报警内容:">
+            <el-form-item prop="" label="异常报警内容:">
               {{ formQuery.message }}
             </el-form-item>
           </el-col>
           <el-col :span="11">
-            <el-form-item prop="abnormal" label="异常报警时间:">
+            <el-form-item prop="" label="异常报警时间:">
               {{ formQuery.warnTime }}
             </el-form-item>
           </el-col>
@@ -236,13 +328,15 @@ export default {
       dvsubjectList: [],
       // 弹出层标题
       title: "",
+      // 是否显示弹出层
+      open: false,
       // 查看
       openQuery: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        machineryTypeId: 227,
+        machineryTypeId: 230,
       },
       // 表单参数
       form: {
@@ -252,6 +346,8 @@ export default {
       },
       // 查看
       formQuery: {},
+      //置顶弹框
+      openTop: false,
 
       statusArr: [
         {
@@ -275,6 +371,7 @@ export default {
         status: [
           { required: true, message: "是否解决不能为空", trigger: "blur" },
         ],
+        top: [{ required: true, message: "是否置顶不能为空", trigger: "blur" }],
       },
     };
   },
@@ -293,8 +390,19 @@ export default {
       });
     },
     // 取消按钮
+    cancel() {
+      this.open = false;
+      this.reset();
+    },
+    // 取消按钮
     cancelQuery() {
       this.openQuery = false;
+      this.reset();
+    },
+
+    // 取消按钮
+    openopenTop() {
+      this.openTop = false;
       this.reset();
     },
     // 表单重置
@@ -302,7 +410,6 @@ export default {
       this.form = {
         abnormal: 1,
         status: "",
-        top: 0,
       };
       this.autoGenFlag = true;
       this.resetForm("form");
@@ -334,9 +441,55 @@ export default {
       this.openQuery = true;
       this.title = "查看";
     },
+    /** 处理 */
+    handleUpdate(row) {
+      console.log(row);
+      this.reset();
+      this.open = true;
+      this.title = "处理";
+    },
+    /** 提交按钮 */
+    submitForm() {
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          edit(this.form).then((response) => {
+            if (response.code === 200) {
+              this.$notify({
+                title: "处理成功",
+                message: response.msg,
+                type: "success",
+              });
+              this.open = false;
+              this.getList();
+            }
+          });
+        }
+      });
+    },
     /** 置顶操作 */
     handleDelete(row) {
       console.log(row);
+      this.reset();
+      this.openTop = true;
+    },
+
+    /** 置顶提交按钮 */
+    handleForm() {
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          edit(this.form).then((response) => {
+            if (response.code === 200) {
+              this.$notify({
+                title: "处理成功",
+                message: response.msg,
+                type: "success",
+              });
+              this.open = false;
+              this.getList();
+            }
+          });
+        }
+      });
     },
     /** 导出按钮操作 */
     handleExport() {
