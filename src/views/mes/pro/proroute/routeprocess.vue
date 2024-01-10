@@ -302,7 +302,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="Typefile">
             <el-form-item label="代码上传" prop="">
               <el-upload
                 ref="codeName"
@@ -458,6 +458,7 @@ export default {
       lineName:"",
       pointName:"",
       TypeId:false,
+      Typefile:false,
       // 表单参数
       form: {},
       // 表单校验
@@ -549,8 +550,10 @@ export default {
     handleNodeClick(data) {
       if(data.machineryTypeId == 229){
         this.TypeId = true
+        this.Typefile = false
       }else{
         this.TypeId = false
+        this.Typefile = true
       }
       this.form.machineryTypeName = data.machineryTypeName;
     },
@@ -661,6 +664,10 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      if(this.form.machineryTypeId == null){
+        this.TypeId = false
+        this.Typefile = false
+      }
       this.open = true;
       this.title = "添加工艺组成";
       listRouteprocess(this.queryParams).then((response) => {
@@ -670,10 +677,17 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      if(row.machineryTypeId == 229){
-        this.TypeId = true
-      }else{
+      if(row.machineryTypeId == null){
         this.TypeId = false
+        this.Typefile = false
+      }else{
+        if(row.machineryTypeId == 229){
+          this.TypeId = true
+          this.Typefile = false
+        }else{
+          this.TypeId = false
+          this.Typefile = true
+        }
       }
       var name = {};
       if (row.originalName != undefined && row.originalName != "") {
