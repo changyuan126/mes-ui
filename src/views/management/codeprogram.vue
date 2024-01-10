@@ -390,7 +390,6 @@ export default {
     getList() {
       this.loading = true;
       list(this.queryParams).then((response) => {
-        console.log(response);
         this.dvsubjectList = response.data;
         this.total = response.data.length;
         this.loading = false;
@@ -426,10 +425,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      console.log(selection);
       this.ids = selection.map((item) => item.codeId);
-      console.log(this.ids);
-
       this.queryParams.ids = this.ids.join(",");
       this.single = selection.length !== 1;
       this.multiple = !selection.length;
@@ -471,7 +467,6 @@ export default {
 
     // 节点单击事件
     handleNodeClick(data) {
-      console.log(data);
       this.machineryIdsArr = [];
       this.form.machineryTypeName = data.machineryTypeName;
       let arr = {
@@ -482,7 +477,6 @@ export default {
       arr.machineryTypeId = data.machineryTypeId;
 
       listMachinery(arr).then((response) => {
-        console.log(response);
         this.listTypeArr = response.rows;
       });
     },
@@ -501,7 +495,6 @@ export default {
       this.files = e;
     },
     customUploadChangeImage2(files) {
-      console.log(files);
       if (files.status === "ready") return;
       if (files.status === "success") {
         const res = files.response || {};
@@ -543,7 +536,6 @@ export default {
 
     //预览文件
     previewFile() {
-      console.log(this.form);
       if (this.form.url != undefined && this.form.url != "") {
         var url = this.form.url;
         window.open(url);
@@ -554,7 +546,6 @@ export default {
 
     /** 修改按钮操作 */
     handleUpdate(row) {
-      console.log(row);
       this.reset();
       this.fileList = [];
       this.machineryIdsArr = {};
@@ -563,7 +554,6 @@ export default {
       if (row.originalName != undefined && row.originalName != "") {
         this.$set(name, "name", row.originalName);
         this.fileList.push(name);
-        console.log(this.fileList);
       }
       let arr = {
         pageNum: 1,
@@ -571,18 +561,13 @@ export default {
         machineryTypeId: null,
       };
       arr.machineryTypeId = row.machineryTypeId;
-
       listMachinery(arr).then((response) => {
-        console.log(response);
         this.listTypeArr = response.rows;
       });
-
       let arr1 = row.cadCodeMachineryList.map((item) => item.machineryName);
       this.machineryIdsArr = arr1;
-
       let arr2 = row.cadCodeMachineryList.map((item) => item.machineryId);
       this.form.machineryIds = arr2.join(",");
-
       this.form.subjectId = row.codeId || this.ids;
       this.open = true;
       this.title = "修改代码";
@@ -625,7 +610,6 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      console.log(row);
       const subjectIds = row.codeId || this.ids;
       this.$modal
         .confirm("是否确认删除当前的数据项？")
@@ -651,7 +635,6 @@ export default {
 
     /** 单选导出按钮操作 */
     handleExportArr(e) {
-      console.log(e);
       this.queryParams.ids = e.codeId;
       this.download(
         "/cad/code/export",

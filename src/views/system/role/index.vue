@@ -606,7 +606,6 @@ export default {
     },
     // 恢复默认菜单权限
     restoreRole(roleId) {
-      console.log(roleId);
       this.$confirm("确定恢复默认菜单权限吗?", '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

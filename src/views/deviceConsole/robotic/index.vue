@@ -378,7 +378,6 @@ export default {
             },
           })
           .then((res) => {
-            console.log(res);
             if (res.data.code === 200) {
               this.elimage = false;
               this.Powersupply = false;
@@ -404,7 +403,6 @@ export default {
             },
           })
           .then((res) => {
-            console.log(res);
             if (res.data.code === 200) {
               this.elimage = true;
               this.Powersupply = true;

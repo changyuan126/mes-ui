@@ -192,7 +192,6 @@
               })
             } else {
               ownerServer.modifyOwnerContBaseById(this.contractForm).then(result => {
-                console.log(this.contractForm);
                 if (result.code === 200) {
                   this.$notify({
                     title: '成功',

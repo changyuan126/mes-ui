@@ -724,7 +724,6 @@ export default {
     },
     // 节点单击事件
     handleNodeClick(data) {
-      console.log(data);
       this.queryParams.machineryTypeId = data.machineryTypeId;
       this.queryParamsdata = data;
       this.handleQuery();

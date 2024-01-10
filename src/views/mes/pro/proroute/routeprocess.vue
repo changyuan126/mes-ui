@@ -330,7 +330,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
+          <el-col :span="12" v-if="TypeId">
             <el-form-item label="选择线路" prop="lineId">
               <el-select
                 v-model="form.lineId"
@@ -347,7 +347,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="TypeId">
             <el-form-item label="选择点位" prop="lineId">
               <el-select
                 v-model="form.pointId"
@@ -457,6 +457,7 @@ export default {
       dvsubjectList: [],
       lineName:"",
       pointName:"",
+      TypeId:false,
       // 表单参数
       form: {},
       // 表单校验
@@ -546,7 +547,11 @@ export default {
     },
     // 节点单击事件
     handleNodeClick(data) {
-      console.log(data);
+      if(data.machineryTypeId == 229){
+        this.TypeId = true
+      }else{
+        this.TypeId = false
+      }
       this.form.machineryTypeName = data.machineryTypeName;
     },
     // 取消按钮
@@ -559,7 +564,6 @@ export default {
       this.files = e;
     },
     customUploadChangeImage2(files) {
-      console.log(files);
       if (files.status === "ready") return;
       if (files.status === "success") {
         const res = files.response || {};
@@ -601,7 +605,6 @@ export default {
 
     //预览文件
     previewFile() {
-      console.log(this.form);
       if (this.form.url != undefined && this.form.url != "") {
         var url = this.form.url;
         window.open(url);
@@ -667,6 +670,11 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      if(row.machineryTypeId == 229){
+        this.TypeId = true
+      }else{
+        this.TypeId = false
+      }
       var name = {};
       if (row.originalName != undefined && row.originalName != "") {
         this.$set(name, "name", row.originalName);

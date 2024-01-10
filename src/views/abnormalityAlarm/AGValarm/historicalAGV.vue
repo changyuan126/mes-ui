@@ -286,7 +286,6 @@ export default {
     getList() {
       this.loading = true;
       list(this.queryParams).then((response) => {
-        console.log(response);
         this.dvsubjectList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -319,17 +318,13 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      console.log(selection);
       this.ids = selection.map((item) => item.codeId);
-      console.log(this.ids);
-
       this.queryParams.ids = this.ids.join(",");
       this.single = selection.length !== 1;
       this.multiple = !selection.length;
     },
     /** 查看 **/
     handleExportArr(row) {
-      console.log(row);
       this.formQuery = row;
       this.openQuery = true;
       this.title = "查看";

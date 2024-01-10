@@ -712,7 +712,6 @@ export default {
         debugger;
         let blob = new Blob([res],{type:'application/pdf'});        
         let href = URL.createObjectURL(blob);
-        console.log(href);
         window.open(`/pdf/web/viewer.html?file=${encodeURIComponent(href)}`);
       });
     }

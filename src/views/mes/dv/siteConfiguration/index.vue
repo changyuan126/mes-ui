@@ -349,9 +349,8 @@ export default {
   methods: {
     /** 列表 */
     getList() {
-      //   this.loading = true;
+        this.loading = true;
       findProAgvsite(this.queryParams).then((response) => {
-        console.log(response);
         this.dvsubjectList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -406,13 +405,11 @@ export default {
       this.open = true;
       this.title = "新增AGV站点";
       findSiteCode().then((response) => {
-        console.log(response);
         this.form.siteCode = response.data.siteCode;
       });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      console.log(row);
       this.reset();
       this.getWorkshops();
       this.form = row;
@@ -454,7 +451,6 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      console.log(row);
       deleteProAgvsite({ proAgvsiteId: row.proAgvsiteId }).then((response) => {
         this.$modal
           .confirm("是否确认删除当前的数据项？")
