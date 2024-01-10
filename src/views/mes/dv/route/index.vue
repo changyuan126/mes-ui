@@ -323,7 +323,6 @@ export default {
     getList() {
       this.loading = true;
       findProAgvline(this.queryParams).then((response) => {
-        console.log(response);
         this.dvsubjectList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -377,13 +376,11 @@ export default {
       this.open = true;
       this.title = "新增AGV线路";
       findLineCode().then((response) => {
-        console.log(response);
         this.form.lineCode = response.data.lineCode;
       });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      console.log(row);
       this.reset();
       this.getWorkshops();
       this.form = row;

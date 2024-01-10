@@ -439,7 +439,6 @@ export default {
         this.loading = false;
       });
       listType().then((response) => {
-        console.log(response);
         this.listTypeArr = response.rows;
       });
     },
@@ -478,7 +477,6 @@ export default {
     handleSelectionChange(selection) {
       this.id = selection.map((item) => item.id);
       this.queryParams.ids = this.id.join(",");
-      console.log(this.queryParams.ids);
       this.single = selection.length !== 1;
       this.multiple = !selection.length;
     },
@@ -487,7 +485,6 @@ export default {
       this.reset();
       this.fileList = [];
       listType().then((response) => {
-        console.log(response);
         this.listTypeArr = response.rows;
       });
       this.open = true;
@@ -495,7 +492,6 @@ export default {
     },
 
     typeNameArr(e) {
-      console.log(e);
       this.form.typeName = e.name;
       this.form.type = e.id;
     },
@@ -505,7 +501,6 @@ export default {
       this.files = e;
     },
     customUploadChangeImage2(files) {
-      console.log(files);
       if (files.status === "ready") return;
       if (files.status === "success") {
         const res = files.response || {};
@@ -547,7 +542,6 @@ export default {
 
     //预览文件
     previewFile() {
-      console.log(this.form);
       if (this.form.url != undefined && this.form.url != "") {
         var url = this.form.url;
         window.open(url);
@@ -558,14 +552,12 @@ export default {
 
     /** 修改按钮操作 */
     handleUpdate(row) {
-      console.log(row);
       this.reset();
       this.fileList = [];
       this.form = row;
       var name = {};
       this.$set(name, "name", row.originalName);
       this.fileList.push(name);
-      console.log(this.fileList);
       this.form.subjectId = row.id || this.id;
       this.open = true;
       this.title = "修改文档";
