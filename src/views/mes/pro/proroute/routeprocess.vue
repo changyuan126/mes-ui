@@ -191,11 +191,11 @@
             <el-form-item label="与下一道工序关系" prop="linkType">
               <el-tooltip effect="dark" placement="right">
                 <div slot="content">
-                        F-to-S：当前工序结束生产，下一道工序才可开始生产 </br>
-                        S-to-F：当前工序开始生产，下一道工序才可结束生产 </br>
-                        F-to-F：当前工序结束生产，下一道工序才可结束生产 </br>
-                        S-to-S：当前工序开始生产，下一道工序才可开始生产 </br>
-                    </div>
+                  <div>F-to-S：当前工序结束生产，下一道工序才可开始生产</div>
+                  <div>S-to-F：当前工序开始生产，下一道工序才可结束生产</div>
+                  <div>F-to-F：当前工序结束生产，下一道工序才可结束生产</div>
+                  <div>S-to-S：当前工序开始生产，下一道工序才可开始生产</div>
+                </div>
                 <el-select
                   v-model="form.linkType"
                   placeholder="请选择与下一道工序关系"
@@ -228,9 +228,11 @@
             <el-form-item label="是否关键工序" prop="keyFlag">
               <el-tooltip effect="dark" placement="right">
                 <div slot="content">
-                        是：整个工单的生产进度将根据当前工序的生产报工数量进行更新</br>
-                        每个工艺流程只能有一个关键工序                        
-                    </div>
+                  <div>
+                    是：整个工单的生产进度将根据当前工序的生产报工数量进行更新
+                  </div>
+                  <div>每个工艺流程只能有一个关键工序</div>
+                </div>
                 <el-select v-model="form.keyFlag">
                   <el-option
                     v-for="dict in dict.type.sys_yes_no"
@@ -246,9 +248,9 @@
             <el-form-item label="是否需要质检确认" prop="isCheck">
               <el-tooltip effect="dark" placement="right">
                 <div slot="content">
-                        是：当前工序报工时需要进行质检确认</br>
-                        质检合格数量作为最终生产数量                                            
-                    </div>
+                  <div>是：当前工序报工时需要进行质检确认</div>
+                  <div>质检合格数量作为最终生产数量</div>
+                </div>
                 <el-select v-model="form.isCheck">
                   <el-option
                     v-for="dict in dict.type.sys_yes_no"
@@ -330,6 +332,16 @@
           </el-col>
         </el-row>
         <el-row>
+          <el-col :span="12">
+            <el-form-item label="选择出入库类型" prop="exitType">
+              <el-radio-group v-model="form.exitType">
+                <el-radio label="0">出库</el-radio>
+                <el-radio label="1">入库</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12" v-if="TypeId">
             <el-form-item label="选择线路" prop="lineId">
               <el-select
@@ -348,7 +360,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="TypeId">
-            <el-form-item label="选择点位" prop="lineId">
+            <el-form-item label="选择点位" prop="pointId">
               <el-select
                 v-model="form.pointId"
                 placeholder="请选择点位"
@@ -455,12 +467,17 @@ export default {
       workshopOptions: [],
       // 站点
       dvsubjectList: [],
-      lineName:"",
-      pointName:"",
-      TypeId:false,
-      Typefile:false,
+      lineName: "",
+      pointName: "",
+      TypeId: false,
+      Typefile: false,
       // 表单参数
-      form: {},
+      form: {
+        originalName: "",
+        url: "",
+        lineId: "",
+        pointId: "",
+      },
       // 表单校验
       rules: {
         routeId: [
@@ -548,12 +565,16 @@ export default {
     },
     // 节点单击事件
     handleNodeClick(data) {
-      if(data.machineryTypeId == 229){
-        this.TypeId = true
-        this.Typefile = false
-      }else{
-        this.TypeId = false
-        this.Typefile = true
+      if (data.machineryTypeId == 229) {
+        this.TypeId = true;
+        this.Typefile = false;
+        this.form.originalName = "";
+        this.form.url = "";
+      } else {
+        this.TypeId = false;
+        this.Typefile = true;
+        this.form.lineId = "";
+        this.form.pointId = "";
       }
       this.form.machineryTypeName = data.machineryTypeName;
     },
@@ -641,8 +662,13 @@ export default {
         createTime: null,
         updateBy: null,
         updateTime: null,
+        originalName: null,
+        url: null,
+        lineId: null,
+        pointId: null,
+        exitType: "0",
       };
-      this.fileList = []
+      this.fileList = [];
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -664,9 +690,9 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      if(this.form.machineryTypeId == null){
-        this.TypeId = false
-        this.Typefile = false
+      if (this.form.machineryTypeId == null) {
+        this.TypeId = false;
+        this.Typefile = false;
       }
       this.open = true;
       this.title = "添加工艺组成";
@@ -676,17 +702,24 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+      console.log(row);
       this.reset();
-      if(row.machineryTypeId == null){
-        this.TypeId = false
-        this.Typefile = false
-      }else{
-        if(row.machineryTypeId == 229){
-          this.TypeId = true
-          this.Typefile = false
-        }else{
-          this.TypeId = false
-          this.Typefile = true
+      const recordId = row.recordId || this.ids;
+      getRouteprocess(recordId).then((response) => {
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改工艺组成";
+      });
+      if (row.machineryTypeId == null) {
+        this.TypeId = false;
+        this.Typefile = false;
+      } else {
+        if (row.machineryTypeId == 229) {
+          this.TypeId = true;
+          this.Typefile = false;
+        } else {
+          this.TypeId = false;
+          this.Typefile = true;
         }
       }
       var name = {};
@@ -694,18 +727,19 @@ export default {
         this.$set(name, "name", row.originalName);
         this.fileList.push(name);
       }
-      const recordId = row.recordId || this.ids;
-      getRouteprocess(recordId).then((response) => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改工艺组成";
-      });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.recordId != null) {
+            if (this.form.machineryTypeId == 229) {
+              this.form.originalName = "";
+              this.form.url = "";
+            } else {
+              this.form.lineId = "";
+              this.form.pointId = "";
+            }
             updateRouteprocess(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
