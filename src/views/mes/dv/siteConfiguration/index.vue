@@ -107,24 +107,25 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column
-        label="AGV站点编码"
-        width="120"
-        align="center"
-        key="siteCode"
-        prop="siteCode"
-        v-if="1"
-      >
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            @click="handleView(scope.row)"
-            v-hasPermi="['mes:dv:route']"
-            >{{ scope.row.siteCode }}</el-button
-          >
-        </template>
-      </el-table-column>
+      <el-table-column label="AGV站点编码" align="center" prop="siteCode" />
+<!--      <el-table-column-->
+<!--        label="AGV站点编码11"-->
+<!--        width="120"-->
+<!--        align="center"-->
+<!--        key="siteCode"-->
+<!--        prop="siteCode"-->
+<!--        v-if="1"-->
+<!--      >-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            @click="handleView(scope.row)"-->
+<!--            v-hasPermi="['mes:dv:route']"-->
+<!--            >{{ scope.row.siteCode }}</el-button-->
+<!--          >-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="AGV站点名称" align="center" prop="siteName" />
       <el-table-column label="所属线路" align="center" prop="agvlineName" />
       <el-table-column label="是否启用" align="center" prop="enableFlag">
