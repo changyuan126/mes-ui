@@ -206,7 +206,7 @@
               <div style="height: 10%">
                 <el-radio-group
                   size="mini"
-                  v-model="radio1"
+                  v-model="radio2"
                   style="
                     display: flex;
                     justify-content: flex-end;
@@ -288,7 +288,7 @@
               <div style="height: 10%">
                 <el-radio-group
                   size="mini"
-                  v-model="radio1"
+                  v-model="radio3"
                   style="
                     display: flex;
                     justify-content: flex-end;
@@ -408,6 +408,8 @@ export default {
       thisYear: false,
       isFullscreen: false,
       radio1: 1,
+      radio2: 1,
+      radio3: 1,
     };
   },
 

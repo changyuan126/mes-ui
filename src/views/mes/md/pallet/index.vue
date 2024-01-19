@@ -11,9 +11,9 @@
           v-show="showSearch"
           label-width="68px"
         >
-          <el-form-item label="托盘编码" prop="itemCode">
+          <el-form-item label="托盘编码" prop="palletCode">
             <el-input
-              v-model="queryParams.itemCode"
+              v-model="queryParams.palletCode"
               placeholder="请输入托盘编码"
               clearable
               style="width: 240px"
@@ -46,7 +46,7 @@
               >新增</el-button
             >
           </el-col>
-          <el-col :span="1.5">
+          <!-- <el-col :span="1.5">
             <el-button
               type="success"
               plain
@@ -57,7 +57,7 @@
               v-hasPermi="['mes:md:mditem:edit']"
               >修改</el-button
             >
-          </el-col>
+          </el-col> -->
           <el-col :span="1.5">
             <el-button
               type="danger"
@@ -65,7 +65,7 @@
               icon="el-icon-delete"
               size="mini"
               :disabled="multiple"
-              @click="handleDelete"
+              @click="handleDeleteData"
               v-hasPermi="['mes:md:mditem:remove']"
               >删除</el-button
             >
@@ -108,52 +108,45 @@
             label="托盘码"
             width="120"
             align="center"
-            key="itemCode"
-            prop="itemCode"
-            v-if="columns[0].visible"
+            key="palletCode"
+            prop="palletCode"
           >
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="text"
-                @click="handleView(scope.row)"
-                v-hasPermi="['mes:md:mditem:query']"
-                >{{ scope.row.itemCode }}</el-button
-              >
-            </template>
           </el-table-column>
 
           <el-table-column
             label="托盘尺寸"
             align="center"
-            key="specification"
-            prop="specification"
-            v-if="columns[2].visible"
+            key="palletSize"
+            prop="palletSize"
             :show-overflow-tooltip="true"
           />
           <el-table-column
             label="动裁承重"
             align="center"
-            key="specification"
-            prop="specification"
-            v-if="columns[2].visible"
+            key="dynamicBear"
+            prop="dynamicBear"
             :show-overflow-tooltip="true"
-          />
+          >
+            <template slot-scope="scope">
+              {{ scope.row.dynamicBear + "kg" }}
+            </template>
+          </el-table-column>
           <el-table-column
             label="静载承重"
             align="center"
-            key="unitOfMeasure"
-            prop="unitOfMeasure"
-            v-if="columns[3].visible"
+            key="staticBear"
+            prop="staticBear"
             :show-overflow-tooltip="true"
           >
+            <template slot-scope="scope">
+              {{ scope.row.staticBear + "kg" }}
+            </template>
           </el-table-column>
           <el-table-column
             label="当前位置"
             align="center"
-            key="unitOfMeasure"
-            prop="unitOfMeasure"
-            v-if="columns[3].visible"
+            key="currentLocation"
+            prop="currentLocation"
             :show-overflow-tooltip="true"
           >
           </el-table-column>
@@ -200,15 +193,15 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="托盘编码" prop="itemCode">
+            <el-form-item label="托盘编码" prop="palletCode">
               <el-input
-                v-model="form.itemCode"
+                v-model="form.palletCode"
                 readonly="readonly"
                 maxlength="64"
                 v-if="optType == 'view'"
               />
               <el-input
-                v-model="form.itemCode"
+                v-model="form.palletCode"
                 placeholder="请输入托盘编码"
                 maxlength="64"
                 v-else
@@ -228,15 +221,15 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="托盘尺寸" prop="itemName">
+            <el-form-item label="托盘尺寸" prop="palletSize">
               <el-input
-                v-model="form.itemName"
+                v-model="form.palletSize"
                 maxlength="255"
                 readonly="readonly"
                 v-if="optType == 'view'"
               />
               <el-input
-                v-model="form.itemName"
+                v-model="form.palletSize"
                 placeholder="请输入托盘尺寸"
                 maxlength="255"
                 v-else
@@ -244,35 +237,79 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="动载承里" prop="">
+            <el-form-item label="动载承重" prop="dynamicBear">
               <el-input
-                v-model="form.itemName"
+                v-model="form.dynamicBear"
                 maxlength="255"
                 readonly="readonly"
                 v-if="optType == 'view'"
-              />
+              >
+                <i
+                  slot="suffix"
+                  style="
+                    font-style: normal;
+                    margin-right: 10px;
+                    line-height: 30px;
+                    color: #1e1e1e;
+                  "
+                  >kg</i
+                >
+              </el-input>
               <el-input
-                v-model="form.itemName"
-                placeholder="请输入动载承里"
+                v-model="form.dynamicBear"
+                placeholder="请输入动载承重"
                 maxlength="255"
                 v-else
-              />
+              >
+                <i
+                  slot="suffix"
+                  style="
+                    font-style: normal;
+                    margin-right: 10px;
+                    line-height: 30px;
+                    color: #1e1e1e;
+                  "
+                  >kg</i
+                >
+              </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="静载承里" prop="">
+            <el-form-item label="静载承重" prop="staticBear">
               <el-input
-                v-model="form.itemName"
+                v-model="form.staticBear"
                 maxlength="255"
                 readonly="readonly"
                 v-if="optType == 'view'"
-              />
+              >
+                <i
+                  slot="suffix"
+                  style="
+                    font-style: normal;
+                    margin-right: 10px;
+                    line-height: 30px;
+                    color: #1e1e1e;
+                  "
+                  >kg</i
+                >
+              </el-input>
               <el-input
-                v-model="form.itemName"
-                placeholder="请输入静载承里"
+                v-model="form.staticBear"
+                placeholder="请输入静载承重"
                 maxlength="255"
                 v-else
-              />
+              >
+                <i
+                  slot="suffix"
+                  style="
+                    font-style: normal;
+                    margin-right: 10px;
+                    line-height: 30px;
+                    color: #1e1e1e;
+                  "
+                  >kg</i
+                >
+              </el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -333,11 +370,12 @@
 <script>
 import {
   listMdItem,
-  getMdItem,
   delMdItem,
   addMdItem,
   updateMdItem,
-} from "@/api/mes/md/mdItem";
+  findPalletCode,
+  batchDeleteProPallet,
+} from "@/api/mes/md/pallet";
 
 import { genCode } from "@/api/system/autocode/rule";
 import { getToken } from "@/utils/auth";
@@ -345,7 +383,7 @@ import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
-  name: "MdItem",
+  name: "Pallet",
   dicts: ["sys_yes_no", "mes_item_product"],
   components: { Treeselect },
   data() {
@@ -397,25 +435,13 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        itemCode: undefined,
+        palletCode: undefined,
         itemName: undefined,
         itemTypeId: 0,
       },
-      // 列信息
-      columns: [
-        { key: 0, label: `物料/产品编码`, visible: true },
-        { key: 1, label: `物料/产品名称`, visible: true },
-        { key: 2, label: `规格型号`, visible: true },
-        { key: 3, label: `单位`, visible: true },
-        { key: 4, label: `物料/产品`, visible: true },
-        { key: 5, label: `物料分类`, visible: true },
-        { key: 6, label: `是否启用`, visible: true },
-        { key: 7, label: `是否设置安全库存`, visible: true },
-        { key: 8, label: `创建时间`, visible: true },
-      ],
       // 表单校验
       rules: {
-        itemCode: [
+        palletCode: [
           { required: true, message: "托盘编码不能为空", trigger: "blur" },
           {
             max: 64,
@@ -441,7 +467,7 @@ export default {
   methods: {
     /** 查询物料编码列表 */
     getList() {
-      this.loading = true;
+      this.loading = false;
       listMdItem(this.queryParams).then((response) => {
         this.itemList = response.rows;
         this.total = response.total;
@@ -457,20 +483,12 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        itemId: undefined,
-        itemTypeId: undefined,
-        itemCode: undefined,
-        itemName: undefined,
-        specification: undefined,
-        unitOfMeasrue: undefined,
-        enableFlag: undefined,
-        itemOrProduct: undefined,
-        enableFlag: "Y",
-        safeStockFlag: "N",
-        minStock: 0,
-        maxStock: 0,
-        optType: undefined,
-        remark: undefined,
+        proPalletId: undefined,
+        palletCode: undefined,
+        palletSize: undefined,
+        dynamicBear: undefined,
+        staticBear: undefined,
+        currentLocation: undefined,
       };
       this.autoGenFlag = true;
       this.resetForm("form");
@@ -487,20 +505,9 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.itemId);
+      this.ids = selection.map((item) => item.proPalletId);
       this.single = selection.length != 1;
       this.multiple = !selection.length;
-    },
-    // 查询明细按钮操作
-    handleView(row) {
-      this.reset();
-      const itemId = row.itemId || this.ids;
-      getMdItem(itemId).then((response) => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "查看物料/产品";
-        this.optType = "view";
-      });
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -508,26 +515,24 @@ export default {
       this.optType = "add";
       this.open = true;
       this.title = "新增托盘";
-      genCode("ITEM_CODE").then((response) => {
-        this.form.itemCode = response;
+      findPalletCode().then((response) => {
+        this.form.palletCode = response.data.palletCode;
       });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+      console.log(row);
       this.reset();
-      const itemId = row.itemId || this.ids;
-      getMdItem(itemId).then((response) => {
-        this.form = response.data;
-        this.open = true;
-        this.optType = "edit";
-        this.title = "修改物料/产品";
-      });
+      this.form = row;
+      this.open = true;
+      this.optType = "edit";
+      this.title = "修改";
     },
     /** 提交按钮 */
     submitForm: function () {
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          if (this.form.itemId != undefined) {
+          if (this.form.proPalletId != undefined) {
             updateMdItem(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
@@ -546,11 +551,30 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const itemIds = row.itemId || this.ids;
+      const itemIds = row.proPalletId;
+      delMdItem({ proPalletId: itemIds }).then((response) => {
+        this.$modal
+          .confirm("是否确认删除当前的数据项？")
+          .then(() => {
+            if (response.code === 200) {
+              this.$notify({
+                title: "删除成功",
+                message: response.msg,
+                type: "success",
+              });
+              this.getList();
+            }
+          })
+          .catch(() => {});
+      });
+    },
+    /** 批量删除按钮操作 */
+    handleDeleteData() {
+      const itemIds = this.ids;
       this.$modal
-        .confirm("确认删除数据项？")
+        .confirm("是否确认删除班次？")
         .then(function () {
-          return delMdItem(itemIds);
+          return batchDeleteProPallet(itemIds);
         })
         .then(() => {
           this.getList();
@@ -560,26 +584,26 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download(
-        "mes/md/mditem/export",
-        {
-          ...this.queryParams,
-        },
-        `user_${new Date().getTime()}.xlsx`
-      );
+      // this.download(
+      //   "mes/md/mditem/export",
+      //   {
+      //     ...this.queryParams,
+      //   },
+      //   `user_${new Date().getTime()}.xlsx`
+      // );
     },
     /** 导入按钮操作 */
     handleImport() {
-      this.upload.title = "物料/产品导入";
-      this.upload.open = true;
+      // this.upload.title = "物料/产品导入";
+      // this.upload.open = true;
     },
     /** 下载模板操作 */
     importTemplate() {
-      this.download(
-        "mes/md/mditem/importTemplate",
-        {},
-        `md_item_${new Date().getTime()}.xlsx`
-      );
+      // this.download(
+      //   "mes/md/mditem/importTemplate",
+      //   {},
+      //   `md_item_${new Date().getTime()}.xlsx`
+      // );
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
@@ -606,11 +630,11 @@ export default {
     //自动生成物料编码
     handleAutoGenChange(autoGenFlag) {
       if (autoGenFlag) {
-        genCode("ITEM_CODE").then((response) => {
-          this.form.itemCode = response;
+        findPalletCode().then((response) => {
+          this.form.palletCode = response.data.palletCode;
         });
       } else {
-        this.form.itemCode = null;
+        this.form.palletCode = null;
       }
     },
   },
