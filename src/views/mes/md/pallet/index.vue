@@ -375,6 +375,7 @@ import {
   updateMdItem,
   findPalletCode,
   batchDeleteProPallet,
+  exportProPallet,
 } from "@/api/mes/md/pallet";
 
 import { genCode } from "@/api/system/autocode/rule";
@@ -431,13 +432,14 @@ export default {
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + "/mes/md/mditem/importData",
       },
+      // 设置上传的请求头部
+      headers: { Authorization: "Bearer " + getToken() },
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         palletCode: undefined,
         itemName: undefined,
-        itemTypeId: 0,
       },
       // 表单校验
       rules: {
@@ -454,9 +456,6 @@ export default {
         ],
         unitOfMeasure: [
           { required: true, message: "单位不能为空", trigger: "blur" },
-        ],
-        itemTypeId: [
-          { required: true, message: "物料分类不能为空", trigger: "blur" },
         ],
       },
     };
@@ -521,7 +520,6 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      console.log(row);
       this.reset();
       this.form = row;
       this.open = true;
@@ -584,13 +582,13 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      // this.download(
-      //   "mes/md/mditem/export",
-      //   {
-      //     ...this.queryParams,
-      //   },
-      //   `user_${new Date().getTime()}.xlsx`
-      // );
+      this.download(
+        "/propallet/exportProPallet",
+        {
+          ...this.queryParams,
+        },
+        `calplan_${new Date().getTime()}.xlsx`
+      );
     },
     /** 导入按钮操作 */
     handleImport() {

@@ -52,3 +52,13 @@ export function findPalletCode(query) {
     params: query,
   });
 }
+
+// 托盘设置导出
+export function exportProPallet(query) {
+  return request({
+    url: "/propallet/exportProPallet",
+    method: "get",
+    params: query,
+  });
+}
+
