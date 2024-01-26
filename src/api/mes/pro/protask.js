@@ -18,6 +18,15 @@ export function listGanttTaskList(query) {
   })
 }
 
+// 查询生产任务列表
+export function listTaskListByWorkorder(query) {
+  return request({
+    url: '/mes/pro/protask/listTaskListByWorkorder',
+    method: 'get',
+    params: query
+  })
+}
+
 
 // 查询生产任务详细
 export function getProtask(taskId) {
