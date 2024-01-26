@@ -45,10 +45,11 @@ export function confirmItemrecpt(data) {
 }
 
 //执行入库
-export function execute(recptId) {
+export function storage(data) {
   return request({
-    url: '/mes/wm/itemrecpt/' + recptId,
-    method: 'put'
+    url: '/wmMatter/storage',
+    method: 'post',
+    data: data
   })
 }
 

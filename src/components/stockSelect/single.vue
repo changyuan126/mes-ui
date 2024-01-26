@@ -161,7 +161,7 @@ export default {
     return {
       showFlag:false,
       // 遮罩层
-      loading: true,
+      loading: false,
       // 选中数组
       selectedId: null,
       selectedRow: null,
@@ -244,16 +244,19 @@ export default {
     getList() {
       this.loading = true;
       listWmstock(this.queryParams).then(response => {
-        if(response.rows){
-          if(this.warehouseCode.indexOf('VIR') == -1){
-            //如果不是查询线边库的物资，则在查询结果中过滤掉线边库的数据
-            this.wmstockList = response.rows.filter((el) =>{
-            return el.warehouseCode.indexOf('VIR') == -1;
-            });
-          }
+        // if(response.rows){
+        //   if(this.warehouseCode.indexOf('VIR') == -1){
+        //     //如果不是查询线边库的物资，则在查询结果中过滤掉线边库的数据
+        //     this.wmstockList = response.rows.filter((el) =>{
+        //     return el.warehouseCode.indexOf('VIR') == -1;
+        //     });
+        //   }
+        //   this.total = response.total;
+        //   this.loading = false;
+        // }
+          this.wmstockList = response.rows
           this.total = response.total;
           this.loading = false;
-        }
       });
     },
     /** 查询分类下拉树结构 */
