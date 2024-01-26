@@ -105,8 +105,11 @@ export default {
             if(this.changedTaskIds.length>0){
                 this.reset();
                 this.changedTaskIds.forEach(id => {
-                    debugger;
+                    debugger;                    
                     let nTask = this.tasks.data.filter(task => task.id == id)[0];
+                    if(nTask.id.startsWith("MO")){
+                        return; //如果是工单改变，不进行保存。
+                    }
                     let startDate = new Date(nTask.start_date);
                     let endDate = new Date(nTask.end_date);
                     this.form = nTask;

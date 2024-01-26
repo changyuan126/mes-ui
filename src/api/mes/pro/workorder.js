@@ -17,6 +17,15 @@ export function getWorkorder(workorderId) {
   })
 }
 
+//查询生产工单，并携带每个生产工单下生产任务的情况
+export function listWithTaskJson(query) {
+  return request({
+    url: '/mes/pro/workorder/listWithTaskJson',
+    method: 'get',
+    params: query
+  })
+}
+
 // 新增生产工单
 export function addWorkorder(data) {
   return request({
