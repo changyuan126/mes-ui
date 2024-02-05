@@ -646,7 +646,7 @@ export default {
 
       inputName: "",
 
-      queryParamsdata:{},
+      queryParamsdata: {},
 
       // 表单校验
       rules: {
@@ -663,9 +663,9 @@ export default {
         machineryTypeId: [
           { required: true, message: "设备分类不能为空", trigger: "blur" },
         ],
-        // idList: [
-        //   { required: true, message: "关联代码程序不能为空", trigger: "blur" },
-        // ],
+        workshopName: [
+          { required: true, message: "所属车间不能为空", trigger: "blur" },
+        ],
       },
     };
   },
@@ -794,9 +794,9 @@ export default {
       this.getWorkshops();
       this.userName = "";
       this.inputName = "";
-      if (this.queryParamsdata.machineryTypeId != 0) {
-        this.form = this.queryParamsdata;
-      }
+      // if (this.queryParamsdata.machineryTypeId != 0) {
+      //   this.form = this.queryParamsdata;
+      // }
       this.optType = "add";
       this.open = true;
       this.title = "新增设备";
