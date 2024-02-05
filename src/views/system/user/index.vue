@@ -165,14 +165,14 @@
         >
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column
-            label="用户编号"
+            label="员工工号"
             align="center"
             key="userId"
             prop="userId"
             v-if="columns[0].visible"
           />
           <el-table-column
-            label="用户名称"
+            label="登录账号"
             align="center"
             key="userName"
             prop="userName"
@@ -180,7 +180,7 @@
             :show-overflow-tooltip="true"
           />
           <el-table-column
-            label="用户昵称"
+            label="员工姓名"
             align="center"
             key="nickName"
             prop="nickName"

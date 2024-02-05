@@ -496,7 +496,7 @@ export default {
       itemrecptlineList: [],
       itemList: [],
       perform: {},
-      remainingquantity: "",
+      remainingquantity: 0,
       recptIdsData: "",
       itemData: "",
       // 查询参数
@@ -699,7 +699,12 @@ export default {
       });
     },
     selectEncoding(data) {
-      this.remainingquantity = data.quantityRecived;
+      var arr = data.quantityRecived - data.accepted;
+      if (arr != 0) {
+        this.remainingquantity = arr;
+      } else {
+        this.remainingquantity = 0;
+      }
       this.perform.itemCode = data.itemCode;
       this.perform.lineId = data.lineId;
       this.perform.itemId = data.itemId;
@@ -709,12 +714,19 @@ export default {
       this.perform.palletCode = data.palletCode;
     },
     submitFileForm() {
-      storage(this.perform).then((response) => {
-        this.$modal.msgSuccess("入库成功");
-        this.warehousing = false;
-        this.getList();
-        this.selectEncoding();
-      });
+      if (this.remainingquantity != 0) {
+        storage(this.perform).then((response) => {
+          this.$modal.msgSuccess("入库成功");
+          this.warehousing = false;
+          this.getList();
+          this.selectEncoding();
+        });
+      } else {
+        this.$message({
+          message: "当前入库数量为0",
+          type: "warning",
+        });
+      }
     },
     /** 提交按钮 */
     submitForm() {

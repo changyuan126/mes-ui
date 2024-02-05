@@ -702,7 +702,7 @@ export default {
     },
     handleConfirm(){
       let that = this;
-      this.$modal.confirm('是确认完成工单编制？【确认后将不能更改】').then(function(){
+      this.$modal.confirm('是否确认完成工单编制？【确认后将不能更改】').then(function(){
         that.form.status = 'CONFIRMED';
         that.submitForm();
       });
