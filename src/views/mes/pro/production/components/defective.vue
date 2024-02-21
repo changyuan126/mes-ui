@@ -94,7 +94,7 @@ export default {
       };
       var option = {
         title: {
-          text: "总考生数",
+          text: "不良品总数",
           left: "center",
           top: "53%",
           padding: [20, 0],
