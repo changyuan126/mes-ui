@@ -58,7 +58,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['mes:wm:productrecpt:edit']"
+          v-hasPermi="['mes:productrecpt:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -69,7 +69,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['mes:wm:productrecpt:remove']"
+          v-hasPermi="['mes:productrecpt:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -110,7 +110,7 @@
             icon="el-icon-video-play"
             v-if="scope.row.status =='PREPARE'"
             @click="handleExecute(scope.row)"
-            v-hasPermi="['mes:wm:productrecpt:edit']"
+            v-hasPermi="['mes:productrecpt:edit']"
           >执行入库</el-button>
           <el-button
             size="mini"
@@ -118,7 +118,7 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-if="scope.row.status =='PREPARE'"
-            v-hasPermi="['mes:wm:productrecpt:edit']"
+            v-hasPermi="['mes:productrecpt:edit']"
           >修改</el-button>
           <el-button
             size="mini"
@@ -126,12 +126,12 @@
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-if="scope.row.status =='PREPARE'"
-            v-hasPermi="['mes:wm:productrecpt:remove']"
+            v-hasPermi="['mes:productrecpt:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -154,7 +154,7 @@
               <el-switch v-model="autoGenFlag"
                   active-color="#13ce66"
                   active-text="自动生成"
-                  @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view' && form.status =='PREPARE'">               
+                  @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view' && form.status =='PREPARE'">
               </el-switch>
             </el-form-item>
           </el-col>
@@ -188,7 +188,7 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
-        </el-row>       
+        </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注" prop="remark">
@@ -197,13 +197,13 @@
           </el-col>
         </el-row>
       </el-form>
-      <el-divider v-if="form.recptId !=null" content-position="center">物料信息</el-divider> 
+      <el-divider v-if="form.recptId !=null" content-position="center">物料信息</el-divider>
       <el-card shadow="always" v-if="form.recptId !=null" class="box-card">
         <Productrecptline :recptId="form.recptId" :optType="optType" :workorderId="form.workorderId" :itemId="form.itemId"></Productrecptline>
       </el-card>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="cancel" v-if="optType =='view' || form.status !='PREPARE' ">返回</el-button>
-        <el-button type="primary" @click="submitForm" v-if="form.status =='PREPARE' && optType !='view' ">保 存</el-button>        
+        <el-button type="primary" @click="submitForm" v-if="form.status =='PREPARE' && optType !='view' ">保 存</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -302,16 +302,16 @@ export default {
       });
     },
     getWarehouseList(){
-      getTreeList().then( response =>{        
+      getTreeList().then( response =>{
         this.warehouseOptions = response.data;
         this.warehouseOptions.map(w =>{
           w.children.map(l =>{
-                  let lstr =JSON.stringify(l.children).replace(/locationId/g,'lId').replace(/areaId/g, 'pId').replace(/areaName/g,'pName');                  
+                  let lstr =JSON.stringify(l.children).replace(/locationId/g,'lId').replace(/areaId/g, 'pId').replace(/areaName/g,'pName');
                   l.children = JSON.parse(lstr);
           });
-            
-          let wstr = JSON.stringify(w.children).replace(/warehouseId/g,'wId').replace(/locationId/g, 'pId').replace(/locationName/g,'pName');  
-          w.children =  JSON.parse(wstr); 
+
+          let wstr = JSON.stringify(w.children).replace(/warehouseId/g,'wId').replace(/locationId/g, 'pId').replace(/locationName/g,'pName');
+          w.children =  JSON.parse(wstr);
 
         });
         let ostr=JSON.stringify(this.warehouseOptions).replace(/warehouseId/g,'pId').replace(/warehouseName/g, 'pName');
@@ -462,7 +462,7 @@ export default {
       }
     },
     //选择默认的仓库、库区、库位
-    handleWarehouseChanged(obj){      
+    handleWarehouseChanged(obj){
       if(obj !=null){
         this.form.warehouseId = obj[0];
         this.form.locationId = obj[1];
