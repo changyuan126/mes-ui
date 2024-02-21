@@ -61,6 +61,19 @@ export const constantRoutes = [
     component: () => import("@/views/error/401"),
     hidden: true,
   },
+  // {
+  //   path: "",
+  //   component: Layout,
+  //   redirect: "index",
+  //   children: [
+  //     {
+  //       path: "index",
+  //       component: () => import("@/views/index"),
+  //       name: "Index",
+  //       meta: { title: "首页", icon: "dashboard", affix: true },
+  //     },
+  //   ],
+  // },
   {
     path: "",
     component: Layout,
@@ -68,9 +81,9 @@ export const constantRoutes = [
     children: [
       {
         path: "index",
-        component: () => import("@/views/index"),
+        component: () => import("@/views/mes/pro/production/index"),
         name: "Index",
-        meta: { title: "首页", icon: "dashboard", affix: true },
+        // meta: { title: "首页", icon: "dashboard", affix: true },
       },
     ],
   },
@@ -180,7 +193,7 @@ export const dynamicRoutes = [
     path: "/mes/pro/schedule",
     component: Layout,
     hidden: true,
-    permissions: ['mes:pro:protask:edit'],
+    permissions: ["mes:pro:protask:edit"],
     children: [
       {
         path: "ganttedit",
@@ -211,43 +224,43 @@ export const dynamicRoutes = [
     permissions: ["tool:gen:edit"],
     children: [
       {
-        path: 'index/:tableId(\\d+)',
-        component: () => import('@/views/tool/gen/editTable'),
-        name: 'GenEdit',
-        meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
-      }
-    ]
+        path: "index/:tableId(\\d+)",
+        component: () => import("@/views/tool/gen/editTable"),
+        name: "GenEdit",
+        meta: { title: "修改生成配置", activeMenu: "/tool/gen" },
+      },
+    ],
   },
   {
-    path: '/mes/qc/pendinginspect/add',
+    path: "/mes/qc/pendinginspect/add",
     component: Layout,
     hidden: true,
-    permissions: ['mes:qc:pending'],
+    permissions: ["mes:qc:pending"],
     children: [
       {
-        path: 'iqc',
-        component: () => import('@/views/mes/qc/pendinginspect/iqc'),
-        name: 'iqcadd',
+        path: "iqc",
+        component: () => import("@/views/mes/qc/pendinginspect/iqc"),
+        name: "iqcadd",
         props: true,
-        meta: {title: '来料检验', activeMenu: '/mes/qc/pendinginspect/iqc'}
+        meta: { title: "来料检验", activeMenu: "/mes/qc/pendinginspect/iqc" },
       },
       {
-        path: 'pqc',
-        component: () => import('@/views/mes/qc/pendinginspect/pqc'),
-        name: 'pqcadd',
+        path: "pqc",
+        component: () => import("@/views/mes/qc/pendinginspect/pqc"),
+        name: "pqcadd",
         props: true,
-        meta: {title: '过程检验', activeMenu: '/mes/qc/pendinginspect/pqc'}
+        meta: { title: "过程检验", activeMenu: "/mes/qc/pendinginspect/pqc" },
       },
       {
-        path: 'oqc',
-        component: () => import('@/views/mes/qc/oqc/index'),
-        name: 'oqcadd',
+        path: "oqc",
+        component: () => import("@/views/mes/qc/oqc/index"),
+        name: "oqcadd",
         props: true,
-        meta: {title: '出厂检验', activeMenu: '/mes/qc/pendinginspect/oqc'}
-      }
-    ]
-  }
-]
+        meta: { title: "出厂检验", activeMenu: "/mes/qc/pendinginspect/oqc" },
+      },
+    ],
+  },
+];
 
 // 防止连续点击多次路由报错
 let routerPush = Router.prototype.push;
@@ -262,6 +275,6 @@ export default new Router({
 });
 
 export function resetRouter() {
-  const newRouter = createRouter()
-  Router.matcher = newRouter.matcher // 重制 router
+  const newRouter = createRouter();
+  Router.matcher = newRouter.matcher; // 重制 router
 }
