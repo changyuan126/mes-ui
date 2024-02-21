@@ -54,13 +54,173 @@
         </el-row>
       </div>
       <!-- 第一部分 -->
-      <div style="height: 10%">
-
+      <div style="height: 15%">
+        <div>
+          <el-row>
+            <el-col
+              :span="24"
+              style="color: #fff; font-size: 30px; font-weight: 700"
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  margin-top: -10px;
+                  margin-bottom: 20px;
+                "
+              >
+                <el-radio-group v-model="radio4" size="mini">
+                  <el-radio-button :label="1">今日</el-radio-button>
+                  <el-radio-button :label="2">昨日</el-radio-button>
+                  <el-radio-button :label="3">本周</el-radio-button>
+                  <el-radio-button :label="4">本月</el-radio-button>
+                </el-radio-group>
+              </div></el-col
+            >
+          </el-row>
+        </div>
+        <div>
+          <el-row
+            :gutter="24"
+            style="color: #fff; font-size: 30px; font-weight: 700"
+          >
+            <el-col :span="4"
+              ><div
+                class="grid-content bg-purple"
+                style="margin: 10% 10% 10% 27%"
+              >
+                21
+              </div></el-col
+            >
+            <el-col :span="4"
+              ><div
+                class="grid-content bg-purple"
+                style="margin: 10% 10% 10% 35%"
+              >
+                30
+              </div></el-col
+            >
+            <el-col :span="4"
+              ><div
+                class="grid-content bg-purple"
+                style="margin: 10% 10% 10% 37%"
+              >
+                50%
+              </div></el-col
+            >
+            <el-col :span="4"
+              ><div
+                class="grid-content bg-purple"
+                style="margin: 10% 10% 10% 44%"
+              >
+                121
+              </div></el-col
+            >
+            <el-col :span="4"
+              ><div
+                class="grid-content bg-purple"
+                style="margin: 10% 10% 10% 47%"
+              >
+                1651
+              </div></el-col
+            >
+            <el-col :span="4"
+              ><div
+                class="grid-content bg-purple"
+                style="margin: 10% 10% 10% 60%"
+              >
+                1%
+              </div></el-col
+            >
+          </el-row>
+        </div>
       </div>
 
       <!-- 第二部分 -->
-      <div style="height: 80%">
-
+      <div style="height: 75%">
+        <div style="height: 50%; display: flex">
+          <div style="width: 80%">
+            <ticket :message="this.ticketData" />
+          </div>
+          <div style="width: 24%; margin-top: 50px">
+            <defective :message="this.defectiveData" />
+          </div>
+        </div>
+        <div style="height: 50%; display: flex">
+          <div style="width: 45%">
+            <complete :message="this.completeData" />
+          </div>
+          <div style="width: 55%; margin-top: 50px">
+            <el-row :gutter="32" style="padding: 16px 16px 0">
+              <!-- <el-card> -->
+              <el-table
+                :data="workorderList"
+                row-key="workorderId"
+                default-expand-all
+                :tree-props="{
+                  children: 'children',
+                  hasChildren: 'hasChildren',
+                }"
+              >
+                <el-table-column
+                  label="工单号"
+                  width="150"
+                  align="center"
+                  prop="sourceCode"
+                />
+                <el-table-column
+                  label="工单名称"
+                  align="center"
+                  width="150"
+                  prop="clientName"
+                  :show-overflow-tooltip="true"
+                />
+                <el-table-column
+                  label="产品名称"
+                  width="150"
+                  align="center"
+                  prop="productCode"
+                />
+                <el-table-column
+                  label="产出数量"
+                  width="150px"
+                  align="center"
+                  prop="productName"
+                  :show-overflow-tooltip="true"
+                />
+                <el-table-column label="进度" align="center" width="275px">
+                  <template slot-scope="scope">
+                    <el-progress
+                      :text-inside="true"
+                      :stroke-width="20"
+                      :percentage="
+                        parseFloat(
+                          (
+                            (scope.row.quantityProduced / scope.row.quantity) *
+                            100
+                          ).toFixed(2)
+                        )
+                      "
+                    ></el-progress>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="实际开始时间"
+                  align="center"
+                  prop="requestDate"
+                  width="180"
+                >
+                  <template slot-scope="scope">
+                    <span>{{
+                      parseTime(scope.row.requestDate, "{y}-{m}-{d}")
+                    }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <!-- </el-card> -->
+            </el-row>
+          </div>
+        </div>
       </div>
 
       <!--标题修改-->
@@ -84,18 +244,17 @@
 </template>
 
 <script>
+import { listWorkorder } from "@/api/mes/pro/workorder";
+
 // import * as statisServer from "@/api/statistics";
 // import { getInfo } from "@/api/user";
 import screenfull from "screenfull";
-import online from "./components/online.vue";
-import offline from "./components/offline.vue";
-import fault from "./components/fault.vue";
-import onlineRate from "./components/onlineRate.vue";
-import roboticRate from "./components/roboticRate.vue";
-import AGVrate from "./components/AGVrate.vue";
+import defective from "./components/defective.vue";
+import complete from "./components/complete.vue";
+import ticket from "./components/ticket.vue";
 
 export default {
-  components: { online, offline, fault, onlineRate, roboticRate, AGVrate },
+  components: { defective, complete, ticket },
   data() {
     return {
       screenfull: false,
@@ -112,11 +271,10 @@ export default {
       month: "", //获取当月合同
       Contracts: "",
       barquantity: [],
-      offlineData: [],
-      faultData: [],
-      onlineRateData: [],
-      roboticRateData: [],
-      AGVrateData: [],
+      completeData: [],
+      ticketData: [],
+      defectiveData: [],
+      workorderList: [],
       signarr: [],
       detection: [],
       reports: "",
@@ -124,9 +282,7 @@ export default {
       accumulation: true,
       thisYear: false,
       isFullscreen: false,
-      radio1: 1,
-      radio2: 1,
-      radio3: 1,
+      radio4: 1,
     };
   },
 
@@ -190,9 +346,9 @@ export default {
     },
 
     getList() {
-      //   getInfo().then(res => {
-      //     this.title = res.result.screenName;
-      //   });
+      // listWorkorder(this.queryParams).then((response) => {
+      //   this.workorderList = response.data;
+      // });
     },
 
     // 任务
@@ -330,8 +486,7 @@ export default {
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  background: url("../../../../assets/images/scjk.png") center center
-    no-repeat;
+  background: url("../../../../assets/images/scjk.png") center center no-repeat;
   background-size: 100% 100%;
 }
 .row-bg-1 {
@@ -359,4 +514,27 @@ export default {
   font-size: 20px;
   font-weight: 700;
 }
+
+::v-deep .el-table {
+  background-color: transparent; /* 背景透明 */
+}
+
+::v-deep .el-table th {
+  color: #979bb4; /* 字体颜色 */
+  font-size: 16px;
+  background-color: transparent; /* 背景透明 */
+  border: 0;
+  height: 30px;
+  line-height: 30px;
+}
+::v-deep .el-table tr,
+.el-table td {
+  color: #e5dada;
+  font-size: 12px;
+  background-color: transparent; /* 背景透明 */
+  border: 0;
+  height: 30px;
+  line-height: 30px;
+}
+/* 上面两个背景色透明才能让table的背景透明少一个都不行 */
 </style>
