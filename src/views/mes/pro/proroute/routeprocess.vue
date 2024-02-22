@@ -304,8 +304,8 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-<!--          <el-col :span="12" v-if="Typefile">-->
+          <!-- <el-col :span="12"> -->
+          <el-col :span="12" v-if="Typefile">
             <el-form-item label="代码上传" prop="">
               <el-upload
                 ref="codeName"
@@ -333,7 +333,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
+          <el-col :span="12" v-if="warehousing">
             <el-form-item label="选择出入库类型" prop="exitType">
               <el-radio-group v-model="form.exitType">
                 <el-radio label="0">出库</el-radio>
@@ -471,7 +471,8 @@ export default {
       lineName: "",
       pointName: "",
       TypeId: false,
-      // Typefile: false,
+      Typefile: false,
+      warehousing: false,
       // 表单参数
       form: {
         originalName: "",
@@ -568,14 +569,25 @@ export default {
     handleNodeClick(data) {
       if (data.machineryTypeId == 229) {
         this.TypeId = true;
-        // this.Typefile = false;
+        this.Typefile = false;
+        this.warehousing = false;
         this.form.originalName = "";
         this.form.url = "";
-      } else {
+        this.form.exitType = "";
+      } else if (data.machineryTypeId == 230) {
         this.TypeId = false;
-        // this.Typefile = true;
+        this.Typefile = false;
+        this.warehousing = true;
         this.form.lineId = "";
         this.form.pointId = "";
+        this.form.exitType = "0";
+      } else {
+        this.TypeId = false;
+        this.Typefile = true;
+        this.warehousing = false;
+        this.form.lineId = "";
+        this.form.pointId = "";
+        this.form.exitType = "";
       }
       this.form.machineryTypeName = data.machineryTypeName;
     },
@@ -693,7 +705,7 @@ export default {
       this.reset();
       if (this.form.machineryTypeId == null) {
         this.TypeId = false;
-        // this.Typefile = false;
+        this.Typefile = false;
       }
       this.open = true;
       this.title = "添加工艺组成";
@@ -713,14 +725,28 @@ export default {
       });
       if (row.machineryTypeId == null) {
         this.TypeId = false;
-        // this.Typefile = false;
+        this.Typefile = false;
       } else {
         if (row.machineryTypeId == 229) {
           this.TypeId = true;
-          // this.Typefile = false;
+          this.Typefile = false;
+          this.warehousing = false;
+          this.form.originalName = "";
+          this.form.url = "";
+          this.form.exitType = "";
+        } else if (row.machineryTypeId == 230) {
+          this.TypeId = false;
+          this.Typefile = false;
+          this.warehousing = true;
+          this.form.lineId = "";
+          this.form.pointId = "";
         } else {
           this.TypeId = false;
-          // this.Typefile = true;
+          this.Typefile = true;
+          this.warehousing = false;
+          this.form.lineId = "";
+          this.form.pointId = "";
+          this.form.exitType = "";
         }
       }
       var name = {};
