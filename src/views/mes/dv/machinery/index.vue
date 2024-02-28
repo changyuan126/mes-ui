@@ -324,7 +324,6 @@
                 :normalizer="normalizer"
                 placeholder="请选择所属分类"
                 v-else
-                :disable-branch-nodes="true"
               />
             </el-form-item>
           </el-col>

@@ -242,7 +242,7 @@
           <el-col :span="12">
             <el-form-item  label="物料/产品分类" prop="itemTypeId">
               <treeselect v-model="form.itemTypeId" :options="itemTypeOptions" :show-count="true" disabled v-if="optType=='view'"  />
-              <treeselect v-model="form.itemTypeId" :options="itemTypeOptions" :show-count="true" placeholder="请选择所属分类" v-else :disable-branch-nodes="true"/>
+              <treeselect v-model="form.itemTypeId" :options="itemTypeOptions" :show-count="true" placeholder="请选择所属分类" v-else/>
             </el-form-item>
           </el-col>
         </el-row>

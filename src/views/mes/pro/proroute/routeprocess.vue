@@ -291,6 +291,16 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!-- <el-row>
+          <el-col :span="12">
+            <el-form-item label="是否工艺节点" prop="idid">
+              <el-radio-group v-model="form.idid">
+                <el-radio :label="0">是</el-radio>
+                <el-radio :label="1">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row> -->
         <el-row>
           <el-col :span="12">
             <el-form-item label="选择设备类型" prop="machineryTypeId">
@@ -299,9 +309,9 @@
                 :options="machineryTypeOptions"
                 :normalizer="normalizer"
                 placeholder="请选择设备类型"
-                :disable-branch-nodes="true"
                 @select="handleNodeClick"
               />
+                <!-- :disable-branch-nodes="true" -->
             </el-form-item>
           </el-col>
           <!-- <el-col :span="12"> -->
@@ -505,6 +515,9 @@ export default {
             trigger: "blur",
           },
         ],
+        idid: [
+          { required: true, message: "请选择是否工艺节点", trigger: "blur" },
+        ],
       },
     };
   },
@@ -583,7 +596,7 @@ export default {
         this.form.exitType = "0";
       } else {
         this.TypeId = false;
-        this.Typefile = true;
+        this.Typefile = false;
         this.warehousing = false;
         this.form.lineId = "";
         this.form.pointId = "";
@@ -658,11 +671,12 @@ export default {
         processCode: null,
         processName: null,
         isCheck: "N",
+        keyFlag: "N",
         orderNum: 1,
         nextProcessId: null,
         nextProcessCode: null,
         nextProcessName: null,
-        linkType: null,
+        linkType: "FS",
         defaultPreTime: 0,
         defaultSufTime: 0,
         colorCode: "#00AEF3",
@@ -706,6 +720,12 @@ export default {
       if (this.form.machineryTypeId == null) {
         this.TypeId = false;
         this.Typefile = false;
+        this.warehousing = false;
+        this.form.originalName = "";
+        this.form.url = "";
+        this.form.exitType = "";
+        this.form.lineId = "";
+        this.form.pointId = "";
       }
       this.open = true;
       this.title = "添加工艺组成";
@@ -726,6 +746,7 @@ export default {
       if (row.machineryTypeId == null) {
         this.TypeId = false;
         this.Typefile = false;
+        this.warehousing = false;
       } else {
         if (row.machineryTypeId == 229) {
           this.TypeId = true;

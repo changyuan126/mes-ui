@@ -310,7 +310,7 @@
               <VendorSelect ref="vendorSelect" @onSelected="onVendorSelected" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <el-form-item label="入库仓库">
               <el-cascader
                 v-model="warehouseInfo"
@@ -320,7 +320,7 @@
               >
               </el-cascader>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col :span="8"> </el-col>
         </el-row>
         <el-row>

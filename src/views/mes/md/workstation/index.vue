@@ -249,7 +249,7 @@
                 <WorkStationMachine ref="machineryList" :optType="optType" :workstationId="form.workstationId" style="align:center"></WorkStationMachine>                
               </el-card>
             </el-carousel-item>
-            <el-carousel-item>
+            <!-- <el-carousel-item>
               <el-card shadow="always" style="width:400px">
                 <div slot="header">
                   <span>人力资源</span>
@@ -257,8 +257,8 @@
                 </div>
                 <Workstationworker ref="postList" :optType="optType" :workstationId="form.workstationId"></Workstationworker>
               </el-card>
-            </el-carousel-item>
-            <el-carousel-item>
+            </el-carousel-item> -->
+            <!-- <el-carousel-item>
               <el-card shadow="always" style="width:400px">
                 <div slot="header">
                   <span>工装夹具</span>
@@ -266,7 +266,7 @@
                 </div>
                 <WorkStationTool ref="toolList" :optType="optType" :workstationId="form.workstationId"></WorkStationTool>
               </el-card>
-            </el-carousel-item>
+            </el-carousel-item> -->
           </el-carousel>
         </el-col>
       </el-row>

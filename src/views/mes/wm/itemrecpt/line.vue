@@ -121,7 +121,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <el-form-item label="入库仓库" prop="warehouseId">
               <el-cascader v-model="warehouseInfo"
                 :options="warehouseOptions"
@@ -130,7 +130,7 @@
               >                  
               </el-cascader>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col :span="8">
             <el-form-item label="是否检验">
               <el-radio-group v-model="form.iqcCheck" disabled v-if="optType=='view'">
