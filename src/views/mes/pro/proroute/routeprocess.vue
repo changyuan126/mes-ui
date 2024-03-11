@@ -311,12 +311,12 @@
                 placeholder="请选择设备类型"
                 @select="handleNodeClick"
               />
-                <!-- :disable-branch-nodes="true" -->
+              <!-- :disable-branch-nodes="true" -->
             </el-form-item>
           </el-col>
           <!-- <el-col :span="12"> -->
           <el-col :span="12" v-if="Typefile">
-            <el-form-item label="代码上传" prop="">
+            <!-- <el-form-item label="代码上传" prop="">
               <el-upload
                 ref="codeName"
                 class="upload-demo"
@@ -339,6 +339,21 @@
                   >&nbsp;预览文件</el-button
                 >
               </el-upload>
+            </el-form-item> -->
+            <el-form-item label="代码上传" prop="url">
+              <el-select
+                v-model="form.originalName"
+                value-key="codeId"
+                placeholder="请选择工序"
+                @change="selectSource($event)"
+              >
+                <el-option
+                  v-for="item in machineryList"
+                  :key="item.codeId"
+                  :label="item.codeName"
+                  :value="{ url: item.codeId, originalName: item.codeName }"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -412,6 +427,7 @@
 </template>
 
 <script>
+import { list } from "@/api/management/codeprogram";
 import { findProAgvline } from "@/api/mes/dv/route";
 import { findProAgvsite } from "@/api/mes/dv/siteConfiguration";
 import {
@@ -490,6 +506,7 @@ export default {
         lineId: "",
         pointId: "",
       },
+      machineryList: [],
       // 表单校验
       rules: {
         routeId: [
@@ -594,15 +611,28 @@ export default {
         this.form.lineId = "";
         this.form.pointId = "";
         this.form.exitType = "0";
+        this.form.originalName = "";
+        this.form.url = "";
       } else {
         this.TypeId = false;
-        this.Typefile = false;
+        this.Typefile = true;
         this.warehousing = false;
         this.form.lineId = "";
         this.form.pointId = "";
         this.form.exitType = "";
+        this.form.originalName = "";
+        this.form.url = "";
       }
       this.form.machineryTypeName = data.machineryTypeName;
+      var queryParams = { machineryTypeId: data.machineryTypeId };
+      list(queryParams).then((response) => {
+        this.machineryList = response.data;
+      });
+    },
+    selectSource(e) {
+      console.log(e);
+      this.form.url = e.url;
+      this.form.originalName = e.originalName;
     },
     // 取消按钮
     cancel() {
@@ -752,24 +782,28 @@ export default {
           this.TypeId = true;
           this.Typefile = false;
           this.warehousing = false;
-          this.form.originalName = "";
-          this.form.url = "";
-          this.form.exitType = "";
+          // this.form.originalName = "";
+          // this.form.url = "";
+          // this.form.exitType = "";
         } else if (row.machineryTypeId == 230) {
           this.TypeId = false;
           this.Typefile = false;
           this.warehousing = true;
-          this.form.lineId = "";
-          this.form.pointId = "";
+          // this.form.lineId = "";
+          // this.form.pointId = "";
         } else {
           this.TypeId = false;
           this.Typefile = true;
           this.warehousing = false;
-          this.form.lineId = "";
-          this.form.pointId = "";
-          this.form.exitType = "";
+          // this.form.lineId = "";
+          // this.form.pointId = "";
+          // this.form.exitType = "";
         }
       }
+      var queryParams = { machineryTypeId: row.machineryTypeId };
+      list(queryParams).then((response) => {
+        this.machineryList = response.data;
+      });
       var name = {};
       if (row.originalName != undefined && row.originalName != "") {
         this.$set(name, "name", row.originalName);
@@ -781,13 +815,13 @@ export default {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.recordId != null) {
-            if (this.form.machineryTypeId == 229) {
-              this.form.originalName = "";
-              this.form.url = "";
-            } else {
-              this.form.lineId = "";
-              this.form.pointId = "";
-            }
+            // if (this.form.machineryTypeId == 229) {
+            //   this.form.originalName = "";
+            //   this.form.url = "";
+            // } else {
+            //   this.form.lineId = "";
+            //   this.form.pointId = "";
+            // }
             updateRouteprocess(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
