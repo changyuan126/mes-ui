@@ -291,6 +291,16 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!-- <el-row>
+          <el-col :span="12">
+            <el-form-item label="是否工艺节点" prop="idid">
+              <el-radio-group v-model="form.idid">
+                <el-radio :label="0">是</el-radio>
+                <el-radio :label="1">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row> -->
         <el-row>
           <el-col :span="12">
             <el-form-item label="选择设备类型" prop="machineryTypeId">
@@ -299,14 +309,14 @@
                 :options="machineryTypeOptions"
                 :normalizer="normalizer"
                 placeholder="请选择设备类型"
-                :disable-branch-nodes="true"
                 @select="handleNodeClick"
               />
+              <!-- :disable-branch-nodes="true" -->
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-<!--          <el-col :span="12" v-if="Typefile">-->
-            <el-form-item label="代码上传" prop="">
+          <!-- <el-col :span="12"> -->
+          <el-col :span="12" v-if="Typefile">
+            <!-- <el-form-item label="代码上传" prop="">
               <el-upload
                 ref="codeName"
                 class="upload-demo"
@@ -329,11 +339,26 @@
                   >&nbsp;预览文件</el-button
                 >
               </el-upload>
+            </el-form-item> -->
+            <el-form-item label="代码上传" prop="url">
+              <el-select
+                v-model="form.originalName"
+                value-key="codeId"
+                placeholder="请选择工序"
+                @change="selectSource($event)"
+              >
+                <el-option
+                  v-for="item in machineryList"
+                  :key="item.codeId"
+                  :label="item.codeName"
+                  :value="{ url: item.codeId, originalName: item.codeName }"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
+          <el-col :span="12" v-if="warehousing">
             <el-form-item label="选择出入库类型" prop="exitType">
               <el-radio-group v-model="form.exitType">
                 <el-radio label="0">出库</el-radio>
@@ -402,6 +427,7 @@
 </template>
 
 <script>
+import { list } from "@/api/management/codeprogram";
 import { findProAgvline } from "@/api/mes/dv/route";
 import { findProAgvsite } from "@/api/mes/dv/siteConfiguration";
 import {
@@ -471,7 +497,8 @@ export default {
       lineName: "",
       pointName: "",
       TypeId: false,
-      // Typefile: false,
+      Typefile: false,
+      warehousing: false,
       // 表单参数
       form: {
         originalName: "",
@@ -479,6 +506,7 @@ export default {
         lineId: "",
         pointId: "",
       },
+      machineryList: [],
       // 表单校验
       rules: {
         routeId: [
@@ -503,6 +531,9 @@ export default {
             message: "请指定当前工序是否需要质检确认",
             trigger: "blur",
           },
+        ],
+        idid: [
+          { required: true, message: "请选择是否工艺节点", trigger: "blur" },
         ],
       },
     };
@@ -568,16 +599,40 @@ export default {
     handleNodeClick(data) {
       if (data.machineryTypeId == 229) {
         this.TypeId = true;
-        // this.Typefile = false;
+        this.Typefile = false;
+        this.warehousing = false;
+        this.form.originalName = "";
+        this.form.url = "";
+        this.form.exitType = "";
+      } else if (data.machineryTypeId == 230) {
+        this.TypeId = false;
+        this.Typefile = false;
+        this.warehousing = true;
+        this.form.lineId = "";
+        this.form.pointId = "";
+        this.form.exitType = "0";
         this.form.originalName = "";
         this.form.url = "";
       } else {
         this.TypeId = false;
-        // this.Typefile = true;
+        this.Typefile = true;
+        this.warehousing = false;
         this.form.lineId = "";
         this.form.pointId = "";
+        this.form.exitType = "";
+        this.form.originalName = "";
+        this.form.url = "";
       }
       this.form.machineryTypeName = data.machineryTypeName;
+      var queryParams = { machineryTypeId: data.machineryTypeId };
+      list(queryParams).then((response) => {
+        this.machineryList = response.data;
+      });
+    },
+    selectSource(e) {
+      console.log(e);
+      this.form.url = e.url;
+      this.form.originalName = e.originalName;
     },
     // 取消按钮
     cancel() {
@@ -646,11 +701,12 @@ export default {
         processCode: null,
         processName: null,
         isCheck: "N",
+        keyFlag: "N",
         orderNum: 1,
         nextProcessId: null,
         nextProcessCode: null,
         nextProcessName: null,
-        linkType: null,
+        linkType: "FS",
         defaultPreTime: 0,
         defaultSufTime: 0,
         colorCode: "#00AEF3",
@@ -693,7 +749,13 @@ export default {
       this.reset();
       if (this.form.machineryTypeId == null) {
         this.TypeId = false;
-        // this.Typefile = false;
+        this.Typefile = false;
+        this.warehousing = false;
+        this.form.originalName = "";
+        this.form.url = "";
+        this.form.exitType = "";
+        this.form.lineId = "";
+        this.form.pointId = "";
       }
       this.open = true;
       this.title = "添加工艺组成";
@@ -713,16 +775,35 @@ export default {
       });
       if (row.machineryTypeId == null) {
         this.TypeId = false;
-        // this.Typefile = false;
+        this.Typefile = false;
+        this.warehousing = false;
       } else {
         if (row.machineryTypeId == 229) {
           this.TypeId = true;
-          // this.Typefile = false;
+          this.Typefile = false;
+          this.warehousing = false;
+          // this.form.originalName = "";
+          // this.form.url = "";
+          // this.form.exitType = "";
+        } else if (row.machineryTypeId == 230) {
+          this.TypeId = false;
+          this.Typefile = false;
+          this.warehousing = true;
+          // this.form.lineId = "";
+          // this.form.pointId = "";
         } else {
           this.TypeId = false;
-          // this.Typefile = true;
+          this.Typefile = true;
+          this.warehousing = false;
+          // this.form.lineId = "";
+          // this.form.pointId = "";
+          // this.form.exitType = "";
         }
       }
+      var queryParams = { machineryTypeId: row.machineryTypeId };
+      list(queryParams).then((response) => {
+        this.machineryList = response.data;
+      });
       var name = {};
       if (row.originalName != undefined && row.originalName != "") {
         this.$set(name, "name", row.originalName);
@@ -734,13 +815,13 @@ export default {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.recordId != null) {
-            if (this.form.machineryTypeId == 229) {
-              this.form.originalName = "";
-              this.form.url = "";
-            } else {
-              this.form.lineId = "";
-              this.form.pointId = "";
-            }
+            // if (this.form.machineryTypeId == 229) {
+            //   this.form.originalName = "";
+            //   this.form.url = "";
+            // } else {
+            //   this.form.lineId = "";
+            //   this.form.pointId = "";
+            // }
             updateRouteprocess(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;

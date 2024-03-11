@@ -232,7 +232,6 @@
                 :options="machineryTypeOptions"
                 :normalizer="normalizer"
                 placeholder="请选择所属分类"
-                :disable-branch-nodes="true"
                 @select="handleNodeClick"
               />
             </el-form-item>
