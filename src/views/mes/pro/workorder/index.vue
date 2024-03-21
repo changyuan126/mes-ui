@@ -900,7 +900,7 @@ export default {
     handleDelete(row) {
       this.$modal
         .confirm(
-          '是否确认删除生产工单编号为"' + row.workorderId + '"的数据项？'
+          '是否确认删除生产工单编码为"' + row.workorderCode + '"的数据项？'
         )
         .then(function () {
           return delWorkorder(row.workorderId);
