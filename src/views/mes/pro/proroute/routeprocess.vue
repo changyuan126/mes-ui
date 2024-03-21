@@ -164,7 +164,7 @@
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="150px">
         <el-row>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="序号" prop="orderNum">
               <el-input-number
                 :min="1"
@@ -173,7 +173,18 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
+            <el-form-item label="工序类型" prop="processTypeId">
+              <treeselect
+                v-model="form.processTypeId"
+                :options="machineryTypeOptions1"
+                :normalizer="normalizer1"
+                placeholder="请选择工序类型"
+                @select="handleNodeProcess"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
             <el-form-item label="工序" prop="processId">
               <el-select v-model="form.processId" placeholder="请选择工序">
                 <el-option
@@ -311,40 +322,16 @@
                 placeholder="请选择设备类型"
                 @select="handleNodeClick"
               />
-              <!-- :disable-branch-nodes="true" -->
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="12"> -->
-          <el-col :span="12" v-if="Typefile">
-            <!-- <el-form-item label="代码上传" prop="">
-              <el-upload
-                ref="codeName"
-                class="upload-demo"
-                :headers="this.headers"
-                action="/prod-api/common/uploadMinio"
-                :before-remove="beforeRemove"
-                :on-change="customUploadChangeImage2"
-                :before-upload="beforeUpload"
-                :on-exceed="handleExceedImage1"
-                accept=".PDF"
-                name="file"
-                multiple
-                :limit="1"
-                :file-list="fileList"
-              >
-                <el-button size="small" type="primary" icon="el-icon-upload2"
-                  >点击上传</el-button
-                >
-                <el-button type="primary" size="small" @click.stop="previewFile"
-                  >&nbsp;预览文件</el-button
-                >
-              </el-upload>
-            </el-form-item> -->
-            <el-form-item label="代码上传" prop="url">
+          <el-col
+            :span="12"
+            v-if="this.form.code == 'CNC' || this.form.code == 'ROBOT'"
+          >
+            <el-form-item label="选择代码" prop="url">
               <el-select
                 v-model="form.originalName"
                 value-key="codeId"
-                placeholder="请选择工序"
                 @change="selectSource($event)"
               >
                 <el-option
@@ -358,7 +345,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12" v-if="warehousing">
+          <el-col :span="12" v-if="this.form.code == 'STORE'">
             <el-form-item label="选择出入库类型" prop="exitType">
               <el-radio-group v-model="form.exitType">
                 <el-radio label="0">出库</el-radio>
@@ -368,7 +355,44 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12" v-if="TypeId">
+          <el-col
+            :span="12"
+            v-if="
+              this.form.code == 'AGV_TRANSMIT' ||
+              this.form.code == 'TRANSMIT' ||
+              this.form.code == 'ROBOT_TRANSMIT'
+            "
+          >
+            <el-form-item label="传送带转动方向" prop="rotationDirection">
+              <el-radio-group v-model="form.rotationDirection">
+                <el-radio label="0">正转</el-radio>
+                <el-radio label="1">反转</el-radio>
+                <el-radio label="2">停止</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="this.form.code == 'ROBOT_TRANSMIT'">
+            <el-form-item label="传送带位置" prop="conveyNumber">
+              <el-radio-group v-model="form.conveyNumber">
+                <el-radio label="1">1号传送带</el-radio>
+                <el-radio label="2">2号传送带</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col
+            :span="12"
+            v-if="this.form.code == 'CNC' || this.form.code == 'ROBOT'"
+          >
+            <el-form-item label="安全门状态" prop="securityDoor">
+              <el-radio-group v-model="form.securityDoor">
+                <el-radio label="0">开启</el-radio>
+                <el-radio label="1">关闭</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" v-if="this.form.code == 'AGV'">
             <el-form-item label="选择线路" prop="lineId">
               <el-select
                 v-model="form.lineId"
@@ -385,7 +409,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="TypeId">
+          <el-col :span="12" v-if="this.form.code == 'AGV'">
             <el-form-item label="选择点位" prop="pointId">
               <el-select
                 v-model="form.pointId"
@@ -437,9 +461,13 @@ import {
   addRouteprocess,
   updateRouteprocess,
 } from "@/api/mes/pro/routeprocess";
-import { listAllProcess } from "@/api/mes/pro/process";
+import { listProcess } from "@/api/mes/pro/process";
 import { getToken } from "@/utils/auth";
-import { listMachinerytype } from "@/api/mes/dv/machinerytype";
+import {
+  listMachinerytype,
+  getMachinerytype,
+} from "@/api/mes/dv/machinerytype";
+import * as listType from "@/api/mes/pro/processType";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 export default {
@@ -489,6 +517,7 @@ export default {
       },
       // 设备类型树选项
       machineryTypeOptions: [],
+      machineryTypeOptions1: [],
       fileList: [],
       //车间线路
       workshopOptions: [],
@@ -505,6 +534,7 @@ export default {
         url: "",
         lineId: "",
         pointId: "",
+        code: null,
       },
       machineryList: [],
       // 表单校验
@@ -532,6 +562,9 @@ export default {
             trigger: "blur",
           },
         ],
+        processTypeId: [
+          { required: true, message: "请选择工序类型", trigger: "blur" },
+        ],
         idid: [
           { required: true, message: "请选择是否工艺节点", trigger: "blur" },
         ],
@@ -544,7 +577,7 @@ export default {
   },
   created() {
     this.getList();
-    this.getProcess();
+    // this.getProcess();
     this.getTreeselect();
     this.getWorkshops();
   },
@@ -558,12 +591,12 @@ export default {
         this.loading = false;
       });
     },
-    //查询工序信息
-    getProcess() {
-      listAllProcess().then((response) => {
-        this.processOptions = response.data;
-      });
-    },
+    // //查询工序信息
+    // getProcess() {
+    //   listAllProcess().then((response) => {
+    //     this.processOptions = response.data;
+    //   });
+    // },
     getWorkshops() {
       findProAgvline().then((response) => {
         this.workshopOptions = response.rows;
@@ -583,6 +616,15 @@ export default {
         )[0];
         this.machineryTypeOptions.push(data);
       });
+      listType.listMachinerytype().then((response) => {
+        this.machineryTypeOptions1 = [];
+        const data = this.handleTree(
+          response.data,
+          "processTypeId",
+          "parentTypeId"
+        )[0];
+        this.machineryTypeOptions1.push(data);
+      });
     },
     /** 转换设备类型数据结构 */
     normalizer(node) {
@@ -595,28 +637,47 @@ export default {
         children: node.children,
       };
     },
+    /** 转换设备类型数据结构 */
+    normalizer1(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.processTypeId,
+        label: node.processTypeName,
+        children: node.children,
+      };
+    },
     // 节点单击事件
     handleNodeClick(data) {
-      if (data.machineryTypeId == 229) {
-        this.TypeId = true;
-        this.Typefile = false;
-        this.warehousing = false;
+      console.log(data);
+      if (data.code == "AGV") {
+        // this.TypeId = true;
+        // this.Typefile = false;
+        // this.warehousing = false;
         this.form.originalName = "";
         this.form.url = "";
         this.form.exitType = "";
-      } else if (data.machineryTypeId == 230) {
-        this.TypeId = false;
-        this.Typefile = false;
-        this.warehousing = true;
+      } else if (data.code == "STORE") {
+        // this.TypeId = false;
+        // this.Typefile = false;
+        // this.warehousing = true;
         this.form.lineId = "";
         this.form.pointId = "";
         this.form.exitType = "0";
         this.form.originalName = "";
         this.form.url = "";
+      } else if (data.code == "CNC" || data.code == "ROBOT") {
+        // this.TypeId = false;
+        // this.Typefile = false;
+        // this.warehousing = true;
+        this.form.lineId = "";
+        this.form.pointId = "";
+        this.form.exitType = "";
       } else {
-        this.TypeId = false;
-        this.Typefile = true;
-        this.warehousing = false;
+        // this.TypeId = false;
+        // this.Typefile = false;
+        // this.warehousing = false;
         this.form.lineId = "";
         this.form.pointId = "";
         this.form.exitType = "";
@@ -624,9 +685,16 @@ export default {
         this.form.url = "";
       }
       this.form.machineryTypeName = data.machineryTypeName;
-      var queryParams = { machineryTypeId: data.machineryTypeId };
-      list(queryParams).then((response) => {
+      this.form.code = data.code;
+      var arr = { machineryTypeId: data.machineryTypeId };
+      list(arr).then((response) => {
         this.machineryList = response.data;
+      });
+    },
+    handleNodeProcess(data) {
+      var arr = { processTypeId: data.processTypeId };
+      listProcess(arr).then((response) => {
+        this.processOptions = response.rows;
       });
     },
     selectSource(e) {
@@ -724,6 +792,10 @@ export default {
         lineId: null,
         pointId: null,
         exitType: "0",
+        rotationDirection: "0",
+        processTypeId: null,
+        code: null,
+        securityDoor: null,
       };
       this.fileList = [];
       this.resetForm("form");
@@ -747,7 +819,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      if (this.form.machineryTypeId == null) {
+      if (this.form.code == null) {
         this.TypeId = false;
         this.Typefile = false;
         this.warehousing = false;
@@ -770,39 +842,20 @@ export default {
       const recordId = row.recordId || this.ids;
       getRouteprocess(recordId).then((response) => {
         this.form = response.data;
-        this.open = true;
-        this.title = "修改工艺组成";
+        getMachinerytype(row.machineryTypeId).then((response) => {
+          this.form.code = response.data.code;
+          this.open = true;
+          this.title = "修改工艺组成";
+        });
       });
-      if (row.machineryTypeId == null) {
-        this.TypeId = false;
-        this.Typefile = false;
-        this.warehousing = false;
-      } else {
-        if (row.machineryTypeId == 229) {
-          this.TypeId = true;
-          this.Typefile = false;
-          this.warehousing = false;
-          // this.form.originalName = "";
-          // this.form.url = "";
-          // this.form.exitType = "";
-        } else if (row.machineryTypeId == 230) {
-          this.TypeId = false;
-          this.Typefile = false;
-          this.warehousing = true;
-          // this.form.lineId = "";
-          // this.form.pointId = "";
-        } else {
-          this.TypeId = false;
-          this.Typefile = true;
-          this.warehousing = false;
-          // this.form.lineId = "";
-          // this.form.pointId = "";
-          // this.form.exitType = "";
-        }
-      }
-      var queryParams = { machineryTypeId: row.machineryTypeId };
-      list(queryParams).then((response) => {
+
+      var arr = { machineryTypeId: row.machineryTypeId };
+      list(arr).then((response) => {
         this.machineryList = response.data;
+      });
+      var arr1 = { processTypeId: row.processTypeId };
+      listProcess(arr1).then((response) => {
+        this.processOptions = response.rows;
       });
       var name = {};
       if (row.originalName != undefined && row.originalName != "") {
@@ -815,13 +868,6 @@ export default {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.recordId != null) {
-            // if (this.form.machineryTypeId == 229) {
-            //   this.form.originalName = "";
-            //   this.form.url = "";
-            // } else {
-            //   this.form.lineId = "";
-            //   this.form.pointId = "";
-            // }
             updateRouteprocess(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;

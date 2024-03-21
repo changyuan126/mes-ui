@@ -139,11 +139,18 @@
       <!-- 第二部分 -->
       <div style="height: 75%">
         <div style="height: 50%; display: flex">
-          <div style="width: 80%">
+          <div style="width: 45%">
             <ticket :message="this.ticketData" />
           </div>
           <div style="width: 24%; margin-top: 50px">
             <defective :message="this.defectiveData" />
+          </div>
+          <div style="width: 30%; margin-top: 50px">
+            <hkVideo
+              :cameraIndexCode="cameraIndexCode"
+              :objData="objData"
+              ref="hikVideo"
+            ></hkVideo>
           </div>
         </div>
         <div style="height: 50%; display: flex">
@@ -252,11 +259,24 @@ import screenfull from "screenfull";
 import defective from "./components/defective.vue";
 import complete from "./components/complete.vue";
 import ticket from "./components/ticket.vue";
+import hkVideo from "./components/video.vue";
 
 export default {
-  components: { defective, complete, ticket },
+  components: { defective, complete, ticket, hkVideo },
   data() {
     return {
+      cameraIndexCode: "", //wed插件监控点
+      //海康wed插件初始化数据
+      objData: {
+        appkey: "", //综合安防管理平台提供的appkey，必填
+        ip: "", //综合安防管理平台IP地址，必填
+        secret: "", //综合安防管理平台提供的secret，必填
+        port: 443, //综合安防管理平台端口，若启用HTTPS协议，默认443
+        playMode: 0, // 0 预览 1回放
+        layout: "2x2", //页面展示的模块数【16】
+        showToolbar: 1, //是否显示工具栏，0-不显示，非0-显示
+      },
+
       screenfull: false,
       title: "生产监控分析",
       titleVisible: false,

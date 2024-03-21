@@ -1,6 +1,13 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      size="small"
+      :inline="true"
+      v-show="showSearch"
+      label-width="68px"
+    >
       <el-form-item label="类型名称" prop="machineryTypeName">
         <el-input
           v-model="queryParams.machineryTypeName"
@@ -10,7 +17,11 @@
         />
       </el-form-item>
       <el-form-item label="是否启用" prop="enableFlag">
-        <el-select v-model="queryParams.enableFlag" placeholder="选择是或否" clearable>
+        <el-select
+          v-model="queryParams.enableFlag"
+          placeholder="选择是或否"
+          clearable
+        >
           <el-option
             v-for="dict in dict.type.sys_yes_no"
             :key="dict.value"
@@ -20,8 +31,16 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-	    <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="handleQuery"
+          >搜索</el-button
+        >
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+          >重置</el-button
+        >
       </el-form-item>
     </el-form>
 
@@ -30,17 +49,28 @@
       :data="machinerytypeList"
       row-key="machineryTypeId"
       default-expand-all
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column label="设备类型编码" prop="machineryTypeCode" />
-      <el-table-column label="设备类型名称" align="center" prop="machineryTypeName" />
-      <el-table-column label="是否启用" align="center" prop="enableFlag" >
+      <el-table-column
+        label="设备类型名称"
+        align="center"
+        prop="machineryTypeName"
+      />
+      <el-table-column label="是否启用" align="center" prop="enableFlag">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.enableFlag"/>
+          <dict-tag
+            :options="dict.type.sys_yes_no"
+            :value="scope.row.enableFlag"
+          />
         </template>
       </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -48,14 +78,16 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['mes:dv:machinerytype:edit']"
-          >修改</el-button>
+            >修改</el-button
+          >
           <el-button
             size="mini"
             type="text"
             icon="el-icon-plus"
             @click="handleAdd(scope.row)"
             v-hasPermi="['mes:dv:machinerytype:add']"
-          >新增</el-button>
+            >新增</el-button
+          >
           <el-button
             v-if="scope.row.parentTypeId != 0"
             size="mini"
@@ -63,7 +95,8 @@
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['mes:dv:machinerytype:remove']"
-          >删除</el-button>
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -74,39 +107,70 @@
         <el-row>
           <el-col :span="24" v-if="form.parentTypeId !== 0">
             <el-form-item label="父类型" prop="parentTypeId">
-              <treeselect v-model="form.parentTypeId" :options="machinerytypeOptions" :normalizer="normalizer" placeholder="请选择父类型" />
+              <treeselect
+                v-model="form.parentTypeId"
+                :options="machinerytypeOptions"
+                :normalizer="normalizer"
+                placeholder="请选择父类型"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="设备类型名称" prop="machineryTypeName">
-              <el-input v-model="form.machineryTypeName" placeholder="请输入设备类型名称" />
+              <el-input
+                v-model="form.machineryTypeName"
+                placeholder="请输入设备类型名称"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="默认设备类型" prop="code">
+              <el-select v-model="form.code" placeholder="请选择默认设备类型">
+                <el-option
+                  v-for="dict in dict.type.dv_m_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="是否启用" prop="enableFlag">
-              <el-radio-group v-model="form.enableFlag" disabled v-if="optType=='view'">
+              <el-radio-group
+                v-model="form.enableFlag"
+                disabled
+                v-if="optType == 'view'"
+              >
                 <el-radio
                   v-for="dict in dict.type.sys_yes_no"
                   :key="dict.value"
                   :label="dict.value"
-                >{{dict.label}}</el-radio>
+                  >{{ dict.label }}</el-radio
+                >
               </el-radio-group>
               <el-radio-group v-model="form.enableFlag" v-else>
                 <el-radio
                   v-for="dict in dict.type.sys_yes_no"
                   :key="dict.value"
                   :label="dict.value"
-                >{{dict.label}}</el-radio>
+                  >{{ dict.label }}</el-radio
+                >
               </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
+
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注" prop="remark">
-              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+              <el-input
+                v-model="form.remark"
+                type="textarea"
+                placeholder="请输入内容"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -120,19 +184,25 @@
 </template>
 
 <script>
-import { listMachinerytype, getMachinerytype, delMachinerytype, addMachinerytype, updateMachinerytype } from "@/api/mes/dv/machinerytype";
+import {
+  listMachinerytype,
+  getMachinerytype,
+  delMachinerytype,
+  addMachinerytype,
+  updateMachinerytype,
+} from "@/api/mes/dv/machinerytype";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Machinerytype",
-  dicts: ['sys_yes_no'],
+  dicts: ["sys_yes_no", "dv_m_type"],
   components: {
-    Treeselect
+    Treeselect,
   },
   data() {
     return {
-      optType:undefined,
+      optType: undefined,
       // 遮罩层
       loading: true,
       // 显示搜索条件
@@ -158,15 +228,18 @@ export default {
       // 表单校验
       rules: {
         parentTypeId: [
-          { required: true, message: "父类型不能为空", trigger: "blur" }
+          { required: true, message: "父类型不能为空", trigger: "blur" },
         ],
         machineryTypeName: [
-          { required: true, message: "设备类型名称不能为空", trigger: "blur" }
+          { required: true, message: "设备类型名称不能为空", trigger: "blur" },
         ],
         enableFlag: [
-          { required: true, message: "是否启用不能为空", trigger: "blur" }
+          { required: true, message: "是否启用不能为空", trigger: "blur" },
         ],
-      }
+        code: [
+          { required: true, message: "请默认设备类型不能为空", trigger: "blur" },
+        ],
+      },
     };
   },
   created() {
@@ -176,8 +249,12 @@ export default {
     /** 查询设备类型列表 */
     getList() {
       this.loading = true;
-      listMachinerytype(this.queryParams).then(response => {
-        this.machinerytypeList = this.handleTree(response.data, "machineryTypeId", "parentTypeId");
+      listMachinerytype(this.queryParams).then((response) => {
+        this.machinerytypeList = this.handleTree(
+          response.data,
+          "machineryTypeId",
+          "parentTypeId"
+        );
         this.loading = false;
       });
     },
@@ -189,15 +266,19 @@ export default {
       return {
         id: node.machineryTypeId,
         label: node.machineryTypeName,
-        children: node.children
+        children: node.children,
       };
     },
-	/** 查询设备类型下拉树结构 */
+    /** 查询设备类型下拉树结构 */
     getTreeselect() {
-      listMachinerytype().then(response => {
+      listMachinerytype().then((response) => {
         debugger;
         this.machinerytypeOptions = [];
-        const data = this.handleTree(response.data, "machineryTypeId", "parentTypeId")[0];
+        const data = this.handleTree(
+          response.data,
+          "machineryTypeId",
+          "parentTypeId"
+        )[0];
         this.machinerytypeOptions.push(data);
       });
     },
@@ -213,12 +294,12 @@ export default {
         machineryTypeName: null,
         parentTypeId: 1,
         ancestors: null,
-        enableFlag: 'Y',
+        enableFlag: "Y",
         remark: null,
         createBy: null,
         createTime: null,
         updateBy: null,
-        updateTime: null
+        updateTime: null,
       };
       this.resetForm("form");
     },
@@ -250,7 +331,7 @@ export default {
       if (row != null) {
         this.form.parentTypeId = row.machineryTypeId;
       }
-      getMachinerytype(row.machineryTypeId).then(response => {
+      getMachinerytype(row.machineryTypeId).then((response) => {
         this.form = response.data;
         this.open = true;
         this.title = "修改设备类型";
@@ -258,16 +339,16 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.machineryTypeId != null) {
-            updateMachinerytype(this.form).then(response => {
+            updateMachinerytype(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addMachinerytype(this.form).then(response => {
+            addMachinerytype(this.form).then((response) => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -278,13 +359,19 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      this.$modal.confirm('是否确认删除设备类型编号为"' + row.machineryTypeId + '"的数据项？').then(function() {
-        return delMachinerytype(row.machineryTypeId);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
-    }
-  }
+      this.$modal
+        .confirm(
+          '是否确认删除设备类型编号为"' + row.machineryTypeId + '"的数据项？'
+        )
+        .then(function () {
+          return delMachinerytype(row.machineryTypeId);
+        })
+        .then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
+    },
+  },
 };
 </script>
