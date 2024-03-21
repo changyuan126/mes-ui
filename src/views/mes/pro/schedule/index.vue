@@ -668,9 +668,11 @@ export default {
         .get("http://192.168.3.53:8077/manage/task/execute?ids=" + routeId)
         // .get("http://127.0.0.1:8077/manage/task/execute?ids=" + routeId)
         .then((res) => {
-          if (res.code == 200) {
-            this.$modal.msgSuccess("执行成功");
+          if (res.data.code === 200) {
             this.getList();
+            this.$modal.msgSuccess("执行成功");
+          } else {
+            this.$message.error(res.data.msg);
           }
         });
     },
@@ -682,9 +684,11 @@ export default {
         .get("http://192.168.3.53:8077/manage/task/suspension?id=" + routeId)
         // .get("http://127.0.0.1:8077/manage/task/suspension?id=" + routeId)
         .then((res) => {
-          if (res.code == 200) {
-            this.$modal.msgSuccess("已暂停");
+          if (res.data.code === 200) {
             this.getList();
+            this.$modal.msgSuccess("已暂停");
+          } else {
+            this.$message.error(res.data.msg);
           }
         });
     },
@@ -692,13 +696,17 @@ export default {
     handleSuspended(row) {
       // const workorderIds = row.workorderId || this.ids;
       // this.$modal
-      //   .confirm("确认删除？")
+      //   .confirm("确认删除数据项？")
       //   .then(function () {
       //     return dofinish(workorderIds); //完成工单
       //   })
       //   .then(() => {
-      //     this.getList();
-      //     this.$modal.msgSuccess("删除成功");
+      //     if (res.data.code === 200) {
+      //       this.getList();
+      //       this.$modal.msgSuccess("删除成功");
+      //     } else {
+      //       this.$message.error(res.data.msg);
+      //     }
       //   })
       //   .catch(() => {});
     },
