@@ -117,7 +117,7 @@
 
     <el-row :gutter="10" class="mb8" style="margin-top: 10px">
       <el-col :span="1.5">
-        <el-button type="primary" plain size="mini" @click="production"
+        <el-button type="primary" plain size="mini" @click="handleproductione"
           >批量执行生产</el-button
         >
       </el-col>
@@ -242,9 +242,23 @@
           <el-button
             size="mini"
             type="text"
-            v-if="scope.row.status == 'CONFIRMED'"
+            v-if="scope.row.status == 'PRODUCTION'"
             @click="handleproductione(scope.row)"
             >执行生产</el-button
+          >
+          <el-button
+            size="mini"
+            type="text"
+            v-if="scope.row.status == 'WORKING'"
+            @click="Pendingproduction(scope.row)"
+            >暂停生产</el-button
+          >
+          <el-button
+            size="mini"
+            type="text"
+            v-if="scope.row.status == 'SUSPENDED'"
+            @click="handleSuspended(scope.row)"
+            >删除</el-button
           >
         </template>
       </el-table-column>
@@ -259,7 +273,12 @@
     />
 
     <!-- 添加或修改生产工单对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body>
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      width="1550px"
+      append-to-body
+    >
       <el-form ref="form" :model="form" label-width="80px">
         <el-row>
           <el-col :span="12">
@@ -274,7 +293,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="来源类型" prop="orderSource">
               <el-radio-group v-model="form.orderSource" disabled>
                 <el-radio
@@ -286,12 +305,12 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="8" v-if="form.orderSource == 'ORDER'">
+          <el-col :span="12" v-if="form.orderSource == 'ORDER'">
             <el-form-item label="订单编号" prop="sourceCode">
               <el-input v-model="form.sourceCode" readonly="readonly" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="排产状态" prop="status">
               <el-select v-model="form.status" disabled>
                 <el-option
@@ -374,19 +393,22 @@
           </el-col>
         </el-row>
       </el-form>
-      <el-steps
-        :active="activeProcess"
-        v-if="form.workorderId != null"
-        align-center
-        simple
-      >
-        <el-step
-          v-for="(item, index) in processOptions"
-          :title="item.processName"
-          @click.native="handleStepClick(index)"
+      <el-scrollbar style="height: 100%; background: #f5f7fa">
+        <el-steps
+          :active="activeProcess"
+          v-if="form.workorderId != null"
+          align-center
+          simple
         >
-        </el-step>
-      </el-steps>
+          <el-step
+            v-for="(item, index) in processOptions"
+            :title="item.processName"
+            @click.native="handleStepClick(index)"
+          >
+          </el-step>
+        </el-steps>
+      </el-scrollbar>
+
       <el-card
         v-for="(item, index) in processOptions"
         :key="index"
@@ -397,6 +419,7 @@
           :routeId="item.routeId"
           :processId="item.processId"
           :colorCode="item.colorCode"
+          :orderNum="item.orderNum"
           :optType="optType"
           :recordId="item.recordId"
         ></ProTask>
@@ -431,6 +454,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import {
   listWorkorder,
   getWorkorder,
@@ -511,6 +535,7 @@ export default {
       },
       // 表单参数
       form: {},
+      ids: "",
     };
   },
   created() {
@@ -634,14 +659,23 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      var ids = [];
-      ids = selection.map((item) => item.routeId);
+      this.ids = selection.map((item) => item.workorderId);
     },
-    production() {},
-    handleproductione() {},
+    // 执行生产
+    handleproductione(row) {
+      const routeId = row.workorderId || this.ids;
+      axios
+        .get("http://192.168.3.53:8077/manage/task/execute?ids=" + routeId)
+        .then((res) => {
+          if (res.code == 200) {
+            this.$modal.msgSuccess("执行成功");
+            this.getList();
+          }
+        });
+    },
 
     selectable(row, index) {
-      if (row.status == "WORKING") {
+      if (row.status == "WORKING" || row.status == "PREPARE") {
         return false;
       } else {
         return true;

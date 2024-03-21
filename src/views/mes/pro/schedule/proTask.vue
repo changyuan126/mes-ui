@@ -70,7 +70,7 @@
           <el-color-picker v-model="scope.row.colorCode" disabled></el-color-picker>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="100px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="150px" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -220,6 +220,7 @@ export default {
         endTime: null,
         colorCode: null,
         requestDate: null,
+        orderNum: this.orderNum,
       },
       // 表单参数
       form: {},
@@ -246,7 +247,8 @@ export default {
       routeId: null,
       processId: null,
       optType: null,
-      recordId:null
+      recordId:null,
+      orderNum:null,
   },
   created() {
     this.getList();
