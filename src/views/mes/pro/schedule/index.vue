@@ -688,6 +688,20 @@ export default {
           }
         });
     },
+    // 删除
+    handleSuspended(row) {
+      // const workorderIds = row.workorderId || this.ids;
+      // this.$modal
+      //   .confirm("确认删除？")
+      //   .then(function () {
+      //     return dofinish(workorderIds); //完成工单
+      //   })
+      //   .then(() => {
+      //     this.getList();
+      //     this.$modal.msgSuccess("删除成功");
+      //   })
+      //   .catch(() => {});
+    },
 
     selectable(row, index) {
       if (row.status == "WORKING" || row.status == "PREPARE") {
