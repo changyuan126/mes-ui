@@ -234,7 +234,7 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            v-if="scope.row.status == 'CONFIRMED'"
+            v-if="scope.row.status == 'PRODUCTION'"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['mes:pro:protask:edit']"
             >排产</el-button
@@ -666,9 +666,24 @@ export default {
       const routeId = row.workorderId || this.ids;
       axios
         .get("http://192.168.3.53:8077/manage/task/execute?ids=" + routeId)
+        // .get("http://127.0.0.1:8077/manage/task/execute?ids=" + routeId)
         .then((res) => {
           if (res.code == 200) {
             this.$modal.msgSuccess("执行成功");
+            this.getList();
+          }
+        });
+    },
+
+    // 暂停生产
+    Pendingproduction(row) {
+      const routeId = row.workorderId || this.ids;
+      axios
+        .get("http://192.168.3.53:8077/manage/task/suspension?id=" + routeId)
+        // .get("http://127.0.0.1:8077/manage/task/suspension?id=" + routeId)
+        .then((res) => {
+          if (res.code == 200) {
+            this.$modal.msgSuccess("已暂停");
             this.getList();
           }
         });

@@ -932,7 +932,7 @@ export default {
       this.$modal
         .confirm("是否确认完成工单编制？【确认后将不能更改】")
         .then(function () {
-          that.form.status = "CONFIRMED";
+          that.form.status = "PRODUCTION";
           that.submitForm();
         });
     },
