@@ -461,6 +461,7 @@ import {
   delWorkorder,
   addWorkorder,
   updateWorkorder,
+  deleteShopFace,
 } from "@/api/mes/pro/workorder";
 import { listGanttTaskList } from "@/api/mes/pro/protask";
 import { listProductprocess } from "@/api/mes/pro/routeprocess";
@@ -532,7 +533,7 @@ export default {
       tasks: {
         data: [],
         links: [],
-      },
+      }, 
       // 表单参数
       form: {},
       ids: "",
@@ -694,21 +695,21 @@ export default {
     },
     // 删除
     handleSuspended(row) {
-      // const workorderIds = row.workorderId || this.ids;
-      // this.$modal
-      //   .confirm("确认删除数据项？")
-      //   .then(function () {
-      //     return dofinish(workorderIds); //完成工单
-      //   })
-      //   .then(() => {
-      //     if (res.data.code === 200) {
-      //       this.getList();
-      //       this.$modal.msgSuccess("删除成功");
-      //     } else {
-      //       this.$message.error(res.data.msg);
-      //     }
-      //   })
-      //   .catch(() => {});
+      const workorderId = row.workorderId || this.ids;
+      this.$modal
+        .confirm("确认删除数据项？")
+        .then(() => {
+          deleteShopFace({workorderId:workorderId}).then((response) => {
+            console.log(response);
+            if (response.code === 200) {
+              this.getList();
+              this.$modal.msgSuccess("删除成功");
+            } else {
+              this.$message.error(res.msg);
+            }
+          });
+        })
+        .catch(() => {});
     },
 
     selectable(row, index) {
