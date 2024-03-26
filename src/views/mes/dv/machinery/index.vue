@@ -315,15 +315,8 @@
                 v-model="form.machineryTypeId"
                 :options="machineryTypeOptions"
                 :normalizer="normalizer"
-                disabled
-                v-if="optType == 'view'"
-              />
-              <treeselect
-                v-model="form.machineryTypeId"
-                :options="machineryTypeOptions"
-                :normalizer="normalizer"
-                placeholder="请选择所属分类"
-                v-else
+                placeholder="请选择设备类型"
+                @select="handleNodeClick"
               />
             </el-form-item>
           </el-col>
@@ -382,7 +375,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="所属车间" prop="workshopName">
+            <!-- <el-form-item label="所属车间" prop="workshopName">
               <el-select
                 v-model="form.workshopName"
                 placeholder="请选择车间"
@@ -397,7 +390,7 @@
                   :value="item"
                 ></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
           </el-col>
         </el-row>
         <el-row>
@@ -587,7 +580,7 @@ export default {
         idList: "",
         workshopCode: "",
         workshopName: "",
-        workshopId: "",
+        workshopId: "214",
       },
       defaultPropss: {
         children: "children",
@@ -656,15 +649,15 @@ export default {
         machineryName: [
           { required: true, message: "设备名称不能为空", trigger: "blur" },
         ],
-        workshopId: [
-          { required: true, message: "车间不能为空", trigger: "blur" },
-        ],
+        // workshopId: [
+        //   { required: true, message: "车间不能为空", trigger: "blur" },
+        // ],
         machineryTypeId: [
           { required: true, message: "设备分类不能为空", trigger: "blur" },
         ],
-        workshopName: [
-          { required: true, message: "所属车间不能为空", trigger: "blur" },
-        ],
+        // workshopName: [
+        //   { required: true, message: "所属车间不能为空", trigger: "blur" },
+        // ],
       },
     };
   },
@@ -727,6 +720,12 @@ export default {
       this.queryParamsdata = data;
       this.handleQuery();
     },
+    // 节点单击事件
+    handleNodeClick(data) {
+      console.log(data);
+      this.form.machineryTypeName = data.machineryTypeName;
+      this.form.machineryTypeCode = data.code;
+    },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -743,7 +742,7 @@ export default {
         machineryTypeId: null,
         machineryTypeCode: null,
         machineryTypeName: null,
-        workshopId: null,
+        workshopId: "214",
         workshopCode: null,
         workshopName: null,
         status: "STOP",
@@ -809,7 +808,7 @@ export default {
       // this.$emit("getSelectList", this.selectList);
     },
 
-    //选择关联的设备
+    //选择车间
     handleAccompanyId(val) {
       this.form.workshopCode = val.workshopCode;
       this.form.workshopName = val.workshopName;

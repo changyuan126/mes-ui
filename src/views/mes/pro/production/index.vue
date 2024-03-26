@@ -146,11 +146,7 @@
             <defective :message="this.defectiveData" />
           </div>
           <div style="width: 30%; margin-top: 50px">
-            <hkVideo
-              :cameraIndexCode="cameraIndexCode"
-              :objData="objData"
-              ref="hikVideo"
-            ></hkVideo>
+            <hkVideo :monitoringNumber="cameraIndexCode"></hkVideo>
           </div>
         </div>
         <div style="height: 50%; display: flex">
@@ -251,6 +247,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import { listWorkorder } from "@/api/mes/pro/workorder";
 
 // import * as statisServer from "@/api/statistics";
@@ -265,7 +262,7 @@ export default {
   components: { defective, complete, ticket, hkVideo },
   data() {
     return {
-      cameraIndexCode: "", //wed插件监控点
+      cameraIndexCode: "1a033f81-a404-4a66-aabf-cb0ead6cc2be", //wed插件监控点
       //海康wed插件初始化数据
       objData: {
         appkey: "", //综合安防管理平台提供的appkey，必填
@@ -366,6 +363,28 @@ export default {
     },
 
     getList() {
+      var params = {
+        pageNo: 1,
+        pageSize: 9999,
+      };
+      axios({
+        url: "https://190.168.2.104:8077/artemis/api/resource/v1/cameras",
+        method: "post",
+        data: params, //将请求参数写入data;
+        headers: {
+          //单个请求设置请求头
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          if (error) {
+            throw error;
+          }
+        });
+
       // listWorkorder(this.queryParams).then((response) => {
       //   this.workorderList = response.data;
       // });
