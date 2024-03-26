@@ -381,7 +381,7 @@
           </el-col>
           <el-col
             :span="12"
-            v-if="this.form.code == 'CNC' || this.form.code == 'ROBOT'"
+            v-if="this.form.code == 'CNC'"
           >
             <el-form-item label="安全门状态" prop="securityDoor">
               <el-radio-group v-model="form.securityDoor">
@@ -547,9 +547,6 @@ export default {
         ],
         nextProcessId: [
           { required: true, message: "工序ID不能为空", trigger: "blur" },
-        ],
-        machineryTypeId: [
-          { required: true, message: "设备类型不能为空", trigger: "blur" },
         ],
         keyFlag: [
           {

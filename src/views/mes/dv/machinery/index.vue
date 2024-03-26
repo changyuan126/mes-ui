@@ -316,7 +316,7 @@
                 :options="machineryTypeOptions"
                 :normalizer="normalizer"
                 placeholder="请选择设备类型"
-                @select="handleNodeClick"
+                @select="handleNode"
               />
             </el-form-item>
           </el-col>
@@ -721,7 +721,7 @@ export default {
       this.handleQuery();
     },
     // 节点单击事件
-    handleNodeClick(data) {
+    handleNode(data) {
       console.log(data);
       this.form.machineryTypeName = data.machineryTypeName;
       this.form.machineryTypeCode = data.code;

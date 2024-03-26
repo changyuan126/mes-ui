@@ -363,28 +363,6 @@ export default {
     },
 
     getList() {
-      var params = {
-        pageNo: 1,
-        pageSize: 9999,
-      };
-      axios({
-        url: "https://190.168.2.104:8077/artemis/api/resource/v1/cameras",
-        method: "post",
-        data: params, //将请求参数写入data;
-        headers: {
-          //单个请求设置请求头
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          if (error) {
-            throw error;
-          }
-        });
-
       // listWorkorder(this.queryParams).then((response) => {
       //   this.workorderList = response.data;
       // });
