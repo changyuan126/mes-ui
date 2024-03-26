@@ -548,6 +548,9 @@ export default {
         nextProcessId: [
           { required: true, message: "工序ID不能为空", trigger: "blur" },
         ],
+        machineryTypeId: [
+          { required: true, message: "设备类型不能为空", trigger: "blur" },
+        ],
         keyFlag: [
           {
             required: true,
