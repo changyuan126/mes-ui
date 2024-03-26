@@ -434,6 +434,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import {
   listItemrecpt,
   getItemrecpt,
@@ -441,7 +442,6 @@ import {
   addItemrecpt,
   updateItemrecpt,
   confirmItemrecpt,
-  storage,
 } from "@/api/mes/wm/itemrecpt";
 import { listItemrecptline } from "@/api/mes/wm/itemrecptline";
 import { listMdItem } from "@/api/mes/md/pallet";
@@ -693,8 +693,12 @@ export default {
       listItemrecptline({ recptId: row.recptId }).then((response) => {
         this.itemrecptlineList = response.rows;
       });
+      var queryParams = {
+        pageNum: 1,
+        pageSize: 10000,
+      };
       // 托盘查询
-      listMdItem(this.queryParams).then((response) => {
+      listMdItem(queryParams).then((response) => {
         this.itemList = response.rows;
       });
     },
@@ -707,7 +711,6 @@ export default {
       }
       this.perform.itemCode = data.itemCode;
       this.perform.lineId = data.lineId;
-      this.perform.itemId = data.itemId;
     },
     selectTray(data) {
       this.perform.palletId = data.proPalletId;
@@ -715,12 +718,20 @@ export default {
     },
     submitFileForm() {
       if (this.remainingquantity != 0) {
-        storage(this.perform).then((response) => {
-          this.$modal.msgSuccess("入库成功");
-          this.warehousing = false;
-          this.getList();
-          this.selectEncoding();
-        });
+        axios
+          .get("http://192.168.2.104:8077/manage/matter/storageItem", {
+            params: this.perform,
+          })
+          .then((res) => {
+            if (res.data.code === 200) {
+              this.$modal.msgSuccess("入库成功");
+              this.warehousing = false;
+              this.getList();
+              this.selectEncoding();
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          });
       } else {
         this.$message({
           message: "当前入库数量为0",

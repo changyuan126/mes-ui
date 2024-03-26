@@ -60,3 +60,12 @@ export function listItems(query) {
     params: query
   })
 }
+
+// 删除
+export function deleteShopFace(data) {
+  return request({
+    url: '/mes/pro/workorder/deleteShopFace',
+    method: 'post',
+    data: data
+  })
+}

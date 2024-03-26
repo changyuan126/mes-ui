@@ -201,7 +201,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="所属车间" prop="workshopId">
+            <!-- <el-form-item label="所属车间" prop="workshopId">
               <el-select
                 v-model="form.workshopId"
                 placeholder="请选择车间"
@@ -215,7 +215,7 @@
                   :value="item.workshopId"
                 ></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
           </el-col>
           <el-col :span="12">
             <el-form-item label="是否启用" prop="enableFlag">
@@ -346,7 +346,7 @@ export default {
         proAgvlineId: null,
         lineCode: null,
         lineName: null,
-        workshopId: null,
+        workshopId: "214",
         enableFlag: "Y",
         remark: null,
       };

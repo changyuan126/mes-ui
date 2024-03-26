@@ -245,7 +245,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <!-- <el-col :span="12">
             <el-form-item label="所在车间" prop="workshopId">
               <el-select
                 v-model="form.workshopId"
@@ -260,7 +260,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row>
           <el-col :span="12">
@@ -564,7 +564,7 @@ export default {
         workstationCode: null,
         workstationName: null,
         workstationAddress: null,
-        workshopId: null,
+        workshopId: "214",
         workshopCode: null,
         workshopName: null,
         processId: null,
@@ -670,6 +670,7 @@ export default {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.workstationId != null) {
+            this.form.processId = this.form.processId.join(",");
             updateWorkstation(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
