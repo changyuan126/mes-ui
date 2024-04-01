@@ -37,9 +37,10 @@
               {{ this.title }}
             </div>
             <div
-              style="color: rgb(9 207 255); font-size: 21px; margin-bottom: 4%"
+              style="color: rgb(9 207 255); font-size: 18px; margin-bottom: 4%"
             >
-              2024.02.27 14:11:00
+              <span>{{ this.dateYear }}</span> {{ this.dateDay }}
+              <span>{{ this.dateWeek }}</span>
             </div>
           </el-col>
           <el-col :span="10"
@@ -105,7 +106,7 @@
                 class="grid-content bg-purple"
                 style="margin: 10% 10% 10% 37%"
               >
-                50%
+                80%
               </div></el-col
             >
             <el-col :span="4"
@@ -113,7 +114,7 @@
                 class="grid-content bg-purple"
                 style="margin: 10% 10% 10% 44%"
               >
-                121
+                9
               </div></el-col
             >
             <el-col :span="4"
@@ -146,7 +147,7 @@
             <defective :message="this.defectiveData" />
           </div>
           <div style="width: 30%; margin-top: 50px">
-            <hkVideo :monitoringNumber="cameraIndexCode"></hkVideo>
+            <ezuikit></ezuikit>
           </div>
         </div>
         <div style="height: 50%; display: flex">
@@ -247,6 +248,7 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
 import axios from "axios";
 import { listWorkorder } from "@/api/mes/pro/workorder";
 
@@ -256,24 +258,28 @@ import screenfull from "screenfull";
 import defective from "./components/defective.vue";
 import complete from "./components/complete.vue";
 import ticket from "./components/ticket.vue";
-import hkVideo from "./components/video.vue";
+import ezuikit from "./components/video.vue";
 
 export default {
-  components: { defective, complete, ticket, hkVideo },
+  components: { defective, complete, ticket, ezuikit, dayjs },
   data() {
     return {
-      cameraIndexCode: "1a033f81-a404-4a66-aabf-cb0ead6cc2be", //wed插件监控点
-      //海康wed插件初始化数据
-      objData: {
-        appkey: "", //综合安防管理平台提供的appkey，必填
-        ip: "", //综合安防管理平台IP地址，必填
-        secret: "", //综合安防管理平台提供的secret，必填
-        port: 443, //综合安防管理平台端口，若启用HTTPS协议，默认443
-        playMode: 0, // 0 预览 1回放
-        layout: "2x2", //页面展示的模块数【16】
-        showToolbar: 1, //是否显示工具栏，0-不显示，非0-显示
-      },
+      dateDay: null,
+      dateYear: null,
+      dateWeek: null,
+      weekday: [
+        "星期日",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六",
+      ],
+      timer: null,
 
+
+      rtSp1: "",
       screenfull: false,
       title: "生产监控分析",
       titleVisible: false,
@@ -300,10 +306,18 @@ export default {
       thisYear: false,
       isFullscreen: false,
       radio4: 1,
+      monitorPoints: [],
     };
   },
 
   created() {
+    this.timer = setInterval(() => {
+      const date = dayjs(new Date());
+      this.dateDay = date.format("HH:mm:ss");
+      this.dateYear = date.format("YYYY-MM-DD");
+      this.dateWeek = date.format(this.weekday[date.day()]);
+    }, 1000);
+
     // 监听事件
     window.addEventListener("resize", this.onresize);
     this.getList();
@@ -316,10 +330,13 @@ export default {
     this.factorNumber();
   },
 
-  // beforeDestroy() {
-  //   // 取消监听事件
-  //   window.removeEventListener("resize", this.onresize);
-  // },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    // 取消监听事件
+    window.removeEventListener("resize", this.onresize);
+  },
   methods: {
     // 监听是否全屏状态
     onresize(event) {

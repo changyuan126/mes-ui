@@ -37,9 +37,10 @@
               {{ this.title }}
             </div>
             <div
-              style="color: rgb(9 207 255); font-size: 21px; margin-bottom: 4%"
+              style="color: rgb(9 207 255); font-size: 18px; margin-bottom: 4%"
             >
-              2024.01.11 09:18:18
+              <span>{{ this.dateYear }}</span> {{ this.dateDay }}
+              <span>{{ this.dateWeek }}</span>
             </div>
           </el-col>
           <el-col :span="10"
@@ -367,6 +368,7 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
 // import * as statisServer from "@/api/statistics";
 // import { getInfo } from "@/api/user";
 import screenfull from "screenfull";
@@ -378,9 +380,31 @@ import roboticRate from "./components/roboticRate.vue";
 import AGVrate from "./components/AGVrate.vue";
 
 export default {
-  components: { online, offline, fault, onlineRate, roboticRate, AGVrate },
+  components: {
+    online,
+    offline,
+    fault,
+    onlineRate,
+    roboticRate,
+    AGVrate,
+    dayjs,
+  },
   data() {
     return {
+      dateDay: null,
+      dateYear: null,
+      dateWeek: null,
+      weekday: [
+        "星期日",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六",
+      ],
+      timer: null,
+
       screenfull: false,
       title: "设备监控分析",
       titleVisible: false,
@@ -414,6 +438,12 @@ export default {
   },
 
   created() {
+    this.timer = setInterval(() => {
+      const date = dayjs(new Date());
+      this.dateDay = date.format("HH:mm:ss");
+      this.dateYear = date.format("YYYY-MM-DD");
+      this.dateWeek = date.format(this.weekday[date.day()]);
+    }, 1000);
     // 监听事件
     window.addEventListener("resize", this.onresize);
     this.getList();
@@ -426,10 +456,13 @@ export default {
     this.factorNumber();
   },
 
-  // beforeDestroy() {
-  //   // 取消监听事件
-  //   window.removeEventListener("resize", this.onresize);
-  // },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    // 取消监听事件
+    window.removeEventListener("resize", this.onresize);
+  },
   methods: {
     // 监听是否全屏状态
     onresize(event) {
