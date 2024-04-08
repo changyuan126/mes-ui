@@ -526,6 +526,8 @@ export default {
       },
       // 表单参数
       form: {},
+      arrquantityRecived: "",
+      arraccepted: "",
       // 表单校验
       rules: {
         recptCode: [
@@ -685,13 +687,22 @@ export default {
 
     //执行入库
     handleExecute(row) {
-      console.log(row);
+      this.remainingquantity = 0;
       this.recptIdsData = row.recptId;
       this.perform.recptId = row.recptId;
       this.warehousing = true;
       // 物料查询
       listItemrecptline({ recptId: row.recptId }).then((response) => {
         this.itemrecptlineList = response.rows;
+        response.rows.forEach((item) => {
+          var arr = 0;
+          this.arrquantityRecived = arr + item.quantityRecived;
+        });
+        response.rows.forEach((item) => {
+          var arr1 = 0;
+          this.arraccepted = arr1 + item.accepted;
+        });
+        this.remainingquantity = this.arrquantityRecived - this.arraccepted;
       });
       var queryParams = {
         pageNum: 1,
@@ -719,10 +730,12 @@ export default {
     submitFileForm() {
       if (this.remainingquantity != 0) {
         axios
-          .get("http://192.168.2.104:8077/manage/matter/storageItem", {
-            params: this.perform,
-          })
-          .then((res) => {
+          // .get("http://192.168.2.104:8077/manage/matter/storageItem", {
+          .post(
+            "http://192.168.2.7:8077/manage/matter/storageItem",
+            this.perform
+          )
+          .then(function (res) {
             if (res.data.code === 200) {
               this.$modal.msgSuccess("入库成功");
               this.warehousing = false;
