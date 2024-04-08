@@ -182,7 +182,7 @@ export default {
   data() {
     return {
       //自动生成编码
-      autoGenFlag:false,
+      autoGenFlag:true,
       optType: undefined,
       // 遮罩层
       loading: true,
@@ -262,7 +262,7 @@ export default {
         updateBy: null,
         updateTime: null
       };
-      this.autoGenFlag = false;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -287,6 +287,9 @@ export default {
       this.open = true;
       this.title = "添加仓库设置";
       this.optType = "add";
+        genCode('WAREHOUSE_CODE').then(response =>{
+          this.form.warehouseCode = response;
+        });
     },
     // 查询明细按钮操作
     handleView(row){

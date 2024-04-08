@@ -9,7 +9,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['mes:wm:productsalse:add']"
-        >新增</el-button>
+          >新增</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -20,7 +21,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['mes:wm:productsalse:edit']"
-        >修改</el-button>
+          >修改</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -31,30 +33,71 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['mes:wm:productsalse:remove']"
-        >删除</el-button>
+          >删除</el-button
+        >
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+      <right-toolbar
+        :showSearch.sync="showSearch"
+        @queryTable="getList"
+      ></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="productsalselineList" @selection-change="handleSelectionChange">
+    <el-table
+      v-loading="loading"
+      :data="productsalselineList"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="产品编码" width="120px" align="center" prop="itemCode" />
-      <el-table-column label="产品名称" width="150px" align="center" prop="itemName" :show-overflow-tooltip="true"/>
-      <el-table-column label="规格型号" align="center" prop="specification" :show-overflow-tooltip="true"/>
+      <el-table-column
+        label="产品编码"
+        width="120px"
+        align="center"
+        prop="itemCode"
+      />
+      <el-table-column
+        label="产品名称"
+        width="150px"
+        align="center"
+        prop="itemName"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        label="规格型号"
+        align="center"
+        prop="specification"
+        :show-overflow-tooltip="true"
+      />
       <el-table-column label="单位" align="center" prop="unitOfMeasure" />
       <el-table-column label="出库数量" align="center" prop="quantitySalse" />
-      <el-table-column label="批次号" width="120px" align="center" prop="batchCode" />
+      <el-table-column
+        label="批次号"
+        width="120px"
+        align="center"
+        prop="batchCode"
+      />
       <el-table-column label="仓库名称" align="center" prop="warehouseName" />
       <el-table-column label="库区名称" align="center" prop="locationName" />
       <el-table-column label="库位名称" align="center" prop="areaName" />
       <el-table-column label="是否检验" align="center" prop="iqcCheck">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.oqcCheck"/>
+          <dict-tag
+            :options="dict.type.sys_yes_no"
+            :value="scope.row.oqcCheck"
+          />
         </template>
       </el-table-column>
-      <el-table-column label="检验单编号" width="120" align="center" prop="oqcCode" />
+      <el-table-column
+        label="检验单编号"
+        width="120"
+        align="center"
+        prop="oqcCode"
+      />
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -63,13 +106,14 @@
             @click="handleDelete(scope.row)"
             v-if="optType != 'view'"
             v-hasPermi="['mes:wm:productsalse:remove']"
-          >删除</el-button>
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
@@ -82,15 +126,25 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="产品编码" prop="itemCode">
-              <el-input v-model="form.itemCode" placeholder="请选择库存物资" >
-                <el-button slot="append" @click="handleSelectStock" icon="el-icon-search"></el-button>
+              <el-input v-model="form.itemCode" placeholder="请选择库存物资">
+                <el-button
+                  slot="append"
+                  @click="handleSelectStock"
+                  icon="el-icon-search"
+                ></el-button>
               </el-input>
             </el-form-item>
-            <StockSelect ref="stockSelect"  @onSelected="onStockSelected"></StockSelect>
+            <StockSelect
+              ref="stockSelect"
+              @onSelected="onStockSelected"
+            ></StockSelect>
           </el-col>
           <el-col :span="8">
             <el-form-item label="产品名称" prop="itemName">
-              <el-input v-model="form.itemName" placeholder="请输入产品物料名称" />
+              <el-input
+                v-model="form.itemName"
+                placeholder="请输入产品物料名称"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -102,9 +156,13 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="规格型号" prop="specification">
-              <el-input v-model="form.specification" type="textarea" placeholder="请输入内容" />
+              <el-input
+                v-model="form.specification"
+                type="textarea"
+                placeholder="请输入内容"
+              />
             </el-form-item>
-          </el-col>          
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
@@ -126,29 +184,39 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="批次号" prop="batchCode">
-              <el-input v-model="form.batchCode"/>
+              <el-input v-model="form.batchCode" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="生产工单" prop="workorderCode">
-              <el-input v-model="form.workorderCode"/>
+              <el-input v-model="form.workorderCode" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="出库数量" prop="quantitySalse">
-              <el-input :max="form.quantityMax" :min="0" v-model="form.quantitySalse" placeholder="请输入出库数量" />
+              <el-input
+                :max="form.quantityMax"
+                :min="0"
+                v-model="form.quantitySalse"
+                placeholder="请输入出库数量"
+              />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="是否检验">
-              <el-radio-group v-model="form.oqcCheck" disabled v-if="optType=='view'">
+              <el-radio-group
+                v-model="form.oqcCheck"
+                disabled
+                v-if="optType == 'view'"
+              >
                 <el-radio
                   v-for="dict in dict.type.sys_yes_no"
                   :key="dict.value"
                   :label="dict.value"
-                >{{dict.label}}</el-radio>
+                  >{{ dict.label }}</el-radio
+                >
               </el-radio-group>
 
               <el-radio-group v-model="form.oqcCheck" v-else>
@@ -156,23 +224,39 @@
                   v-for="dict in dict.type.sys_yes_no"
                   :key="dict.value"
                   :label="dict.value"
-                >{{dict.label}}</el-radio>
+                  >{{ dict.label }}</el-radio
+                >
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item v-if="form.oqcCheck == 'Y'" label="出货检验单" prop="oqcCode">
-              <el-input v-model="form.oqcCode" placeholder="请输入出货检验单" >
-                <el-button slot="append" @click="handleSelectOqc" icon="el-icon-search"></el-button>
+            <el-form-item
+              v-if="form.oqcCheck == 'Y'"
+              label="出货检验单"
+              prop="oqcCode"
+            >
+              <el-input v-model="form.oqcCode" placeholder="请输入出货检验单">
+                <el-button
+                  slot="append"
+                  @click="handleSelectOqc"
+                  icon="el-icon-search"
+                ></el-button>
               </el-input>
             </el-form-item>
-            <OqcSelectSingle ref="oqcSelect" @onSelected="onOqcSelected"></OqcSelectSingle>
+            <OqcSelectSingle
+              ref="oqcSelect"
+              @onSelected="onOqcSelected"
+            ></OqcSelectSingle>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注" prop="remark">
-              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+              <el-input
+                v-model="form.remark"
+                type="textarea"
+                placeholder="请输入内容"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -186,30 +270,36 @@
 </template>
 
 <script>
-import { listProductsalseline, getProductsalseline, delProductsalseline, addProductsalseline, updateProductsalseline } from "@/api/mes/wm/productsalseline";
-import StockSelect from "@/components/stockSelect/single.vue"
-import OqcSelectSingle from "@/components/oqcSelect/single.vue"
+import {
+  listProductsalseline,
+  getProductsalseline,
+  delProductsalseline,
+  addProductsalseline,
+  updateProductsalseline,
+} from "@/api/mes/wm/productsalseline";
+import StockSelect from "@/components/stockSelect/single.vue";
+import OqcSelectSingle from "@/components/oqcSelect/single.vue";
 export default {
   name: "Productsalseline",
-  dicts: ['sys_yes_no'],
-  components: {StockSelect,OqcSelectSingle},
+  dicts: ["sys_yes_no"],
+  components: { StockSelect, OqcSelectSingle },
   props: {
     salseId: null,
     optType: null,
     warehouseId: null,
     locationId: null,
-    areaId: null
+    areaId: null,
   },
   data() {
     return {
       // 遮罩层
       loading: true,
-      warehouseInfo:[],
-      warehouseOptions:[],
-      warehouseProps:{
+      warehouseInfo: [],
+      warehouseOptions: [],
+      warehouseProps: {
         multiple: false,
-        value: 'pId',
-        label: 'pName',
+        value: "pId",
+        label: "pName",
       },
       // 选中数组
       ids: [],
@@ -250,20 +340,21 @@ export default {
         areaCode: null,
         areaName: null,
       },
+      quantitySalse: "",
       // 表单参数
       form: {},
       // 表单校验
       rules: {
         itemCode: [
-          { required: true, message: "出库物资不能为空", trigger: "blur" }
+          { required: true, message: "出库物资不能为空", trigger: "blur" },
         ],
         warehouseInfo: [
-          { required: true, message: "仓库不能为空", trigger: "blur" }
+          { required: true, message: "仓库不能为空", trigger: "blur" },
         ],
         quantitySalse: [
-          { required: true, message: "出库数量不能为空", trigger: "blur" }
+          { required: true, message: "出库数量不能为空", trigger: "blur" },
         ],
-      }
+      },
     };
   },
   created() {
@@ -273,7 +364,7 @@ export default {
     /** 查询产品销售出库行列表 */
     getList() {
       this.loading = true;
-      listProductsalseline(this.queryParams).then(response => {
+      listProductsalseline(this.queryParams).then((response) => {
         this.productsalselineList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -308,7 +399,7 @@ export default {
         areaId: this.areaId,
         areaCode: null,
         areaName: null,
-        oqcCheck: 'N',
+        oqcCheck: "N",
         oqcId: null,
         oqcCode: null,
         remark: null,
@@ -319,7 +410,7 @@ export default {
         createBy: null,
         createTime: null,
         updateBy: null,
-        updateTime: null
+        updateTime: null,
       };
       this.resetForm("form");
     },
@@ -335,9 +426,9 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.lineId)
-      this.single = selection.length!==1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.lineId);
+      this.single = selection.length !== 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -348,8 +439,8 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const lineId = row.lineId || this.ids
-      getProductsalseline(lineId).then(response => {
+      const lineId = row.lineId || this.ids;
+      getProductsalseline(lineId).then((response) => {
         this.form = response.data;
         this.open = true;
         this.title = "修改产品销售出库行";
@@ -357,16 +448,22 @@ export default {
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.lineId != null) {
-            updateProductsalseline(this.form).then(response => {
+            updateProductsalseline(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addProductsalseline(this.form).then(response => {
+            if (this.form.quantitySalse > this.quantitySalse) {
+              this.$message({
+                message: "数量不足",
+                type: "warning",
+              });
+            }
+            addProductsalseline(this.form).then((response) => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -378,60 +475,68 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const lineIds = row.lineId || this.ids;
-      this.$modal.confirm('是否确认删除产品销售出库行编号为"' + lineIds + '"的数据项？').then(function() {
-        return delProductsalseline(lineIds);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      this.$modal
+        .confirm('是否确认删除产品销售出库行编号为"' + lineIds + '"的数据项？')
+        .then(function () {
+          return delProductsalseline(lineIds);
+        })
+        .then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('wm/productsalseline/export', {
-        ...this.queryParams
-      }, `productsalseline_${new Date().getTime()}.xlsx`)
+      this.download(
+        "wm/productsalseline/export",
+        {
+          ...this.queryParams,
+        },
+        `productsalseline_${new Date().getTime()}.xlsx`
+      );
     },
-    handleSelectStock(){
+    handleSelectStock() {
       this.$refs.stockSelect.showFlag = true;
       this.$refs.stockSelect.getList();
     },
     //物料选择弹出框
-    onStockSelected(obj){
-        if(obj != undefined && obj != null){
-          debugger;
-          this.form.materialStockId = obj.materialStockId;
-          this.form.itemId = obj.itemId;
-          this.form.itemCode = obj.itemCode;
-          this.form.itemName = obj.itemName;
-          this.form.specification = obj.specification;
-          this.form.unitOfMeasure = obj.unitOfMeasure;  
-          this.form.batchCode = obj.batchCode;
-          this.form.workorderId = obj.workorderId;
-          this.form.workorderCode = obj.workorderCode;
-          this.form.warehouseId = obj.warehouseId;
-          this.form.warehouseCode = obj.warehouseCode;
-          this.form.warehouseName = obj.warehouseName;
-          this.form.locationId = obj.locationId;
-          this.form.locationCode = obj.locationCode;
-          this.form.locationName = obj.locationName;
-          this.form.areaId = obj.areaId;
-          this.form.areaCode = obj.areaCode;
-          this.form.areaName = obj.areaName;
-          this.form.quantitySalse = obj.quantityOnhand;
-          this.form.quantityMax = obj.quantityOnhand;
-        }
+    onStockSelected(obj) {
+      if (obj != undefined && obj != null) {
+        this.form.materialStockId = obj.materialStockId;
+        this.form.itemId = obj.itemId;
+        this.form.itemCode = obj.itemCode;
+        this.form.itemName = obj.itemName;
+        this.form.specification = obj.specification;
+        this.form.unitOfMeasure = obj.unitOfMeasure;
+        this.form.batchCode = obj.batchCode;
+        this.form.workorderId = obj.workorderId;
+        this.form.workorderCode = obj.workorderCode;
+        this.form.warehouseId = obj.warehouseId;
+        this.form.warehouseCode = obj.warehouseCode;
+        this.form.warehouseName = obj.warehouseName;
+        this.form.locationId = obj.locationId;
+        this.form.locationCode = obj.locationCode;
+        this.form.locationName = obj.locationName;
+        this.form.areaId = obj.areaId;
+        this.form.areaCode = obj.areaCode;
+        this.form.areaName = obj.areaName;
+        this.form.quantitySalse = obj.quantityOnhand;
+        this.form.quantityMax = obj.quantityOnhand;
+        this.quantitySalse = obj.quantityOnhand;
+      }
     },
     //OQC检验单选择
-    handleSelectOqc(){
+    handleSelectOqc() {
       this.$refs.oqcSelect.showFlag = true;
     },
     //OQC检验单选择弹出框
-    onOqcSelected(obj){
-        if(obj != undefined && obj != null){
-          this.form.oqcId = obj.oqcId;
-          this.form.oqcCode = obj.oqcCode;
-        }
+    onOqcSelected(obj) {
+      if (obj != undefined && obj != null) {
+        this.form.oqcId = obj.oqcId;
+        this.form.oqcCode = obj.oqcCode;
+      }
     },
-  }
+  },
 };
 </script>

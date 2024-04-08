@@ -42,3 +42,11 @@ export function delProroute(routeId) {
     method: 'delete'
   })
 }
+
+// 复制
+export function copyProRoute(routeId) {
+  return request({
+    url: '/mes/pro/proroute/copyProRoute/' + routeId,
+    method: 'get'
+  })
+}

@@ -109,3 +109,12 @@ export function authUserSelectAll(data) {
     params: data
   })
 }
+
+// 角色恢复默认菜单权限
+export function resetRole(query) {
+  return request({
+    url: '/system/role/resetRole',
+    method: 'get',
+    params: query
+  })
+}

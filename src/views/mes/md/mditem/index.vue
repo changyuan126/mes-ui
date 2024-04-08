@@ -242,7 +242,7 @@
           <el-col :span="12">
             <el-form-item  label="物料/产品分类" prop="itemTypeId">
               <treeselect v-model="form.itemTypeId" :options="itemTypeOptions" :show-count="true" disabled v-if="optType=='view'"  />
-              <treeselect v-model="form.itemTypeId" :options="itemTypeOptions" :show-count="true" placeholder="请选择所属分类" v-else :disable-branch-nodes="true"/>
+              <treeselect v-model="form.itemTypeId" :options="itemTypeOptions" :show-count="true" placeholder="请选择所属分类" v-else/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -531,7 +531,7 @@ export default {
         optType: undefined,
         remark: undefined        
       };
-      this.autoGenFlag = false;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -572,6 +572,9 @@ export default {
       this.optType = "add";
       this.open = true;
       this.title = "新增物料/产品";
+      genCode('ITEM_CODE').then(response =>{
+          this.form.itemCode = response;
+        });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

@@ -167,7 +167,6 @@
           workstationId: null,
           workstationCode: null,
           workstationName: null,
-          routeId: null,
           processId: this.processId,
           processCode: null,
           processName: null,
@@ -217,7 +216,6 @@
       getList() {
         this.loading = true;
         listProtask(this.queryParams).then(response => {
-          debugger;
           this.protaskList = response.rows;
           this.total = response.total;
           this.loading = false;

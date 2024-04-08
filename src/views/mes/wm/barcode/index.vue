@@ -201,27 +201,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!--仓库-->
-        <el-row v-if="form.barcodeType=='WAREHOUSE'">
-          <el-col :span="24">
-            <el-form-item label="储位" prop="warehouseId">
-              <!-- <el-cascader v-model="warehouseInfo"
-                :options="warehouseOptions"
-                :props="warehouseProps"
-                @change="handleWarehouseChanged"
-              >                  
-              </el-cascader> -->
-              <el-cascader v-model="warehouseInfo"
-                ref="warehouseRef"
-                :options="warehouseOptions"
-                :props="warehouseProps"
-                @change="handleWarehouseChanged"
-              >                  
-              </el-cascader>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
         <!--箱条码-->
         <el-row v-if="form.barcodeType=='BOX'">
           <el-col :span="12">
@@ -255,7 +234,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- 工作站 -->
         <el-row v-else-if="form.barcodeType=='WORKSTATION'">
           <el-col :span="12">
             <el-form-item label="工作站" prop="bussinessCode">
@@ -272,23 +250,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- 库存 -->
-        <el-row v-else-if="form.barcodeType=='STOCK'">
-          <el-col :span="8">
-            <el-form-item label="物资编码" prop="bussinessCode">
-              <el-input v-model="form.bussinessCode" placeholder="请选择库存记录" >
-                <el-button slot="append" icon="el-icon-search" @click="handleMaterialStockSelect"></el-button>
-              </el-input>
-            </el-form-item>
-            <StockSelect ref="stockSelect"  @onSelected="onMaterialStockSelected"> </StockSelect>      
-          </el-col>
-          <el-col :span="16">
-            <el-form-item label="物资信息" prop="bussinessName">
-              <el-input v-model="form.bussinessName" readonly="readonly" ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
         <!--根据不同的条码类型展示不同的业务内容选择 end-->
         <el-row>
           <el-col :span="24">
@@ -331,25 +292,16 @@ import ItemSelect  from "@/components/itemSelect/single.vue";
 import VendorSelect from "@/components/vendorSelect/single.vue";
 import PackageSelectSingle from "@/components/package/single.vue";
 import WorkstationSelect from "@/components/workstationSelect/simpletableSingle.vue"
-import StockSelect from "@/components/stockSelect/single.vue"
 import Barcodeconfig from "./config.vue"
 import BarcodeBatchPrint from "./batchprint.vue"
-import {getTreeList} from "@/api/mes/wm/warehouse"
 export default {
   name: "Barcode",
   dicts: ['mes_barcode_type','mes_barcode_formart','sys_yes_no'],
   components: {
-    ItemSelect,VendorSelect,PackageSelectSingle,Barcodeconfig,WorkstationSelect,StockSelect,BarcodeBatchPrint
+    ItemSelect,VendorSelect,PackageSelectSingle,Barcodeconfig,WorkstationSelect,BarcodeBatchPrint
   },
   data() {
     return {
-      warehouseInfo:[],
-      warehouseOptions:[],
-      warehouseProps:{
-        multiple: false,
-        value: 'pId',
-        label: 'pName',
-      },
       optType: null,
       // 遮罩层
       loading: true,
@@ -400,7 +352,6 @@ export default {
   },
   created() {
     this.getList();
-    this.getWarehouseList();
   },
   methods: {
     /** 查询条码清单列表 */
@@ -534,40 +485,6 @@ export default {
           this.form.barcodeContent= "".concat(this.form.barcodeType,'-',this.form.bussinessCode);
         }
     },
-    //选择仓库、库区、库位
-    getWarehouseList(){
-      getTreeList().then( response =>{        
-        if(response.data){
-          this.warehouseOptions = response.data.filter((el) =>{
-              return el.warehouseCode.indexOf('VIR') == -1;
-          });;
-        }
-        this.warehouseOptions.map(w =>{
-          debugger;
-          w.children.map(l =>{
-                  let lstr =JSON.stringify(l.children).replace(/locationId/g,'lId').replace(/areaId/g, 'pId').replace(/areaName/g,'pName');                  
-                  l.children = JSON.parse(lstr);
-          });
-            
-          let wstr = JSON.stringify(w.children).replace(/warehouseId/g,'wId').replace(/locationId/g, 'pId').replace(/locationName/g,'pName');  
-          w.children =  JSON.parse(wstr); 
-
-        });
-        let ostr=JSON.stringify(this.warehouseOptions).replace(/warehouseId/g,'pId').replace(/warehouseName/g, 'pName');
-        this.warehouseOptions = JSON.parse(ostr);
-        debugger;
-      });
-    },
-    handleWarehouseChanged(obj){
-      debugger;
-      const checkedNode = this.$refs['warehouseRef'].getCheckedNodes();
-      if(obj !=null){
-        this.form.bussinessId = checkedNode[0].data.pId;
-        this.form.bussinessCode = checkedNode[0].data.areaCode;
-        this.form.bussinessName = checkedNode[0].data.pName;
-        this.form.barcodeContent = "".concat(this.form.barcodeType,'-',this.form.bussinessCode);
-      }
-    },
     //装箱单选择
     handleSelectPackage(){
       this.$refs.packageSelect.showFlag=true;
@@ -594,22 +511,6 @@ export default {
           this.form.barcodeContent= "".concat(this.form.barcodeType,'-',this.form.bussinessCode);
         }
     },
-    /**
-     * 选择库存 
-     */
-     handleMaterialStockSelect(){
-        this.$refs.stockSelect.showFlag = true;
-     },
-
-     /**库存选择返回 */
-     onMaterialStockSelected(obj){
-      if(obj != undefined && obj != null){
-          this.form.bussinessId = obj.materialStockId;
-          this.form.bussinessCode = obj.itemCode;
-          this.form.bussinessName = "".concat(obj.itemName,'|',obj.specification,'|',obj.vendorName,'|',obj.batchCode);
-          this.form.barcodeContent= "".concat(this.form.barcodeType,'-',this.form.bussinessId);
-        }
-     },
     handleConfig(){
       this.$refs.barcodeconfig.showFlag = true;
     },
