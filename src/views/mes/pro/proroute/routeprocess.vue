@@ -338,7 +338,7 @@
                   v-for="item in machineryList"
                   :key="item.codeId"
                   :label="item.codeName"
-                  :value="{ url: item.codeId, originalName: item.codeName }"
+                  :value="{ url: item.codeId, originalName: item.code }"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -379,10 +379,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col
-            :span="12"
-            v-if="this.form.code == 'CNC'"
-          >
+          <el-col :span="12" v-if="this.form.code == 'CNC'">
             <el-form-item label="安全门状态" prop="securityDoor">
               <el-radio-group v-model="form.securityDoor">
                 <el-radio label="0">开启</el-radio>
@@ -652,32 +649,20 @@ export default {
     handleNodeClick(data) {
       console.log(data);
       if (data.code == "AGV") {
-        // this.TypeId = true;
-        // this.Typefile = false;
-        // this.warehousing = false;
         this.form.originalName = "";
         this.form.url = "";
         this.form.exitType = "";
       } else if (data.code == "STORE") {
-        // this.TypeId = false;
-        // this.Typefile = false;
-        // this.warehousing = true;
         this.form.lineId = "";
         this.form.pointId = "";
         this.form.exitType = "0";
         this.form.originalName = "";
         this.form.url = "";
       } else if (data.code == "CNC" || data.code == "ROBOT") {
-        // this.TypeId = false;
-        // this.Typefile = false;
-        // this.warehousing = true;
         this.form.lineId = "";
         this.form.pointId = "";
         this.form.exitType = "";
       } else {
-        // this.TypeId = false;
-        // this.Typefile = false;
-        // this.warehousing = false;
         this.form.lineId = "";
         this.form.pointId = "";
         this.form.exitType = "";
