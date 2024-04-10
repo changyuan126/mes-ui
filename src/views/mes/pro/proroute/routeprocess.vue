@@ -817,7 +817,7 @@ export default {
       this.open = true;
       this.title = "添加工艺组成";
       listRouteprocess(this.queryParams).then((response) => {
-        this.form.orderNum = response.total + 1;
+        this.form.orderNum = response.rows.pop().orderNum + 1;
       });
     },
     /** 修改按钮操作 */
