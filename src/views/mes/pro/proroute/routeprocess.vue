@@ -856,15 +856,24 @@ export default {
             updateRouteprocess(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
-              this.getList();
+              // this.getList();
             });
           } else {
             addRouteprocess(this.form).then((response) => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
-              this.getList();
+              // this.getList();
             });
           }
+
+          this.routeprocessList.forEach((item) => {
+            getRouteprocess(item.recordId).then((response1) => {
+                updateRouteprocess(response1.data).then((response2) => {
+                });
+            });
+          });
+          this.getList();
+
         }
       });
     },
