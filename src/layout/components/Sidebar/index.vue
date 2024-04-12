@@ -101,7 +101,7 @@ export default {
       )
         .then(() => {
           axios
-            .get("http://192.168.3.53:8077/manage/task/emergencyStop")
+            .get("http://192.168.50.191:8077/manage/task/emergencyStop")
             .then((res) => {
               if (res.code === 200) {
                 this.$message({

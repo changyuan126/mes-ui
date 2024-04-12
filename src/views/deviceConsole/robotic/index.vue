@@ -359,7 +359,7 @@ export default {
 
     setInterval() {
       // axios
-      //   .get("http://192.168.3.53:8077/manage/modbus/data", {
+      //   .get("http://192.168.50.191:8077/manage/modbus/data", {
       //     params: {
       //       id: this.id,
       //     },
@@ -372,7 +372,7 @@ export default {
     upbutton() {
       if (this.id != "") {
         axios
-          .get("http://192.168.3.53:8077/manage/robot/powerOn", {
+          .get("http://192.168.50.191:8077/manage/robot/powerOn", {
             params: {
               id: this.id,
             },
@@ -397,7 +397,7 @@ export default {
     downbutton() {
       if (this.id != "") {
         axios
-          .get("http://192.168.3.53:8077/manage/robot/powerOff", {
+          .get("http://192.168.50.191:8077/manage/robot/powerOff", {
             params: {
               id: this.id,
             },

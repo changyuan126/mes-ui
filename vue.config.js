@@ -36,7 +36,7 @@ module.exports = {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       "/prod-api": {
         // target: `http://192.168.2.104:8063`,
-        target: `http://192.168.3.53:8063`,
+        target: `http://192.168.50.191:8063`,
         changeOrigin: true,
         // pathRewrite: {
         //   ['^' + process.env.VUE_APP_BASE_API]: ''
@@ -44,7 +44,7 @@ module.exports = {
       },
       "/ureport": {
         // target: `http://192.168.2.104:8063`,
-        target: `http://192.168.3.53:8063`,
+        target: `http://192.168.50.191:8063`,
         ws: false,
         changeOrigin: true,
         pathRewrite: {
