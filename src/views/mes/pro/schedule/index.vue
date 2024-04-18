@@ -533,7 +533,7 @@ export default {
       tasks: {
         data: [],
         links: [],
-      }, 
+      },
       // 表单参数
       form: {},
       ids: "",
@@ -665,18 +665,25 @@ export default {
     // 执行生产
     handleproductione(row) {
       const routeId = row.workorderId || this.ids;
-      axios
-        .get("http://192.168.2.104:8077/manage/task/execute?ids=" + routeId)
-        // .get("http://192.168.50.191:8077/manage/task/execute?ids=" + routeId)
-        // .get("http://127.0.0.1:8077/manage/task/execute?ids=" + routeId)
-        .then((res) => {
-          if (res.data.code === 200) {
-            this.getList();
-            this.$modal.msgSuccess("执行成功");
-          } else {
-            this.$message.error(res.data.msg);
-          }
+      if (routeId !== "") {
+        axios
+          .get("http://192.168.2.104:8077/manage/task/execute?ids=" + routeId)
+          // .get("http://192.168.50.191:8077/manage/task/execute?ids=" + routeId)
+          // .get("http://127.0.0.1:8077/manage/task/execute?ids=" + routeId)
+          .then((res) => {
+            if (res.data.code === 200) {
+              this.getList();
+              this.$modal.msgSuccess("执行成功");
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          });
+      } else {
+        this.$message({
+          message: "请选择要执行的工单",
+          type: "warning",
         });
+      }
     },
 
     // 暂停生产
@@ -701,7 +708,7 @@ export default {
       this.$modal
         .confirm("确认删除数据项？")
         .then(() => {
-          deleteShopFace({workorderId:workorderId}).then((response) => {
+          deleteShopFace({ workorderId: workorderId }).then((response) => {
             console.log(response);
             if (response.code === 200) {
               this.getList();

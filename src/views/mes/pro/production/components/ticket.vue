@@ -147,11 +147,11 @@ export default {
         ],
         dataset: {
           source: [
-            { status: "今飞智造2.1订单", value1: 33, value2: 93 },
-            { status: "今飞餐达1.15订单", value1: 53, value2: 32 },
-            { status: "今飞智造1.1订单", value1: 78, value2: 65 },
-            { status: "今飞智适12.15打单", value1: 12, value2: 35 },
-            { status: "今飞智适12.1订单", value1: 90, value2: 52 },
+            // { status: "今飞智造2.1订单", value1: 33, value2: 93 },
+            // { status: "今飞餐达1.15订单", value1: 53, value2: 32 },
+            // { status: "今飞智造1.1订单", value1: 78, value2: 65 },
+            // { status: "今飞智适12.15打单", value1: 12, value2: 35 },
+            // { status: "今飞智适12.1订单", value1: 90, value2: 52 },
           ],
         },
       };

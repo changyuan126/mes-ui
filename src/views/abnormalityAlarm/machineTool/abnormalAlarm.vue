@@ -17,7 +17,7 @@
         />
       </el-form-item>
 
-      <el-form-item label="异常报警类型" label-width="100px" prop="warnType">
+      <!-- <el-form-item label="异常报警类型" label-width="100px" prop="warnType">
         <el-select
           v-model="queryParams.warnType"
           placeholder="请选择"
@@ -31,7 +31,7 @@
             :value="dict.value"
           />
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item label="处理状态" prop="status">
         <el-select
@@ -115,12 +115,12 @@
         prop="machineryTypeName"
         :show-overflow-tooltip="true"
       />
-      <el-table-column
+      <!-- <el-table-column
         label="异常报警类型"
         align="center"
         prop="warnType"
         :show-overflow-tooltip="true"
-      />
+      /> -->
       <el-table-column
         label="异常报警内容"
         align="center"
@@ -274,11 +274,11 @@
               {{ formQuery.machineryTypeName }}
             </el-form-item>
           </el-col>
-          <el-col :span="11">
+          <!-- <el-col :span="11">
             <el-form-item prop="" label="异常报警类型:">
               {{ formQuery.warnType }}
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row>
           <el-col :span="11">
@@ -336,7 +336,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        machineryTypeId: 227,
+        machineryTypeId: "CNC",
       },
       // 表单参数
       form: {

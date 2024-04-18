@@ -90,7 +90,7 @@
                 class="grid-content bg-purple"
                 style="margin: 10% 10% 10% 27%"
               >
-                21
+                0
               </div></el-col
             >
             <el-col :span="4"
@@ -98,7 +98,7 @@
                 class="grid-content bg-purple"
                 style="margin: 10% 10% 10% 35%"
               >
-                30
+                0
               </div></el-col
             >
             <el-col :span="4"
@@ -106,7 +106,7 @@
                 class="grid-content bg-purple"
                 style="margin: 10% 10% 10% 37%"
               >
-                80%
+                0
               </div></el-col
             >
             <el-col :span="4"
@@ -114,7 +114,7 @@
                 class="grid-content bg-purple"
                 style="margin: 10% 10% 10% 44%"
               >
-                9
+                0
               </div></el-col
             >
             <el-col :span="4"
@@ -122,7 +122,7 @@
                 class="grid-content bg-purple"
                 style="margin: 10% 10% 10% 47%"
               >
-                1651
+                0
               </div></el-col
             >
             <el-col :span="4"
@@ -130,7 +130,7 @@
                 class="grid-content bg-purple"
                 style="margin: 10% 10% 10% 60%"
               >
-                1%
+                0
               </div></el-col
             >
           </el-row>
@@ -277,7 +277,6 @@ export default {
         "星期六",
       ],
       timer: null,
-
 
       rtSp1: "",
       screenfull: false,

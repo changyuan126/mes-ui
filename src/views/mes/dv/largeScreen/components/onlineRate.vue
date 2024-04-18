@@ -43,7 +43,7 @@ export default {
       // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById("onlineRate"));
 
-      let value = "50%";
+      let value = "0%";
       let title = "设备在线率";
       var option = {
         title: [
@@ -98,7 +98,7 @@ export default {
             backgroundStyle: {
               color: "rgba(66, 66, 66, .3)",
             },
-            data: [50],
+            // data: [50],
             coordinateSystem: "polar",
 
             itemStyle: {

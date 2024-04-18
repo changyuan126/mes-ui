@@ -45,22 +45,22 @@ export default {
 
       var scale = 1;
       var echartData = [
-        {
-          value: 5,
-          name: "材料不良",
-        },
-        {
-          value: 1,
-          name: "工序不良",
-        },
-        {
-          value: 2,
-          name: "尺寸不良",
-        },
-        {
-          value: 1,
-          name: "其他不良",
-        },
+        // {
+        //   value: 5,
+        //   name: "材料不良",
+        // },
+        // {
+        //   value: 1,
+        //   name: "工序不良",
+        // },
+        // {
+        //   value: 2,
+        //   name: "尺寸不良",
+        // },
+        // {
+        //   value: 1,
+        //   name: "其他不良",
+        // },
       ];
       var rich = {
         yellow: {

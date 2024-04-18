@@ -69,7 +69,7 @@
                 ></el-col>
                 <el-col :span="4"
                   ><div class="grid-content bg-purple" style="margin-top: 10%">
-                    <div style="font-size: 25px">12</div>
+                    <div style="font-size: 25px">0</div>
                     <div>当前在线</div>
                   </div></el-col
                 >
@@ -88,7 +88,7 @@
                 ></el-col>
                 <el-col :span="4"
                   ><div class="grid-content bg-purple" style="margin-top: 10%">
-                    <div style="font-size: 25px">12</div>
+                    <div style="font-size: 25px">0</div>
                     <div>当前离线</div>
                   </div></el-col
                 >
@@ -107,7 +107,7 @@
                 ></el-col>
                 <el-col :span="4"
                   ><div class="grid-content bg-purple" style="margin-top: 10%">
-                    <div style="font-size: 25px">12</div>
+                    <div style="font-size: 25px">0</div>
                     <div>当前故障</div>
                   </div></el-col
                 >
@@ -144,16 +144,16 @@
                         <onlineRate :message="this.onlineRateData" /></div
                     ></el-col>
                     <el-col :span="6"
-                      ><div style="margin: 45% 0% 0% 17%">2</div></el-col
+                      ><div style="margin: 45% 0% 0% 17%">0</div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 45% 27% 0% 0%; color: #2cc195">
-                        3
+                        0
                       </div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 45% 55% 0% 0%; color: #ec1821">
-                        4
+                        0
                       </div></el-col
                     >
                   </el-row>
@@ -163,15 +163,15 @@
                 <div style="height: 100%">
                   <el-row :gutter="24">
                     <el-col :span="8"
-                      ><div style="margin: 40% 0% 0% 3%">2</div></el-col
+                      ><div style="margin: 40% 0% 0% 3%">0</div></el-col
                     >
                     <el-col :span="8"
                       ><div style="margin: 40% 7% 0% 0%; color: #f5c959">
-                        3
+                        0
                       </div></el-col
                     >
                     <el-col :span="8"
-                      ><div style="margin: 40% 18% 0% 0%">4</div></el-col
+                      ><div style="margin: 40% 18% 0% 0%">0</div></el-col
                     >
                   </el-row>
                 </div>
@@ -180,21 +180,21 @@
                 <div style="height: 100%">
                   <el-row :gutter="20">
                     <el-col :span="6"
-                      ><div style="margin: 25% 0% 0% 33%">1</div></el-col
+                      ><div style="margin: 25% 0% 0% 33%">0</div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 25% 0% 0% 5%; color: #f5c959">
-                        2
+                        0
                       </div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 25% 27% 0% 0%; color: #ec1821">
-                        3
+                        0
                       </div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 25% 60% 0% 0%; color: #2cc195">
-                        4
+                        0
                       </div></el-col
                     >
                   </el-row>
@@ -226,16 +226,16 @@
                         <roboticRate :message="this.roboticRateData" /></div
                     ></el-col>
                     <el-col :span="6"
-                      ><div style="margin: 45% 0% 0% 30%">2</div></el-col
+                      ><div style="margin: 45% 0% 0% 30%">0</div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 45% 15% 0% 0%; color: #2cc195">
-                        3
+                        0
                       </div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 45% 40% 0% 0%; color: #ec1821">
-                        4
+                        0
                       </div></el-col
                     >
                   </el-row>
@@ -245,15 +245,15 @@
                 <div style="height: 100%">
                   <el-row :gutter="24">
                     <el-col :span="8"
-                      ><div style="margin: 40% 0% 0% 12%">2</div></el-col
+                      ><div style="margin: 40% 0% 0% 12%">0</div></el-col
                     >
                     <el-col :span="8"
                       ><div style="margin: 40% 0% 0% 2%; color: #f5c959">
-                        3
+                        0
                       </div></el-col
                     >
                     <el-col :span="8"
-                      ><div style="margin: 40% 10% 0% 0%">4</div></el-col
+                      ><div style="margin: 40% 10% 0% 0%">0</div></el-col
                     >
                   </el-row>
                 </div>
@@ -262,21 +262,21 @@
                 <div style="height: 100%">
                   <el-row :gutter="20">
                     <el-col :span="6"
-                      ><div style="margin: 25% 0% 0% 46%">1</div></el-col
+                      ><div style="margin: 25% 0% 0% 46%">0</div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 25% 0% 0% 17%; color: #f5c959">
-                        2
+                        0
                       </div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 25% 17% 0% 0%; color: #ec1821">
-                        3
+                        0
                       </div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 25% 50% 0% 0%; color: #2cc195">
-                        4
+                        0
                       </div></el-col
                     >
                   </el-row>
@@ -308,16 +308,16 @@
                         <AGVrate :message="this.AGVrateData" /></div
                     ></el-col>
                     <el-col :span="6"
-                      ><div style="margin: 45% 0% 0% 32%">2</div></el-col
+                      ><div style="margin: 45% 0% 0% 32%">0</div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 45% 0% 0% 0%; color: #2cc195">
-                        3
+                        0
                       </div></el-col
                     >
                     <el-col :span="6"
                       ><div style="margin: 45% 40% 0% 0%; color: #ec1821">
-                        4
+                        0
                       </div></el-col
                     >
                   </el-row>
@@ -327,15 +327,15 @@
                 <div style="height: 100%">
                   <el-row :gutter="24">
                     <el-col :span="8"
-                      ><div style="margin: 40% 0% 0% 17%">2</div></el-col
+                      ><div style="margin: 40% 0% 0% 17%">0</div></el-col
                     >
                     <el-col :span="8"
                       ><div style="margin: 40% 0% 0% 6%; color: #f5c959">
-                        3
+                        0
                       </div></el-col
                     >
                     <el-col :span="8"
-                      ><div style="margin: 40% 4% 0% 0%">4</div></el-col
+                      ><div style="margin: 40% 4% 0% 0%">0</div></el-col
                     >
                   </el-row>
                 </div>

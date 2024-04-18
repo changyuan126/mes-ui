@@ -46,7 +46,7 @@ export default {
       var option = {
         title: [
           {
-            text: "10%",
+            text: "0%",
             x: "center",
             top: "35%",
             textStyle: {
@@ -89,7 +89,7 @@ export default {
             backgroundStyle: {
               color: "rgba(66, 66, 66, .3)",
             },
-            data: [10],
+            // data: [10],
             coordinateSystem: "polar",
 
             itemStyle: {
