@@ -35,8 +35,12 @@ module.exports = {
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       "/prod-api": {
+        // 蚂蚁工业
         // target: `http://192.168.2.104:8063`,
-        target: `http://192.168.50.191:8063`,
+        // 内网
+        // target: `http://192.168.50.191:8063`,
+        // 线上
+        target: `http://mes.jshengzheng.com:7072`,
         changeOrigin: true,
         // pathRewrite: {
         //   ['^' + process.env.VUE_APP_BASE_API]: ''
@@ -44,7 +48,8 @@ module.exports = {
       },
       "/ureport": {
         // target: `http://192.168.2.104:8063`,
-        target: `http://192.168.50.191:8063`,
+        // target: `http://192.168.50.191:8063`,
+        target: `http://mes.jshengzheng.com:7072`,
         ws: false,
         changeOrigin: true,
         pathRewrite: {

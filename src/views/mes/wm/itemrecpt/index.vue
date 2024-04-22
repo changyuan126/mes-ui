@@ -707,6 +707,7 @@ export default {
       var queryParams = {
         pageNum: 1,
         pageSize: 10000,
+        status: 0,
       };
       // 托盘查询
       listMdItem(queryParams).then((response) => {
@@ -732,7 +733,7 @@ export default {
         axios
           // .get("http://192.168.2.104:8077/manage/matter/storageItem", {
           .post(
-            "http://192.168.2.7:8077/manage/matter/storageItem",
+            "http://192.168.2.104:8077/manage/matter/storageItem",
             this.perform
           )
           .then(function (res) {

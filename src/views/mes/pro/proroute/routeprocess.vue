@@ -456,7 +456,8 @@ import {
   getRouteprocess,
   delRouteprocess,
   addRouteprocess,
-  updateRouteprocess, listRouteprocessTwo,
+  updateRouteprocess,
+  listRouteprocessTwo,
 } from "@/api/mes/pro/routeprocess";
 import { listProcess } from "@/api/mes/pro/process";
 import { getToken } from "@/utils/auth";
@@ -866,16 +867,17 @@ export default {
             });
           }
 
-          let aa = {routeId: this.form.routeId,orderNum: this.form.orderNum}
+          let aa = { routeId: this.form.routeId, orderNum: this.form.orderNum };
           listRouteprocessTwo(aa).then((resp) => {
             resp.data.forEach((item) => {
-                getRouteprocess(item.recordId).then((response) => {
-                    updateRouteprocess(response.data).then(() => {});
+              getRouteprocess(item.recordId).then((response) => {
+                const { originalName, ...newObj } = response.data;
+                updateRouteprocess(newObj).then(() => {
+                  this.getList();
                 });
+              });
             });
-            this.getList();
           });
-
         }
       });
     },
