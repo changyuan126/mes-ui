@@ -671,11 +671,15 @@ export default {
           // .get("http://192.168.50.191:8077/manage/task/execute?ids=" + routeId)
           // .get("http://127.0.0.1:8077/manage/task/execute?ids=" + routeId)
           .then((res) => {
-            if (res.code === 200) {
+            if (res.data.code === 200) {
               this.getList();
-              this.$modal.msgSuccess("执行成功");
+              this.$message({
+                showClose: true,
+                message: "执行成功",
+                type: "success",
+              });
             } else {
-              this.$message.error(res.msg);
+              this.$message.error(res.data.msg);
             }
           });
       } else {
@@ -694,11 +698,15 @@ export default {
         // .get("http://192.168.50.191:8077/manage/task/suspension?id=" + routeId)
         // .get("http://127.0.0.1:8077/manage/task/suspension?id=" + routeId)
         .then((res) => {
-          if (res.code === 200) {
+          if (res.data.code === 200) {
             this.getList();
-            this.$modal.msgSuccess("已暂停");
+            this.$message({
+              showClose: true,
+              message: "已暂停",
+              type: "success",
+            });
           } else {
-            this.$message.error(res.msg);
+            this.$message.error(res.data.msg);
           }
         });
     },

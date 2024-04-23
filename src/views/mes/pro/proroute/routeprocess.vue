@@ -167,7 +167,7 @@
           <el-col :span="8">
             <el-form-item label="序号" prop="orderNum">
               <el-input-number
-                :min="1"
+                :min="0"
                 v-model="form.orderNum"
                 placeholder="请输入序号"
               />
@@ -535,6 +535,7 @@ export default {
         code: null,
       },
       machineryList: [],
+      formArr: "",
       // 表单校验
       rules: {
         routeId: [
@@ -825,6 +826,7 @@ export default {
     handleUpdate(row) {
       console.log(row);
       this.reset();
+      this.formArr = row.orderNum;
       const recordId = row.recordId || this.ids;
       getRouteprocess(recordId).then((response) => {
         this.form = response.data;
@@ -849,35 +851,68 @@ export default {
         this.fileList.push(name);
       }
     },
+    process() {
+      const queryParamsArr = {
+        pageNum: 1,
+        pageSize: 10000,
+        routeId: this.routeId,
+      };
+      listRouteprocess(queryParamsArr).then((response) => {
+        const dataAfterThree = [];
+        response.rows.forEach((item, index) => {
+          dataAfterThree.push(item);
+        });
+        const mappedArray = [];
+        for (let i = 1; i <= dataAfterThree.length; i++) {
+          mappedArray[i] = dataAfterThree[i - 1];
+        }
+        mappedArray.forEach((item, index) => {
+          item.orderNum = index;
+          updateRouteprocess(item).then((response) => {
+            this.getList();
+            updateRouteprocess(item).then((response) => {
+              this.getList();
+            });
+          });
+        });
+      });
+      this.getList();
+    },
+
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.recordId != null) {
+            if (this.form.orderNum < this.formArr) {
+              this.form.orderNum = this.form.orderNum - 1;
+            }
             updateRouteprocess(this.form).then((response) => {
+              this.process();
+              this.getList();
               this.$modal.msgSuccess("修改成功");
               this.open = false;
-              this.getList();
             });
           } else {
+            this.form.orderNum = this.form.orderNum - 1;
             addRouteprocess(this.form).then((response) => {
+              this.process();
+              this.getList();
               this.$modal.msgSuccess("新增成功");
               this.open = false;
-              this.getList();
             });
           }
 
-          let aa = { routeId: this.form.routeId, orderNum: this.form.orderNum };
-          listRouteprocessTwo(aa).then((resp) => {
-            resp.data.forEach((item) => {
-              getRouteprocess(item.recordId).then((response) => {
-                const { originalName, ...newObj } = response.data;
-                updateRouteprocess(newObj).then(() => {
-                  this.getList();
-                });
-              });
-            });
-          });
+          // let aa = { routeId: this.form.routeId, orderNum: this.form.orderNum };
+          // listRouteprocessTwo(aa).then((resp) => {
+          //   resp.data.forEach((item) => {
+          //     getRouteprocess(item.recordId).then((response) => {
+          //       const { originalName, ...newObj } = response.data;
+          //       updateRouteprocess(newObj).then(() => {});
+          //     });
+          //   });
+          //   this.getList();
+          // });
         }
       });
     },
@@ -890,6 +925,7 @@ export default {
           return delRouteprocess(recordIds);
         })
         .then(() => {
+          this.process();
           this.getList();
           this.$modal.msgSuccess("删除成功");
         })
