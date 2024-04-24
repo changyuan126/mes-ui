@@ -818,7 +818,7 @@ export default {
       }
       this.open = true;
       this.title = "添加工艺组成";
-      listRouteprocess(this.queryParams).then((response) => {
+      listRouteprocess({ routeId: this.routeId }).then((response) => {
         this.form.orderNum = response.rows.pop().orderNum + 1;
       });
     },
@@ -852,12 +852,7 @@ export default {
       }
     },
     process() {
-      const queryParamsArr = {
-        pageNum: 1,
-        pageSize: 10000,
-        routeId: this.routeId,
-      };
-      listRouteprocess(queryParamsArr).then((response) => {
+      listRouteprocess({ routeId: this.routeId }).then((response) => {
         const dataAfterThree = [];
         response.rows.forEach((item, index) => {
           dataAfterThree.push(item);
