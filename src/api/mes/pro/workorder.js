@@ -61,9 +61,11 @@ export function listItems(query) {
   })
 }
 
-export function dofinish(workorderId){
+// 删除
+export function deleteShopFace(data) {
   return request({
-    url: '/mes/pro/workorder/'+workorderId,
-    method: 'put'
+    url: '/mes/pro/workorder/deleteShopFace',
+    method: 'post',
+    data: data
   })
 }

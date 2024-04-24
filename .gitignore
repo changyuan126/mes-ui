@@ -18,9 +18,9 @@ selenium-debug.log
 *.njsproj
 *.sln
 *.local
-.editorconfig
-.eslintignore
-.eslintrc.js
-.env.*
+# .editorconfig
+# .eslintignore
+# .eslintrc.js
+# .env.*
 package-lock.json
 yarn.lock

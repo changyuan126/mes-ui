@@ -70,7 +70,7 @@
           <el-color-picker v-model="scope.row.colorCode" disabled></el-color-picker>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="100px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="150px" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -126,7 +126,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <el-form-item label="开始时间" prop="startTime">
               <el-date-picker clearable
                 v-model="form.startTime"
@@ -136,7 +136,7 @@
                 placeholder="请选择开始生产时间">
               </el-date-picker>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col :span="8">
             <el-form-item label="生产时长" prop="duration">
               <el-input-number :min="1" :precision="0" :step="1" v-model="form.duration" @change="calculateEndTime" placeholder="请输入生产时长" />
@@ -220,6 +220,7 @@ export default {
         endTime: null,
         colorCode: null,
         requestDate: null,
+        orderNum: this.orderNum,
       },
       // 表单参数
       form: {},
@@ -245,7 +246,9 @@ export default {
       colorCode: null,
       routeId: null,
       processId: null,
-      optType: null
+      optType: null,
+      recordId:null,
+      orderNum:null,
   },
   created() {
     this.getList();
@@ -295,6 +298,7 @@ export default {
     reset() {
       this.form = {
         taskId: null,
+        recordId: this.recordId,
         taskCode: null,
         taskName: null,
         workorderId: this.workorderId,

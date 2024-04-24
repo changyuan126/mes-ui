@@ -1,6 +1,13 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      size="small"
+      :inline="true"
+      v-show="showSearch"
+      label-width="68px"
+    >
       <el-form-item label="工单编码" prop="workorderCode">
         <el-input
           v-model="queryParams.workorderCode"
@@ -60,86 +67,205 @@
         />
       </el-form-item>
       <el-form-item label="需求日期" prop="requestDate">
-        <el-date-picker clearable
+        <el-date-picker
+          clearable
           v-model="queryParams.requestDate"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="请选择需求日期">
+          placeholder="请选择需求日期"
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>        
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="handleQuery"
+          >搜索</el-button
+        >
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+          >重置</el-button
+        >
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-refresh" v-hasPermi="['mes:pro:protask:list']" circle="" @click="getList"></el-button>
-        <el-button type="primary" icon="el-icon-edit" v-hasPermi="['mes:pro:protask:edit']" circle="" @click="handleOpenGantt"></el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-refresh"
+          v-hasPermi="['mes:pro:protask:list']"
+          circle=""
+          @click="getList"
+        ></el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-edit"
+          v-hasPermi="['mes:pro:protask:edit']"
+          circle=""
+          @click="handleOpenGantt"
+        ></el-button>
       </el-form-item>
     </el-form>
     <div class="wrapper">
       <div class="container">
-        <GanttChar class="left-container" ref="ganttChar" :tasks="tasks"></GanttChar>
-      </div>      
-    </div>    
+        <GanttChar
+          class="left-container"
+          ref="ganttChar"
+          :tasks="tasks"
+        ></GanttChar>
+      </div>
+    </div>
+
+    <el-row :gutter="10" class="mb8" style="margin-top: 10px">
+      <el-col :span="1.5">
+        <el-button type="primary" plain size="mini" @click="handleproductione"
+          >批量执行生产</el-button
+        >
+      </el-col>
+    </el-row>
+
     <el-table
       v-loading="loading"
       :data="workorderList"
       row-key="workorderId"
       default-expand-all
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+      @selection-change="handleSelectionChange"
     >
-      <el-table-column label="工单编码" width="180" prop="workorderCode" >
+      <el-table-column
+        type="selection"
+        width="55"
+        align="center"
+        :selectable="selectable"
+      />
+
+      <el-table-column label="工单编码" width="180" prop="workorderCode">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             @click="handleView(scope.row)"
             v-hasPermi="['mes:pro:protask:query']"
-          >{{scope.row.workorderCode}}</el-button>
+            >{{ scope.row.workorderCode }}</el-button
+          >
         </template>
       </el-table-column>
-      <el-table-column label="工单名称" width="200" align="center" prop="workorderName" :show-overflow-tooltip="true"/>
-      <el-table-column label="工单来源" align="center" prop="orderSource" >
+      <el-table-column
+        label="工单名称"
+        width="200"
+        align="center"
+        prop="workorderName"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column label="工单来源" align="center" prop="orderSource">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.mes_workorder_sourcetype" :value="scope.row.orderSource"/>
+          <dict-tag
+            :options="dict.type.mes_workorder_sourcetype"
+            :value="scope.row.orderSource"
+          />
         </template>
       </el-table-column>
-      <el-table-column label="订单编号" width="140" align="center" prop="sourceCode" />
-      <el-table-column label="产品编号" width="120" align="center" prop="productCode" />
-      <el-table-column label="产品名称" width="200" align="center" prop="productName" :show-overflow-tooltip="true"/>
-      <el-table-column label="规格型号" align="center" prop="productSpc" :show-overflow-tooltip="true"/>
+      <el-table-column
+        label="订单编号"
+        width="140"
+        align="center"
+        prop="sourceCode"
+      />
+      <el-table-column
+        label="产品编号"
+        width="120"
+        align="center"
+        prop="productCode"
+      />
+      <el-table-column
+        label="产品名称"
+        width="200"
+        align="center"
+        prop="productName"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        label="规格型号"
+        align="center"
+        prop="productSpc"
+        :show-overflow-tooltip="true"
+      />
       <el-table-column label="单位" align="center" prop="unitOfMeasure" />
-      <el-table-column label="工单数量" align="center" prop="quantity" />                 
+      <el-table-column label="计划数量" align="center" prop="quantity" />
       <el-table-column label="调整数量" align="center" prop="quantityChanged" />
-      <el-table-column label="已生产数量" align="center" width="100px" prop="quantityProduced" /> 
+      <el-table-column
+        label="已生产数量"
+        align="center"
+        width="100px"
+        prop="quantityProduced"
+      />
       <el-table-column label="客户编码" align="center" prop="clientCode" />
-      <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
-      <el-table-column label="需求日期" align="center" prop="requestDate" width="180">
+      <el-table-column
+        label="客户名称"
+        align="center"
+        prop="clientName"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        label="需求日期"
+        align="center"
+        prop="requestDate"
+        width="180"
+      >
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.requestDate, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.requestDate, "{y}-{m}-{d}") }}</span>
         </template>
       </el-table-column>
       <el-table-column label="排产状态" align="center" prop="status">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.mes_order_status" :value="scope.row.status"/>
+          <dict-tag
+            :options="dict.type.mes_order_status"
+            :value="scope.row.status"
+          />
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="150px" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        width="150px"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
-            v-if="scope.row.status =='CONFIRMED'"
+            v-if="scope.row.status == 'PRODUCTION'"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['mes:pro:protask:edit']"
-          >排产</el-button>
+            >排产</el-button
+          >
+          <el-button
+            size="mini"
+            type="text"
+            v-if="scope.row.status == 'PRODUCTION'"
+            @click="handleproductione(scope.row)"
+            >执行生产</el-button
+          >
+          <el-button
+            size="mini"
+            type="text"
+            v-if="scope.row.status == 'WORKING'"
+            @click="Pendingproduction(scope.row)"
+            >暂停生产</el-button
+          >
+          <el-button
+            size="mini"
+            type="text"
+            v-if="scope.row.status == 'SUSPENDED'"
+            @click="handleSuspended(scope.row)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
 
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
@@ -147,7 +273,12 @@
     />
 
     <!-- 添加或修改生产工单对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body>
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      width="1550px"
+      append-to-body
+    >
       <el-form ref="form" :model="form" label-width="80px">
         <el-row>
           <el-col :span="12">
@@ -159,26 +290,27 @@
             <el-form-item label="工单名称" prop="workorderName">
               <el-input v-model="form.workorderName" readonly="readonly" />
             </el-form-item>
-          </el-col>          
+          </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">
-            <el-form-item label="来源类型" prop="orderSource">              
+          <el-col :span="12">
+            <el-form-item label="来源类型" prop="orderSource">
               <el-radio-group v-model="form.orderSource" disabled>
                 <el-radio
                   v-for="dict in dict.type.mes_workorder_sourcetype"
                   :key="dict.value"
                   :label="dict.value"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>            
+                  >{{ dict.label }}</el-radio
+                >
+              </el-radio-group>
             </el-form-item>
-          </el-col>                    
-          <el-col :span="8" v-if="form.orderSource == 'ORDER'">
+          </el-col>
+          <el-col :span="12" v-if="form.orderSource == 'ORDER'">
             <el-form-item label="订单编号" prop="sourceCode">
               <el-input v-model="form.sourceCode" readonly="readonly" />
             </el-form-item>
-          </el-col>         
-          <el-col :span="8">
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="排产状态" prop="status">
               <el-select v-model="form.status" disabled>
                 <el-option
@@ -189,12 +321,12 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-          </el-col> 
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="产品编号" prop="productCode">
-              <el-input v-model="form.productCode" readonly="readonly" >
+              <el-input v-model="form.productCode" readonly="readonly">
               </el-input>
             </el-form-item>
           </el-col>
@@ -202,7 +334,7 @@
             <el-form-item label="产品名称" prop="productName">
               <el-input v-model="form.productName" readonly="readonly" />
             </el-form-item>
-          </el-col>          
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
@@ -214,29 +346,31 @@
             <el-form-item label="单位" prop="unitOfMeasure">
               <el-input v-model="form.unitOfMeasure" readonly="readonly" />
             </el-form-item>
-          </el-col>          
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="工单数量" prop="quantity">
+            <el-form-item label="计划数量" prop="quantity">
               <el-input v-model="form.quantity" readonly="readonly" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="需求日期" prop="requestDate">
-              <el-date-picker disabled
+              <el-date-picker
+                disabled
                 v-model="form.requestDate"
                 type="date"
                 value-format="yyyy-MM-dd"
-                placeholder="请选择需求日期">
+                placeholder="请选择需求日期"
+              >
               </el-date-picker>
             </el-form-item>
-          </el-col>          
+          </el-col>
         </el-row>
         <el-row v-if="form.orderSource == 'ORDER'">
           <el-col :span="12">
             <el-form-item label="客户编号" prop="clientCode">
-              <el-input v-model="form.clientCode" readonly="readonly" >
+              <el-input v-model="form.clientCode" readonly="readonly">
               </el-input>
             </el-form-item>
           </el-col>
@@ -250,23 +384,69 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注" prop="remark">
-              <el-input v-model="form.remark" type="textarea" readonly="readonly" />
+              <el-input
+                v-model="form.remark"
+                type="textarea"
+                readonly="readonly"
+              />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-      <el-steps :active="activeProcess" v-if="form.workorderId !=null" align-center simple>
-        <el-step  v-for="(item,index) in processOptions"
-                  :title="item.processName" @click.native="handleStepClick(index)">           
-        </el-step>
-      </el-steps>
-      <el-card v-for=" (item,index) in processOptions " :key="index" v-if="activeProcess == index && form.workorderId !=null">
-        <ProTask :workorderId="form.workorderId" :routeId="item.routeId" :processId="item.processId" :colorCode="item.colorCode" :optType="optType"></ProTask>
+      <el-scrollbar style="height: 100%; background: #f5f7fa">
+        <el-steps
+          :active="activeProcess"
+          v-if="form.workorderId != null"
+          align-center
+          simple
+        >
+          <el-step
+            v-for="(item, index) in processOptions"
+            :title="item.processName"
+            @click.native="handleStepClick(index)"
+          >
+          </el-step>
+        </el-steps>
+      </el-scrollbar>
+
+      <el-card
+        v-for="(item, index) in processOptions"
+        :key="index"
+        v-if="activeProcess == index && form.workorderId != null"
+      >
+        <ProTask
+          :workorderId="form.workorderId"
+          :routeId="item.routeId"
+          :processId="item.processId"
+          :colorCode="item.colorCode"
+          :orderNum="item.orderNum"
+          :optType="optType"
+          :recordId="item.recordId"
+        ></ProTask>
       </el-card>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="cancel" v-if="optType =='view' || form.status !='PREPARE' ">返回</el-button>
-        <el-button type="primary" @click="submitForm" v-if="form.status =='PREPARE' && optType !='view' ">确 定</el-button>
-        <el-button type="success" @click="handleFinish" v-if="form.status =='PREPARE' && optType !='view'  && form.workorderId !=null">完成</el-button>
+        <el-button
+          type="primary"
+          @click="cancel"
+          v-if="optType == 'view' || form.status != 'PREPARE'"
+          >返回</el-button
+        >
+        <el-button
+          type="primary"
+          @click="submitForm"
+          v-if="form.status == 'PREPARE' && optType != 'view'"
+          >确 定</el-button
+        >
+        <el-button
+          type="success"
+          @click="handleFinish"
+          v-if="
+            form.status == 'PREPARE' &&
+            optType != 'view' &&
+            form.workorderId != null
+          "
+          >完成</el-button
+        >
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -274,8 +454,16 @@
 </template>
 
 <script>
-import { listWorkorder, getWorkorder, delWorkorder, addWorkorder, updateWorkorder } from "@/api/mes/pro/workorder";
-import {listGanttTaskList} from "@/api/mes/pro/protask";
+import axios from "axios";
+import {
+  listWorkorder,
+  getWorkorder,
+  delWorkorder,
+  addWorkorder,
+  updateWorkorder,
+  deleteShopFace,
+} from "@/api/mes/pro/workorder";
+import { listGanttTaskList } from "@/api/mes/pro/protask";
 import { listProductprocess } from "@/api/mes/pro/routeprocess";
 import ProTask from "./proTask.vue";
 import GanttChar from "./ganttx.vue";
@@ -284,16 +472,16 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Workorder",
-  dicts: ['mes_order_status','mes_workorder_sourcetype'],
+  dicts: ["mes_order_status", "mes_workorder_sourcetype"],
   components: {
     Treeselect,
     ProTask,
-    GanttChar
+    GanttChar,
   },
   data() {
     return {
       //自动生成编码
-      autoGenFlag:false,
+      autoGenFlag: true,
       optType: undefined,
       activeProcess: 0,
       // 遮罩层
@@ -322,7 +510,7 @@ export default {
         pageSize: 10,
         workorderCode: null,
         workorderName: null,
-        workorderType: 'SELF', //这里的排产要排除自产之外的外协和外购
+        workorderType: "SELF", //这里的排产要排除自产之外的外协和外购
         orderSource: null,
         sourceCode: null,
         productId: null,
@@ -340,14 +528,15 @@ export default {
         requestDate: null,
         parentId: null,
         ancestors: null,
-        status: 'CONFIRMED',
+        status: null,
       },
-      tasks:{
+      tasks: {
         data: [],
-        links: []
+        links: [],
       },
       // 表单参数
       form: {},
+      ids: "",
     };
   },
   created() {
@@ -358,17 +547,21 @@ export default {
     /** 查询生产工单列表 */
     getList() {
       this.loading = true;
-      listWorkorder(this.queryParams).then(response => {
-        this.workorderList = this.handleTree(response.rows, "workorderId", "parentId");
+      listWorkorder(this.queryParams).then((response) => {
+        this.workorderList = this.handleTree(
+          response.rows,
+          "workorderId",
+          "parentId"
+        );
         this.total = response.total;
         this.loading = false;
       });
     },
-    handleOpenGantt(){
-      this.$router.push({ path: '/mes/pro/schedule/ganttedit'})
+    handleOpenGantt() {
+      this.$router.push({ path: "/mes/pro/schedule/ganttedit" });
     },
-    getGanttTasks(){
-      listGanttTaskList(this.queryParams).then(response =>{
+    getGanttTasks() {
+      listGanttTaskList(this.queryParams).then((response) => {
         this.tasks.data = response.data.data;
         this.tasks.links = response.data.links;
         this.$refs.ganttChar.reload();
@@ -376,10 +569,10 @@ export default {
     },
 
     //获取当前产品对应的生产工序
-    getProcess(){
-        listProductprocess(this.form.productId).then(response =>{
-            this.processOptions = response.data;
-        });
+    getProcess() {
+      listProductprocess(this.form.productId).then((response) => {
+        this.processOptions = response.data;
+      });
     },
 
     /** 转换生产工单数据结构 */
@@ -390,15 +583,23 @@ export default {
       return {
         id: node.workorderId,
         label: node.workorderName,
-        children: node.children
+        children: node.children,
       };
     },
-	/** 查询生产工单下拉树结构 */
+    /** 查询生产工单下拉树结构 */
     getTreeselect() {
-      listWorkorder().then(response => {
+      listWorkorder().then((response) => {
         this.workorderOptions = [];
-        const data = { workorderId: 0, workorderName: '顶级节点', children: [] };
-        data.children = this.handleTree(response.data, "workorderId", "parentId");
+        const data = {
+          workorderId: 0,
+          workorderName: "顶级节点",
+          children: [],
+        };
+        data.children = this.handleTree(
+          response.data,
+          "workorderId",
+          "parentId"
+        );
         this.workorderOptions.push(data);
       });
     },
@@ -434,19 +635,19 @@ export default {
         createBy: null,
         createTime: null,
         updateBy: null,
-        updateTime: null        
+        updateTime: null,
       };
-      this.activeProcess =0;
-      this.autoGenFlag = false;
+      this.activeProcess = 0;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     //甘特图按钮点击
-    openGanttChart(){
-      this.$refs.ganttChar.showFlag =true;
+    openGanttChart() {
+      this.$refs.ganttChar.showFlag = true;
     },
     //Step点击
-    handleStepClick(index){
-        this.activeProcess =index;
+    handleStepClick(index) {
+      this.activeProcess = index;
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -457,8 +658,87 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map((item) => item.workorderId);
+    },
+    // 执行生产
+    handleproductione(row) {
+      const routeId = row.workorderId || this.ids;
+      if (routeId !== "") {
+        axios
+          .get("http://192.168.2.104:8077/manage/task/execute?ids=" + routeId)
+          // .get("http://192.168.50.191:8077/manage/task/execute?ids=" + routeId)
+          // .get("http://127.0.0.1:8077/manage/task/execute?ids=" + routeId)
+          .then((res) => {
+            if (res.data.code === 200) {
+              this.getList();
+              this.$message({
+                showClose: true,
+                message: "执行成功",
+                type: "success",
+              });
+            } else {
+              this.$message.error(res.data.msg);
+            }
+          });
+      } else {
+        this.$message({
+          message: "请选择要执行的工单",
+          type: "warning",
+        });
+      }
+    },
+
+    // 暂停生产
+    Pendingproduction(row) {
+      const routeId = row.workorderId || this.ids;
+      axios
+        .get("http://192.168.2.104:8077/manage/task/suspension?id=" + routeId)
+        // .get("http://192.168.50.191:8077/manage/task/suspension?id=" + routeId)
+        // .get("http://127.0.0.1:8077/manage/task/suspension?id=" + routeId)
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.getList();
+            this.$message({
+              showClose: true,
+              message: "已暂停",
+              type: "success",
+            });
+          } else {
+            this.$message.error(res.data.msg);
+          }
+        });
+    },
+    // 删除
+    handleSuspended(row) {
+      const workorderId = row.workorderId || this.ids;
+      this.$modal
+        .confirm("确认删除数据项？")
+        .then(() => {
+          deleteShopFace({ workorderId: workorderId }).then((response) => {
+            console.log(response);
+            if (response.code === 200) {
+              this.getList();
+              this.$modal.msgSuccess("删除成功");
+            } else {
+              this.$message.error(res.msg);
+            }
+          });
+        })
+        .catch(() => {});
+    },
+
+    selectable(row, index) {
+      if (row.status == "WORKING" || row.status == "PREPARE") {
+        return false;
+      } else {
+        return true;
+      }
+    },
+
     //从BOM行中直接新增
-    handleSubAdd(row){
+    handleSubAdd(row) {
       this.open = false;
       this.reset();
       this.getTreeselect();
@@ -472,7 +752,7 @@ export default {
       }
       this.open = true;
       this.title = "添加生产工单";
-      this.optType="add";
+      this.optType = "add";
     },
     /** 新增按钮操作 */
     handleAdd(row) {
@@ -490,14 +770,17 @@ export default {
       }
       this.open = true;
       this.title = "添加生产工单";
-      this.optType="add";
+      this.optType = "add";
+      genCode("WORKORDER_CODE").then((response) => {
+        this.form.workorderCode = response;
+      });
     },
     // 查询明细按钮操作
-    handleView(row){
-      this.reset();      
+    handleView(row) {
+      this.reset();
       this.getTreeselect();
       const workorderId = row.workorderId || this.ids;
-      getWorkorder(workorderId).then(response => {
+      getWorkorder(workorderId).then((response) => {
         this.form = response.data;
         this.getProcess();
         this.open = true;
@@ -512,27 +795,27 @@ export default {
       if (row != null) {
         this.form.parentId = row.workorderId;
       }
-      getWorkorder(row.workorderId).then(response => {
+      getWorkorder(row.workorderId).then((response) => {
         this.form = response.data;
         this.getProcess();
         this.open = true;
         this.title = "生产排产";
-        this.optType="edit";
+        this.optType = "edit";
       });
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.workorderId != null) {
-            updateWorkorder(this.form).then(response => {
+            updateWorkorder(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               //this.open = false;
               this.$refs["bomlist"].getList();
               this.getList();
             });
           } else {
-            addWorkorder(this.form).then(response => {
+            addWorkorder(this.form).then((response) => {
               this.$modal.msgSuccess("新增成功");
               //this.open = false;
               this.form.workorderId = response.data;
@@ -544,66 +827,78 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      this.$modal.confirm('是否确认删除生产工单编号为"' + row.workorderId + '"的数据项？').then(function() {
-        return delWorkorder(row.workorderId);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      this.$modal
+        .confirm(
+          '是否确认删除生产工单编号为"' + row.workorderId + '"的数据项？'
+        )
+        .then(function () {
+          return delWorkorder(row.workorderId);
+        })
+        .then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
     },
-    handleSelectProduct(){
+    handleSelectProduct() {
       this.$refs.itemSelect.showFlag = true;
     },
-    handleSelectClient(){
+    handleSelectClient() {
       this.$refs.clientSelect.showFlag = true;
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('mes/pro/workorder/export', {
-        ...this.queryParams
-      }, `workorder_${new Date().getTime()}.xlsx`)
+      this.download(
+        "mes/pro/workorder/export",
+        {
+          ...this.queryParams,
+        },
+        `workorder_${new Date().getTime()}.xlsx`
+      );
     },
-    handleFinish(){
+    handleFinish() {
       let that = this;
-      this.$modal.confirm('是否完成工单编制？【完成后将不能更改】').then(function(){
-        that.form.status = 'CONFIRMED';
-        that.submitForm();
-      });
+      this.$modal
+        .confirm("是否完成工单编制？【完成后将不能更改】")
+        .then(function () {
+          that.form.status = "CONFIRMED";
+          that.submitForm();
+        });
     },
     //物料选择弹出框
-    onItemSelected(obj){
-        if(obj != undefined && obj != null){
-          this.form.productId = obj.itemId;
-          this.form.productCode = obj.itemCode;
-          this.form.productName = obj.itemName;
-          this.form.productSpc = obj.specification;
-          this.form.unitOfMeasure = obj.unitOfMeasure;  
-        }
+    onItemSelected(obj) {
+      if (obj != undefined && obj != null) {
+        this.form.productId = obj.itemId;
+        this.form.productCode = obj.itemCode;
+        this.form.productName = obj.itemName;
+        this.form.productSpc = obj.specification;
+        this.form.unitOfMeasure = obj.unitOfMeasure;
+      }
     },
     //客户选择弹出框
-    onClientSelected(obj){
-        if(obj != undefined && obj != null){
-          this.form.clientId = obj.clientId;
-          this.form.clientCode = obj.clientCode;
-          this.form.clientName = obj.clientName;
-        }
+    onClientSelected(obj) {
+      if (obj != undefined && obj != null) {
+        this.form.clientId = obj.clientId;
+        this.form.clientCode = obj.clientCode;
+        this.form.clientName = obj.clientName;
+      }
     },
     //自动生成编码
-    handleAutoGenChange(autoGenFlag){
-      if(autoGenFlag){
-        genCode('WORKORDER_CODE').then(response =>{
+    handleAutoGenChange(autoGenFlag) {
+      if (autoGenFlag) {
+        genCode("WORKORDER_CODE").then((response) => {
           this.form.workorderCode = response;
         });
-      }else{
+      } else {
         this.form.workorderCode = null;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
-.wrapper{
-    height: 400px;
+.wrapper {
+  height: 400px;
 }
 .container {
   height: 100%;

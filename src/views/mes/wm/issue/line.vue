@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">    
+  <div class="app-container">
     <el-row v-if="optType != 'view'" :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -9,7 +9,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['mes:wm:issueheader:add']"
-        >新增</el-button>
+          >新增</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -20,7 +21,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['mes:wm:issueheader:edit']"
-        >修改</el-button>
+          >修改</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -31,24 +33,59 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['mes:wm:issueheader:remove']"
-        >删除</el-button>
+          >删除</el-button
+        >
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+      <right-toolbar
+        :showSearch.sync="showSearch"
+        @queryTable="getList"
+      ></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="issuelineList" @selection-change="handleSelectionChange">
+    <el-table
+      v-loading="loading"
+      :data="issuelineList"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="产品物料编码" width="120px" align="center" prop="itemCode" />
-      <el-table-column label="产品物料名称" width="120px"  align="center" prop="itemName" :show-overflow-tooltip="true"/>
-      <el-table-column label="规格型号" align="center" prop="specification" :show-overflow-tooltip="true"/>
+      <el-table-column
+        label="产品物料编码"
+        width="120px"
+        align="center"
+        prop="itemCode"
+      />
+      <el-table-column
+        label="产品物料名称"
+        width="120px"
+        align="center"
+        prop="itemName"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        label="规格型号"
+        align="center"
+        prop="specification"
+        :show-overflow-tooltip="true"
+      />
       <el-table-column label="单位" align="center" prop="unitOfMeasure" />
       <el-table-column label="领料数量" align="center" prop="quantityIssued" />
       <el-table-column label="批次号" align="center" prop="batchCode" />
       <el-table-column label="仓库名称" align="center" prop="warehouseName" />
       <el-table-column label="库区名称" align="center" prop="locationName" />
       <el-table-column label="库位名称" align="center" prop="areaName" />
-      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true"/>
-      <el-table-column label="操作" align="center" v-if="optType != 'view'" width="100px" class-name="small-padding fixed-width">
+      <el-table-column
+        label="备注"
+        align="center"
+        prop="remark"
+        :show-overflow-tooltip="true"
+      />
+      <el-table-column
+        label="操作"
+        align="center"
+        v-if="optType != 'view'"
+        width="100px"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -57,7 +94,8 @@
             @click="handleUpdate(scope.row)"
             v-if="optType != 'view'"
             v-hasPermi="['mes:wm:issueheader:edit']"
-          >修改</el-button>
+            >修改</el-button
+          >
           <el-button
             size="mini"
             type="text"
@@ -65,13 +103,14 @@
             @click="handleDelete(scope.row)"
             v-if="optType != 'view'"
             v-hasPermi="['mes:wm:issueheader:remove']"
-          >删除</el-button>
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
@@ -80,72 +119,91 @@
 
     <!-- 添加或修改生产领料单行对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="110px">
         <el-row>
-            <el-col :span="8">
-                <el-form-item label="产品物料编码" prop="itemCode">
-                    <el-input v-model="form.itemCode" readonly="readonly" placeholder="请选择产品物料编码" >
-                      <el-button slot="append" @click="handleSelectStock" icon="el-icon-search"></el-button>
-                    </el-input>
-                </el-form-item>
-                <StockSelect ref="stockSelect" :batchCode="form.batchCode" :vendorId="form.vendorId" @onSelected="onStockSelected"></StockSelect>
-            </el-col>
-            <el-col :span="8">
-                <el-form-item label="产品物料名称" prop="itemName">
-                    <el-input v-model="form.itemName" readonly="readonly" />
-                </el-form-item>
-            </el-col>
+          <el-col :span="8">
+            <el-form-item label="产品物料编码" prop="itemCode">
+              <el-input
+                v-model="form.itemCode"
+                readonly="readonly"
+                placeholder="请选择产品物料编码"
+              >
+                <el-button
+                  slot="append"
+                  @click="handleSelectStock"
+                  icon="el-icon-search"
+                ></el-button>
+              </el-input>
+            </el-form-item>
+            <StockSelect
+              ref="stockSelect"
+              :batchCode="batchCdoe"
+              :vendorId="vendorId"
+              @onSelected="onStockSelected"
+            ></StockSelect>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="产品物料名称" prop="itemName">
+              <el-input v-model="form.itemName" readonly="readonly" />
+            </el-form-item>
+          </el-col>
           <el-col :span="8">
             <el-form-item label="领料数量" prop="quantityIssued">
-              <el-input-number :max="form.quantityMax" v-model="form.quantityIssued" placeholder="请输入领料数量" />
+              <el-input-number
+                :max="form.quantityMax"
+                v-model="form.quantityIssued"
+                placeholder="请输入领料数量"
+              />
             </el-form-item>
           </el-col>
         </el-row>
-         <el-row>
-            <el-col :span="24">
-                <el-form-item label="规格型号" prop="specification">
-                    <el-input v-model="form.specification" readonly="readonly" type="textarea" />
-                </el-form-item>
-            </el-col>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="规格型号" prop="specification">
+              <el-input
+                v-model="form.specification"
+                readonly="readonly"
+                type="textarea"
+              />
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row>
-            <el-col :span="8">
-              <el-form-item label="单位" prop="unitOfMeasure">
-                <el-input v-model="form.unitOfMeasure" readonly="readonly" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="批次号" prop="batchCode">
-                <el-input v-model="form.batchCode" readonly="readonly" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-
-            </el-col>
+          <el-col :span="8">
+            <el-form-item label="单位" prop="unitOfMeasure">
+              <el-input v-model="form.unitOfMeasure" readonly="readonly" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="批次号" prop="batchCode">
+              <el-input v-model="form.batchCode" readonly="readonly" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8"> </el-col>
         </el-row>
         <el-row>
-            <el-col :span="8">
-              <el-form-item label="仓库" prop="warehouseName">
-                <el-input v-model="form.warehouseName" readonly="readonly" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="库区" prop="locationName">
-                <el-input v-model="form.locationName" readonly="readonly" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="库位" prop="areaName">
-                <el-input v-model="form.areaName" readonly="readonly" />
-              </el-form-item>
-            </el-col>
+          <el-col :span="8">
+            <el-form-item label="仓库" prop="warehouseName">
+              <el-input v-model="form.warehouseName" readonly="readonly" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="库区" prop="locationName">
+              <el-input v-model="form.locationName" readonly="readonly" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="库位" prop="areaName">
+              <el-input v-model="form.areaName" readonly="readonly" />
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row>
-            <el-col :span="24">
-              <el-form-item label="备注" prop="remark">
-                <el-input v-model="form.remark" type="textarea" />
-              </el-form-item>
-            </el-col>
+          <el-col :span="24">
+            <el-form-item label="备注" prop="remark">
+              <el-input v-model="form.remark" type="textarea" />
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -157,17 +215,23 @@
 </template>
 
 <script>
-import { listIssueline, getIssueline, delIssueline, addIssueline, updateIssueline } from "@/api/mes/wm/issueline";
-import StockSelect from "@/components/stockSelect/single.vue"
+import {
+  listIssueline,
+  getIssueline,
+  delIssueline,
+  addIssueline,
+  updateIssueline,
+} from "@/api/mes/wm/issueline";
+import StockSelect from "@/components/stockSelect/single.vue";
 export default {
   name: "Issueline",
-  components:{StockSelect},
-    props:{
+  components: { StockSelect },
+  props: {
     optType: null,
     issueId: null,
     warehouseId: null,
     locationId: null,
-    areaId: null
+    areaId: null,
   },
   data() {
     return {
@@ -216,12 +280,15 @@ export default {
       // 表单校验
       rules: {
         itemId: [
-          { required: true, message: "产品物料不能为空", trigger: "blur" }
+          { required: true, message: "产品物料不能为空", trigger: "blur" },
         ],
         quantityIssued: [
-          { required: true, message: "领料数量不能为空", trigger: "blur" }
+          { required: true, message: "领料数量不能为空", trigger: "blur" },
         ],
-      }
+        itemCode: [
+          { required: true, message: "产品物料编码不能为空", trigger: "blur" },
+        ],
+      },
     };
   },
   created() {
@@ -231,7 +298,7 @@ export default {
     /** 查询生产领料单行列表 */
     getList() {
       this.loading = true;
-      listIssueline(this.queryParams).then(response => {
+      listIssueline(this.queryParams).then((response) => {
         this.issuelineList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -271,7 +338,7 @@ export default {
         createBy: null,
         createTime: null,
         updateBy: null,
-        updateTime: null
+        updateTime: null,
       };
       this.resetForm("form");
     },
@@ -287,9 +354,9 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.lineId)
-      this.single = selection.length!==1
-      this.multiple = !selection.length
+      this.ids = selection.map((item) => item.lineId);
+      this.single = selection.length !== 1;
+      this.multiple = !selection.length;
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -300,26 +367,28 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const lineId = row.lineId || this.ids
-      getIssueline(lineId).then(response => {
-        debugger;
+      const lineId = row.lineId || this.ids;
+      getIssueline(lineId).then((response) => {
         this.form = response.data;
+        this.warehouseInfo[0] = response.data.warehouseId;
+        this.warehouseInfo[1] = response.data.locationId;
+        this.warehouseInfo[2] = response.data.areaId;
         this.open = true;
         this.title = "修改生产领料单行";
       });
     },
     /** 提交按钮 */
     submitForm() {
-      this.$refs["form"].validate(valid => {
+      this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.lineId != null) {
-            updateIssueline(this.form).then(response => {
+            updateIssueline(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addIssueline(this.form).then(response => {
+            addIssueline(this.form).then((response) => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -331,46 +400,54 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const lineIds = row.lineId || this.ids;
-      this.$modal.confirm('是否确认删除生产领料单行编号为"' + lineIds + '"的数据项？').then(function() {
-        return delIssueline(lineIds);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      this.$modal
+        .confirm('是否确认删除生产领料单行编号为"' + lineIds + '"的数据项？')
+        .then(function () {
+          return delIssueline(lineIds);
+        })
+        .then(() => {
+          this.getList();
+          this.$modal.msgSuccess("删除成功");
+        })
+        .catch(() => {});
     },
-    handleSelectStock(){
+    handleSelectStock() {
       this.$refs.stockSelect.showFlag = true;
       this.$refs.stockSelect.getList();
     },
-        //物料选择弹出框
-    onStockSelected(obj){
-        if(obj != undefined && obj != null){
-          this.form.materialStockId = obj.materialStockId;
-          this.form.itemId = obj.itemId;
-          this.form.itemCode = obj.itemCode;
-          this.form.itemName = obj.itemName;
-          this.form.specification = obj.specification;
-          this.form.unitOfMeasure = obj.unitOfMeasure;  
-          this.form.batchCode = obj.batchCode;
-          this.form.warehouseId = obj.warehouseId;
-          this.form.warehouseCode = obj.warehouseCode;
-          this.form.warehouseName = obj.warehouseName;
-          this.form.locationId = obj.locationId;
-          this.form.locationCode = obj.locationCode;
-          this.form.locationName = obj.locationName;
-          this.form.areaId = obj.areaId;
-          this.form.areaCode = obj.areaCode;
-          this.form.areaName = obj.areaName;
-          this.form.quantityIssued = obj.quantityOnhand;
-          this.form.quantityMax = obj.quantityOnhand;
-        }
+    //物料选择弹出框
+    onStockSelected(obj) {
+      if (obj != undefined && obj != null) {
+        this.form.materialStockId = obj.materialStockId;
+        this.form.itemId = obj.itemId;
+        this.form.itemCode = obj.itemCode;
+        this.form.itemName = obj.itemName;
+        this.form.specification = obj.specification;
+        this.form.unitOfMeasure = obj.unitOfMeasure;
+        this.form.batchCode = obj.batchCode;
+        this.form.warehouseId = obj.warehouseId;
+        this.form.warehouseCode = obj.warehouseCode;
+        this.form.warehouseName = obj.warehouseName;
+        this.form.locationId = obj.locationId;
+        this.form.locationCode = obj.locationCode;
+        this.form.locationName = obj.locationName;
+        this.form.areaId = obj.areaId;
+        this.form.areaCode = obj.areaCode;
+        this.form.areaName = obj.areaName;
+        this.form.quantityIssued = obj.quantityOnhand;
+        this.form.quantityMax = obj.quantityOnhand;
+      }
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('wm/issueline/export', {
-        ...this.queryParams
-      }, `issueline_${new Date().getTime()}.xlsx`)
-    }
-  }
+      this.download(
+        "wm/issueline/export",
+        {
+          ...this.queryParams,
+        },
+        `issueline_${new Date().getTime()}.xlsx`
+      );
+    },
+  },
 };
 </script>

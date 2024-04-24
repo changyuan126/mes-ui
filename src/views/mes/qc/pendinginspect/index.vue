@@ -95,7 +95,7 @@
     data() {
       return {
         //自动生成编码
-        autoGenFlag:false,
+        autoGenFlag:true,
         optType: undefined,
         // 遮罩层
         loading: true,

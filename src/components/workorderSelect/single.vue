@@ -74,7 +74,7 @@
         <el-table-column label="产品名称" width="200" align="center" prop="productName" :show-overflow-tooltip="true"/>
         <el-table-column label="规格型号" align="center" prop="productSpc" :show-overflow-tooltip="true"/>
         <el-table-column label="单位" align="center" prop="unitOfMeasure" />
-        <el-table-column label="工单数量" align="center" prop="quantity" />                 
+        <el-table-column label="计划数量" align="center" prop="quantity" />                 
         <el-table-column label="客户编码" align="center" prop="clientCode" />
         <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
         <el-table-column label="需求日期" align="center" prop="requestDate" width="180">

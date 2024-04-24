@@ -30,7 +30,7 @@
               </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="7">
+        <!-- <el-col :span="7">
           <el-form-item label="所在车间" prop="workshopName">
             <el-select v-model="queryParams.workshopId" placeholder="请选择车间">
               <el-option
@@ -41,7 +41,7 @@
               ></el-option>
             </el-select>
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :span="3">
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -178,7 +178,7 @@ export default {
         workstationCode: null,
         workstationName: null,
         workstationAddress: null,
-        workshopId: null,
+        workshopId: "214",
         workshopCode: null,
         workshopName: null,
         processId: null,
