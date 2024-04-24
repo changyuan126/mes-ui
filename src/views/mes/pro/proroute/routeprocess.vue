@@ -536,6 +536,7 @@ export default {
       },
       machineryList: [],
       formArr: "",
+      popArr: "",
       // 表单校验
       rules: {
         routeId: [
@@ -819,7 +820,8 @@ export default {
       this.open = true;
       this.title = "添加工艺组成";
       listRouteprocess({ routeId: this.routeId }).then((response) => {
-        this.form.orderNum = response.rows.pop().orderNum + 1;
+        this.popArr = response.total;
+        this.form.orderNum = response.total + 1;
       });
     },
     /** 修改按钮操作 */
@@ -864,11 +866,9 @@ export default {
         mappedArray.forEach((item, index) => {
           item.orderNum = index;
           updateRouteprocess(item).then((response) => {
-            this.getList();
-            updateRouteprocess(item).then((response) => {
-              this.getList();
-            });
+            updateRouteprocess(item).then((response) => {});
           });
+          this.getList();
         });
       });
       this.getList();
@@ -889,25 +889,15 @@ export default {
               this.open = false;
             });
           } else {
-            this.form.orderNum = this.form.orderNum - 1;
             addRouteprocess(this.form).then((response) => {
-              this.process();
+              if (this.form.orderNum < this.popArr) {
+                this.process();
+              }
               this.getList();
               this.$modal.msgSuccess("新增成功");
               this.open = false;
             });
           }
-
-          // let aa = { routeId: this.form.routeId, orderNum: this.form.orderNum };
-          // listRouteprocessTwo(aa).then((resp) => {
-          //   resp.data.forEach((item) => {
-          //     getRouteprocess(item.recordId).then((response) => {
-          //       const { originalName, ...newObj } = response.data;
-          //       updateRouteprocess(newObj).then(() => {});
-          //     });
-          //   });
-          //   this.getList();
-          // });
         }
       });
     },
