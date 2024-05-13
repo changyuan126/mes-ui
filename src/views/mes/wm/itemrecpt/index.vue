@@ -731,9 +731,9 @@ export default {
     submitFileForm() {
       if (this.remainingquantity != 0) {
         axios
-          // .get("http://192.168.2.104:8077/manage/matter/storageItem", {
           .post(
             "http://192.168.2.104:8077/manage/matter/storageItem",
+            // "http://192.168.50.191:8063/manage/matter/storageItem",
             this.perform
           )
           .then(function (res) {
@@ -742,9 +742,10 @@ export default {
               this.warehousing = false;
               this.getList();
               this.selectEncoding();
-            } else {
-              this.$message.error(res.data.msg);
             }
+            // if (res.data.code != 200) {
+            //   this.$message.error(res.data.msg);
+            // }
           });
       } else {
         this.$message({

@@ -686,7 +686,7 @@ export default {
       });
     },
     selectSource(e) {
-      console.log(e);
+      // console.log(e);
       this.form.url = e.url;
       this.form.originalName = e.originalName;
     },
@@ -866,7 +866,9 @@ export default {
         mappedArray.forEach((item, index) => {
           item.orderNum = index;
           updateRouteprocess(item).then((response) => {
-            updateRouteprocess(item).then((response) => {});
+            updateRouteprocess(item).then((response) => {
+              this.getList();
+            });
           });
           this.getList();
         });
@@ -889,6 +891,9 @@ export default {
               this.open = false;
             });
           } else {
+            if (this.form.orderNum < this.popArr) {
+              this.form.orderNum = this.form.orderNum - 1;
+            }
             addRouteprocess(this.form).then((response) => {
               if (this.form.orderNum < this.popArr) {
                 this.process();
