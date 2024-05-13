@@ -866,7 +866,6 @@ export default {
         mappedArray.forEach((item, index) => {
           item.orderNum = index;
           updateRouteprocess(item).then((response) => {
-            this.getList();
             updateRouteprocess(item).then((response) => {
               this.getList();
             });
