@@ -678,8 +678,6 @@ export default {
                 message: "执行成功",
                 type: "success",
               });
-            } else {
-              this.$message.error(res.data.msg);
             }
           });
       } else {
