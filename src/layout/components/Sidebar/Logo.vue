@@ -3,15 +3,15 @@
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
       <!-- 制造大师 -->
-        <!-- <img src="../../../assets/images/logo-b.png" class="sidebar-logo-small"> -->
+        <img src="../../../assets/images/logo-b.png" class="sidebar-logo-small">
       <!-- 蚂蚁工业 -->
-        <img src="../../../assets/images/logo-b1.png" class="sidebar-logo-small">
+        <!-- <img src="../../../assets/images/logo-b1.png" class="sidebar-logo-small"> -->
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
       <!-- 制造大师 -->
-        <!-- <img src="../../../assets/images/logo-small.png" class="sidebar-logo"> -->
+        <img src="../../../assets/images/logo-small.png" class="sidebar-logo">
       <!-- 蚂蚁工业 -->
-        <img src="../../../assets/images/logo-small1.png" class="sidebar-logo">
+        <!-- <img src="../../../assets/images/logo-small1.png" class="sidebar-logo"> -->
       </router-link>
     </transition>
   </div>

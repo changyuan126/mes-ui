@@ -732,8 +732,8 @@ export default {
       if (this.remainingquantity != 0) {
         axios
           .post(
-            "http://192.168.2.104:8077/manage/matter/storageItem",
-            // "http://192.168.50.191:8063/manage/matter/storageItem",
+            // "http://192.168.2.104:8077/manage/matter/storageItem",
+            "http://192.168.50.191:8063/manage/matter/storageItem",
             this.perform
           )
           .then(function (res) {

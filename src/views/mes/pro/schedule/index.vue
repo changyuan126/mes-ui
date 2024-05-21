@@ -673,8 +673,8 @@ export default {
       const routeId = row.workorderId || this.ids;
       if (routeId !== "") {
         axios
-          .get("http://192.168.2.104:8077/manage/task/execute?ids=" + routeId)
-          // .get("http://192.168.50.191:8077/manage/task/execute?ids=" + routeId)
+          // .get("http://192.168.2.104:8077/manage/task/execute?ids=" + routeId)
+          .get("http://192.168.50.191:8077/manage/task/execute?ids=" + routeId)
           // .get("http://127.0.0.1:8077/manage/task/execute?ids=" + routeId)
           .then((res) => {
             if (res.data.code === 200) {
@@ -698,8 +698,8 @@ export default {
     Pendingproduction(row) {
       const routeId = row.workorderId || this.ids;
       axios
-        .get("http://192.168.2.104:8077/manage/task/suspension?id=" + routeId)
-        // .get("http://192.168.50.191:8077/manage/task/suspension?id=" + routeId)
+        // .get("http://192.168.2.104:8077/manage/task/suspension?id=" + routeId)
+        .get("http://192.168.50.191:8077/manage/task/suspension?id=" + routeId)
         // .get("http://127.0.0.1:8077/manage/task/suspension?id=" + routeId)
         .then((res) => {
           if (res.data.code === 200) {
