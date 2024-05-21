@@ -196,7 +196,7 @@ export default {
   data(){
     return {
         //自动生成编码
-        autoGenFlag:false,
+        autoGenFlag:true,
         optType: undefined,
         // 表单参数
       form: {},
@@ -277,7 +277,7 @@ export default {
         updateBy: null,
         updateTime: null
       };
-      this.autoGenFlag = false;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     /** 提交按钮 */

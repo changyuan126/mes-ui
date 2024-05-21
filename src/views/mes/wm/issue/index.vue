@@ -272,7 +272,7 @@ export default {
   components: {Issueline,WorkstationSelect,WorkorderSelect},
   data() {
     return {
-      autoGenFlag:false,
+      autoGenFlag:true,
       optType: undefined,
       warehouseInfo:[],
       warehouseOptions:[],
@@ -420,7 +420,7 @@ export default {
         updateBy: null,
         updateTime: null
       };
-      this.autoGenFlag = false;  
+      this.autoGenFlag = true;  
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -445,6 +445,9 @@ export default {
       this.open = true;
       this.title = "添加生产领料单";
       this.optType = "add";
+        genCode('ISSUE_CODE').then(response =>{
+          this.form.issueCode = response;
+        });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

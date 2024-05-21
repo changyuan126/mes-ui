@@ -413,7 +413,7 @@ export default {
   data() {
     return {
       //自动生成编码
-      autoGenFlag:false,
+      autoGenFlag:true,
       optType: undefined,
       acceptImg:  require('@/assets/images/accept.png'),
       rejectImg: require('@/assets/images/reject.png'),
@@ -563,7 +563,7 @@ export default {
         updateBy: null,
         updateTime: null
       };
-      this.autoGenFlag = false;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -588,6 +588,9 @@ export default {
       this.open = true;
       this.title = "添加来料检验单";
       this.optType = 'add';
+        genCode('QC_IQC_CODE').then(response =>{
+          this.form.iqcCode = response;
+        });
     },
     //查看明细
     handleView(row){
@@ -709,7 +712,6 @@ export default {
         debugger;
         let blob = new Blob([res],{type:'application/pdf'});        
         let href = URL.createObjectURL(blob);
-        console.log(href);
         window.open(`/pdf/web/viewer.html?file=${encodeURIComponent(href)}`);
       });
     }

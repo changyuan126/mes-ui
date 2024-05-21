@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue";
+import Router from "vue-router";
 
-Vue.use(Router)
+Vue.use(Router);
 
 /* Layout */
-import Layout from '@/layout'
+import Layout from "@/layout";
 
 /**
  * Note: 路由配置项
@@ -31,232 +31,250 @@ import Layout from '@/layout'
 // 公共路由
 export const constantRoutes = [
   {
-    path: '/redirect',
+    path: "/redirect",
     component: Layout,
     hidden: true,
     children: [
       {
-        path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect')
-      }
-    ]
+        path: "/redirect/:path(.*)",
+        component: () => import("@/views/redirect"),
+      },
+    ],
   },
   {
-    path: '/login',
-    component: () => import('@/views/login'),
-    hidden: true
+    path: "/login",
+    component: () => import("@/views/login"),
+    hidden: true,
   },
   {
-    path: '/register',
-    component: () => import('@/views/register'),
-    hidden: true
+    path: "/register",
+    component: () => import("@/views/register"),
+    hidden: true,
   },
   {
-    path: '/404',
-    component: () => import('@/views/error/404'),
-    hidden: true
+    path: "/404",
+    component: () => import("@/views/error/404"),
+    hidden: true,
   },
   {
-    path: '/401',
-    component: () => import('@/views/error/401'),
-    hidden: true
+    path: "/401",
+    component: () => import("@/views/error/401"),
+    hidden: true,
   },
+  // {
+  //   path: "",
+  //   component: Layout,
+  //   redirect: "index",
+  //   children: [
+  //     {
+  //       path: "index",
+  //       component: () => import("@/views/index"),
+  //       name: "Index",
+  //       meta: { title: "首页", icon: "dashboard", affix: true },
+  //     },
+  //   ],
+  // },
   {
-    path: '',
+    path: "",
     component: Layout,
-    redirect: 'index',
+    redirect: "index",
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/index'),
-        name: 'Index',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
-      }
-    ]
+        path: "index",
+        component: () => import("@/views/mes/pro/production/index"),
+        name: "Index",
+        // meta: { title: "首页", icon: "dashboard", affix: true },
+      },
+    ],
   },
   {
-    path: '/user',
+    path: "/user",
     component: Layout,
     hidden: true,
-    redirect: 'noredirect',
+    redirect: "noredirect",
     children: [
       {
-        path: 'profile',
-        component: () => import('@/views/system/user/profile/index'),
-        name: 'Profile',
-        meta: { title: '个人中心', icon: 'user' }
-      }
-    ]
-  }
-]
+        path: "profile",
+        component: () => import("@/views/system/user/profile/index"),
+        name: "Profile",
+        meta: { title: "个人中心", icon: "user" },
+      },
+    ],
+  },
+];
 
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [
   {
-    path: '/system/user-auth',
+    path: "/system/user-auth",
     component: Layout,
     hidden: true,
-    permissions: ['system:user:edit'],
+    permissions: ["system:user:edit"],
     children: [
       {
-        path: 'role/:userId(\\d+)',
-        component: () => import('@/views/system/user/authRole'),
-        name: 'AuthRole',
-        meta: { title: '分配角色', activeMenu: '/system/user' }
-      }
-    ]
+        path: "role/:userId(\\d+)",
+        component: () => import("@/views/system/user/authRole"),
+        name: "AuthRole",
+        meta: { title: "分配角色", activeMenu: "/system/user" },
+      },
+    ],
   },
   {
-    path: '/system/role-auth',
+    path: "/system/role-auth",
     component: Layout,
     hidden: true,
-    permissions: ['system:role:edit'],
+    permissions: ["system:role:edit"],
     children: [
       {
-        path: 'user/:roleId(\\d+)',
-        component: () => import('@/views/system/role/authUser'),
-        name: 'AuthUser',
-        meta: { title: '分配用户', activeMenu: '/system/role' }
-      }
-    ]
+        path: "user/:roleId(\\d+)",
+        component: () => import("@/views/system/role/authUser"),
+        name: "AuthUser",
+        meta: { title: "分配用户", activeMenu: "/system/role" },
+      },
+    ],
   },
   {
-    path: '/system/dict-data',
+    path: "/system/dict-data",
     component: Layout,
     hidden: true,
-    permissions: ['system:dict:list'],
+    permissions: ["system:dict:list"],
     children: [
       {
-        path: 'index/:dictId(\\d+)',
-        component: () => import('@/views/system/dict/data'),
-        name: 'Data',
-        meta: { title: '字典数据', activeMenu: '/system/dict' }
-      }
-    ]
+        path: "index/:dictId(\\d+)",
+        component: () => import("@/views/system/dict/data"),
+        name: "Data",
+        meta: { title: "字典数据", activeMenu: "/system/dict" },
+      },
+    ],
   },
   {
-    path: '/system/autocodePart',
+    path: "/system/autocodePart",
     component: Layout,
     hidden: true,
-    permissions: ['system:autocode:part:list'],
+    permissions: ["system:autocode:part:list"],
     children: [
       {
-        path: 'index/:ruleId(\\d+)',
-        component: () => import('@/views/system/autocode/part'),
-        name: 'AutoCode',
-        meta: { title: '规则组成', activeMenu: '/system/autocode' }
-      }
-    ]
+        path: "index/:ruleId(\\d+)",
+        component: () => import("@/views/system/autocode/part"),
+        name: "AutoCode",
+        meta: { title: "规则组成", activeMenu: "/system/autocode" },
+      },
+    ],
   },
   {
-    path: '/mes/wm/location',
+    path: "/mes/wm/location",
     component: Layout,
     hidden: true,
-    permissions: ['mes:wm:location:list'],
+    permissions: ["mes:wm:location:list"],
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/mes/wm/location/index'),
-        name: 'locationList',
-        meta: { title: '库区设置', activeMenu: '/mes/wm/location' }
-      }
-    ]
+        path: "index",
+        component: () => import("@/views/mes/wm/location/index"),
+        name: "locationList",
+        meta: { title: "库区设置", activeMenu: "/mes/wm/location" },
+      },
+    ],
   },
   {
-    path: '/mes/wm/area',
+    path: "/mes/wm/area",
     component: Layout,
     hidden: true,
-    permissions: ['mes:wm:area:list'],
+    permissions: ["mes:wm:area:list"],
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/mes/wm/area/index'),
-        name: 'areaList',
-        meta: { title: '库位设置', activeMenu: '/mes/wm/area' }
-      }
-    ]
+        path: "index",
+        component: () => import("@/views/mes/wm/area/index"),
+        name: "areaList",
+        meta: { title: "库位设置", activeMenu: "/mes/wm/area" },
+      },
+    ],
   },
   {
-    path: '/mes/pro/schedule',
+    path: "/mes/pro/schedule",
     component: Layout,
     hidden: true,
-    permissions: ['mes:pro:protask:edit'],
+    permissions: ["mes:pro:protask:edit"],
     children: [
       {
-        path: 'ganttedit',
+        path: "ganttedit",
         component: () => import("@/views/mes/pro/schedule/ganttedit"),
-        name: 'ganttEdit',
-        meta: {title: '使用甘特图排产',activeMenu: '/mes/pro/schedule'}
-      }
-    ]
+        name: "ganttEdit",
+        meta: { title: "使用甘特图排产", activeMenu: "/mes/pro/schedule" },
+      },
+    ],
   },
   {
-    path: '/monitor/job-log',
+    path: "/monitor/job-log",
     component: Layout,
     hidden: true,
-    permissions: ['monitor:job:list'],
+    permissions: ["monitor:job:list"],
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/monitor/job/log'),
-        name: 'JobLog',
-        meta: { title: '调度日志', activeMenu: '/monitor/job' }
-      }
-    ]
+        path: "index",
+        component: () => import("@/views/monitor/job/log"),
+        name: "JobLog",
+        meta: { title: "调度日志", activeMenu: "/monitor/job" },
+      },
+    ],
   },
   {
-    path: '/tool/gen-edit',
+    path: "/tool/gen-edit",
     component: Layout,
     hidden: true,
-    permissions: ['tool:gen:edit'],
+    permissions: ["tool:gen:edit"],
     children: [
       {
-        path: 'index/:tableId(\\d+)',
-        component: () => import('@/views/tool/gen/editTable'),
-        name: 'GenEdit',
-        meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
-      }
-    ]
+        path: "index/:tableId(\\d+)",
+        component: () => import("@/views/tool/gen/editTable"),
+        name: "GenEdit",
+        meta: { title: "修改生成配置", activeMenu: "/tool/gen" },
+      },
+    ],
   },
   {
-    path: '/mes/qc/pendinginspect/add',
+    path: "/mes/qc/pendinginspect/add",
     component: Layout,
     hidden: true,
-    permissions: ['mes:qc:pending'],
+    permissions: ["mes:qc:pending"],
     children: [
       {
-        path: 'iqc',
-        component: () => import('@/views/mes/qc/pendinginspect/iqc'),
-        name: 'iqcadd',
+        path: "iqc",
+        component: () => import("@/views/mes/qc/pendinginspect/iqc"),
+        name: "iqcadd",
         props: true,
-        meta: {title: '来料检验', activeMenu: '/mes/qc/pendinginspect/iqc'}
+        meta: { title: "来料检验", activeMenu: "/mes/qc/pendinginspect/iqc" },
       },
       {
-        path: 'pqc',
-        component: () => import('@/views/mes/qc/pendinginspect/pqc'),
-        name: 'pqcadd',
+        path: "pqc",
+        component: () => import("@/views/mes/qc/pendinginspect/pqc"),
+        name: "pqcadd",
         props: true,
-        meta: {title: '过程检验', activeMenu: '/mes/qc/pendinginspect/pqc'}
+        meta: { title: "过程检验", activeMenu: "/mes/qc/pendinginspect/pqc" },
       },
       {
-        path: 'oqc',
-        component: () => import('@/views/mes/qc/oqc/index'),
-        name: 'oqcadd',
+        path: "oqc",
+        component: () => import("@/views/mes/qc/oqc/index"),
+        name: "oqcadd",
         props: true,
-        meta: {title: '出厂检验', activeMenu: '/mes/qc/pendinginspect/oqc'}
-      }
-    ]
-  }
-]
+        meta: { title: "出厂检验", activeMenu: "/mes/qc/pendinginspect/oqc" },
+      },
+    ],
+  },
+];
 
 // 防止连续点击多次路由报错
 let routerPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
-  return routerPush.call(this, location).catch(err => err)
-}
+  return routerPush.call(this, location).catch((err) => err);
+};
 
 export default new Router({
-  mode: 'history', // 去掉url中的#
+  mode: "history", // 去掉url中的#
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
+  routes: constantRoutes,
+});
+
+export function resetRouter() {
+  const newRouter = createRouter();
+  Router.matcher = newRouter.matcher; // 重制 router
+}

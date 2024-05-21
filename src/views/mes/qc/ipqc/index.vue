@@ -394,7 +394,7 @@ export default {
   dicts: ['mes_ipqc_type','mes_qc_result','mes_order_status'],
   data() {
     return {
-      autoGenFlag:false,
+      autoGenFlag:true,
       optType: undefined,
       // 遮罩层
       loading: true,
@@ -475,15 +475,6 @@ export default {
         quantityCheck: [
           { required: true, message: "检测数量不能为空", trigger: "blur" }
         ],
-
-        quantityUnqualified: [
-          { required: true, message: "不合格品数量不能为空", trigger: "blur" }
-        ],
-
-        quantityQualified: [
-          { required: true, message: "合格品数量不能为空", trigger: "blur" }
-        ]
-
       }
     };
   },
@@ -553,7 +544,7 @@ export default {
         updateBy: null,
         updateTime: null
       };
-      this.autoGenFlag = false;
+      this.autoGenFlag = true;
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -578,6 +569,9 @@ export default {
       this.open = true;
       this.title = "添加过程检验单";
       this.optType = "add";
+        genCode('IPQC_CODE').then(response =>{
+          this.form.ipqcCode = response;
+        });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

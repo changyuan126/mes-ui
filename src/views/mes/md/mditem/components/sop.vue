@@ -160,12 +160,10 @@ export default{
         },
         //图片上传成功
         handleImgUplaoded(imgUrl){
-            console.log(imgUrl);
             this.form.sopUrl = imgUrl;
         },
         //图片移除
         handleImgRemoved(imgUrl){
-            console.log(imgUrl);
             this.form.sopUrl = null;            
         },
         //提交

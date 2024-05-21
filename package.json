@@ -1,7 +1,7 @@
 {
   "name": "ktg-mes-ui",
   "version": "3.8.2",
-  "description": "苦糖果MES",
+  "description": "智造大师",
   "author": "YinJinLu",
   "license": "MIT",
   "scripts": {
@@ -44,9 +44,12 @@
     "dhtmlx-gantt": "^7.1.11",
     "echarts": "4.9.0",
     "element-ui": "2.15.6",
+    "ezuikit-js": "^0.7.2",
     "file-saver": "2.0.5",
+    "flv.js": "^1.6.2",
     "fuse.js": "6.4.3",
     "highlight.js": "9.18.5",
+    "jquery": "^3.7.1",
     "js-beautify": "1.13.0",
     "js-cookie": "3.0.1",
     "jsencrypt": "3.0.0-rc.1",
