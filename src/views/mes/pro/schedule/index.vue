@@ -126,12 +126,13 @@
     <el-table
       v-loading="loading"
       :data="workorderList"
-      row-key="workorderId"
+      :row-key="getRowKeys"
       default-expand-all
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       @selection-change="handleSelectionChange"
     >
       <el-table-column
+        :reserve-selection="true"
         type="selection"
         width="55"
         align="center"
@@ -658,10 +659,15 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
+    getRowKeys(row) {
+      return row.workorderId;
+      //将id return出去
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map((item) => item.workorderId);
     },
+
     // 执行生产
     handleproductione(row) {
       const routeId = row.workorderId || this.ids;

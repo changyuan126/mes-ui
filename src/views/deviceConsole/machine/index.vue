@@ -533,7 +533,8 @@ export default {
 
     setInterval() {
       axios
-        .get("http://192.168.50.191:8077/manage/modbus/data", {
+        .get("http://192.168.2.104:8077/manage/modbus/data", {
+        // .get("http://192.168.50.191:8077/manage/modbus/data", {
           params: {
             id: this.id,
           },
@@ -546,7 +547,8 @@ export default {
     off() {
       if (this.id != "") {
         axios
-          .get("http://192.168.50.191:8077/manage/modbus/operate", {
+          .get("http://192.168.2.104:8077/manage/modbus/operate", {
+          // .get("http://192.168.50.191:8077/manage/modbus/operate", {
             params: {
               id: this.id,
               type: 2,
@@ -566,7 +568,8 @@ export default {
     on() {
       if (this.id != "") {
         axios
-          .get("http://192.168.50.191:8077/manage/modbus/operate", {
+          .get("http://192.168.2.104:8077/manage/modbus/operate", {
+          // .get("http://192.168.50.191:8077/manage/modbus/operate", {
             params: {
               id: this.id,
               type: 1,
