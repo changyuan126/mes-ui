@@ -120,7 +120,7 @@
           icon="el-icon-upload2"
           size="mini"
           @click="handleImport"
-          v-hasPermi="['system:user:import']"
+          v-hasPermi="['mes:md:vendor:import']"
         >导入</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -604,6 +604,11 @@ export default {
     handleImport() {
       this.upload.title = "供应商导入";
       this.upload.open = true;
+    },
+    /**下载导入模板 */
+    exportTemplate() {
+      this.download('mes/md/vendor/exportTemplate', {
+      }, `vendor_template_${new Date().getTime()}.xlsx`)
     },
     /** 下载模板操作 */
     importTemplate() {

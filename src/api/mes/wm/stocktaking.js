@@ -42,3 +42,11 @@ export function delStocktaking(takingId) {
     method: 'delete'
   })
 }
+
+//执行转移
+export function execute(takingId){
+  return request({
+    url: '/mes/wm/stocktaking/'+takingId,
+    method: 'put'
+  })
+}

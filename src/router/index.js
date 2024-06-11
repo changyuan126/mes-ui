@@ -246,6 +246,20 @@ export const dynamicRoutes = [
         meta: {title: '出厂检验', activeMenu: '/mes/qc/pendinginspect/oqc'}
       }
     ]
+  },
+  {
+    path: '/print/pt',
+    component: Layout,
+    hidden: true,
+    permissions: ['print:template:edit'],
+    children: [
+      {
+        path: 'edit',
+        component: () => import("@/views/print/printtemplate/index"),
+        name: 'printTemplateEdit',
+        meta: {title: '打印模板编辑',activeMenu: '/print/printtemplate/edit'}
+      }
+    ]
   }
 ]
 

@@ -33,7 +33,7 @@
                 <el-table-column label="单位" align="center" prop="unitOfMeasure" />
                 <el-table-column label="生产进度" align="center" width="200px" >
                     <template slot-scope="scope">
-                        <el-progress :text-inside="true" :stroke-width="20" :percentage="parseFloat(((scope.row.quantityProduced/scope.row.quantity*100).toFixed(2)))"></el-progress>
+                        <el-progress :text-inside="true" :stroke-width="20" :percentage="parseFloat(((scope.row.quantityProduced/scope.row.quantity*100).toFixed(2)))>100?100:parseFloat(((scope.row.quantityProduced/scope.row.quantity*100).toFixed(2)))"></el-progress>
                     </template>
                 </el-table-column>            
                 <el-table-column label="需求日期" align="center" prop="requestDate" width="180">
