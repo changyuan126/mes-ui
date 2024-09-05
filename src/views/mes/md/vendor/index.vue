@@ -184,38 +184,54 @@
     <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row>
-          <el-col :span="8">
-            <el-form-item label="供应商编码" prop="vendorCode">
-              <el-input v-model="form.vendorCode" placeholder="请输入供应商编码" />
-            </el-form-item>
+          <el-col :span="14">
+            <el-row>
+              <el-col :span="20">
+                <el-form-item label="供应商编码" prop="vendorCode">
+                  <el-input v-model="form.vendorCode" placeholder="请输入供应商编码" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item  label-width="80">
+                  <el-switch v-model="autoGenFlag"
+                      active-color="#13ce66"
+                      active-text="自动生成"
+                      @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view'">               
+                  </el-switch>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="供应商名称" prop="vendorName">
+                  <el-input v-model="form.vendorName" placeholder="请输入供应商名称" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="供应商简称" prop="vendorNick">
+                  <el-input v-model="form.vendorNick" placeholder="请输入供应商简称" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="供应商英文名称" prop="vendorEn">
+                  <el-input v-model="form.vendorEn" placeholder="请输入供应商英文名称" />
+                </el-form-item>
+              </el-col>
+            </el-row>
           </el-col>
-          <el-col :span="4">
-            <el-form-item  label-width="80">
-              <el-switch v-model="autoGenFlag"
-                  active-color="#13ce66"
-                  active-text="自动生成"
-                  @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view'">               
-              </el-switch>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="供应商名称" prop="vendorName">
-              <el-input v-model="form.vendorName" placeholder="请输入供应商名称" />
-            </el-form-item>
-          </el-col>
+          <el-col :span="10">
+            <el-image class="barcodeClass" fit="scale-down" :src="form.barcodeUrl">
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline"></i>
+              </div>
+            </el-image>
+          </el-col>          
         </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="供应商简称" prop="vendorNick">
-              <el-input v-model="form.vendorNick" placeholder="请输入供应商简称" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="供应商英文名称" prop="vendorEn">
-              <el-input v-model="form.vendorEn" placeholder="请输入供应商英文名称" />
-            </el-form-item>
-          </el-col>
-        </el-row>
+      
         <el-row>
           <el-col :span="24">
             <el-form-item label="供应商简介" prop="vendorDes">
@@ -363,7 +379,7 @@
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
           <div class="el-upload__tip" slot="tip">
-            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
+            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的数据
           </div>
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate">下载模板</el-link>
@@ -380,6 +396,7 @@
 
 <script>
 import { listVendor, getVendor, delVendor, addVendor, updateVendor } from "@/api/mes/md/vendor";
+import { getBarcodeUrl } from "@/api/mes/wm/barcode";
 import { getToken } from "@/utils/auth";
 import {genCode} from "@/api/system/autocode/rule"
 export default {
@@ -448,6 +465,13 @@ export default {
         creditCode: null,
         enableFlag: null,
       },
+      //二维码查询参数
+      barcodeParams: {
+        bussinessId: null,
+        bussinessCode: null,
+        barcodeFormart: 'QR_CODE', //模式二维码
+        barcodeType: 'VENDOR' //类型为供应商
+      },
       // 表单参数
       form: {},
       // 表单校验
@@ -507,6 +531,7 @@ export default {
         creditCode: null,
         enableFlag: 'Y',
         remark: null,
+        barcodeUrl: null,
         attr1: null,
         attr2: null,
         attr3: null,
@@ -551,6 +576,7 @@ export default {
         this.open = true;
         this.title = "查看供应商";
         this.optType = "view";
+        this.getBarcodeUrl();
       });
     },
     /** 修改按钮操作 */
@@ -562,10 +588,12 @@ export default {
         this.open = true;
         this.title = "修改供应商";
         this.optType = "edit";
+        this.getBarcodeUrl();
       });
     },
     /** 提交按钮 */
     submitForm() {
+      debugger;
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.vendorId != null) {
@@ -631,6 +659,15 @@ export default {
     submitFileForm() {
       this.$refs.upload.submit();
     },
+
+    //获取某个供应商的二维码地址
+    getBarcodeUrl(){
+      this.barcodeParams.bussinessId = this.form.vendorId;
+      this.barcodeParams.bussinessCode = this.form.vendorCode;
+      getBarcodeUrl(this.barcodeParams).then( response =>{          
+        this.$set(this.form,'barcodeUrl',response.data.barcodeUrl);//强制刷新DOM
+      });
+    },
     //自动生成编码
     handleAutoGenChange(autoGenFlag){
       debugger;
@@ -645,3 +682,10 @@ export default {
   }
 };
 </script>
+<style scoped>
+  .barcodeClass {
+    width: 200px;
+    height: 200px;
+  }
+
+</style>

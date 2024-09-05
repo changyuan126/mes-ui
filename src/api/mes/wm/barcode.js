@@ -42,3 +42,13 @@ export function delBarcode(barcodeId) {
     method: 'delete'
   })
 }
+
+//获取某个对象的二维码信息
+export function getBarcodeUrl(query){
+  return request({
+    url: '/mes/wm/barcode/getBarcodeUrl',
+    method: 'get',
+    params: query
+  })
+}
+
