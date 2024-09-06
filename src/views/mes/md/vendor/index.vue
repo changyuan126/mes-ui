@@ -224,11 +224,13 @@
             </el-row>
           </el-col>
           <el-col :span="10">
-            <el-image class="barcodeClass" fit="scale-down" :src="form.barcodeUrl">
-              <div slot="error" class="image-slot">
-                <i class="el-icon-picture-outline"></i>
-              </div>
-            </el-image>
+            <div class="flex-container">
+              <el-image class="barcodeClass" fit="scale-down" :src="form.barcodeUrl">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </div>            
           </el-col>          
         </el-row>
       
@@ -665,7 +667,9 @@ export default {
       this.barcodeParams.bussinessId = this.form.vendorId;
       this.barcodeParams.bussinessCode = this.form.vendorCode;
       getBarcodeUrl(this.barcodeParams).then( response =>{          
-        this.$set(this.form,'barcodeUrl',response.data.barcodeUrl);//强制刷新DOM
+        if(response.data != null){
+          this.$set(this.form,'barcodeUrl',response.data.barcodeUrl);//强制刷新DOM
+        }        
       });
     },
     //自动生成编码
@@ -686,6 +690,14 @@ export default {
   .barcodeClass {
     width: 200px;
     height: 200px;
+    border: 1px dashed;
+    position: relative;
+    display: inline-block;
   }
 
+  .flex-container{
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+  }
 </style>

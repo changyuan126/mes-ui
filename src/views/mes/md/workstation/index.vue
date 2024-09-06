@@ -156,45 +156,62 @@
     <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row>
-          <el-col :span="8">
-            <el-form-item label="工作站编号" prop="workstationCode">
-              <el-input v-model="form.workstationCode" placeholder="请输入工作站编码" />
-            </el-form-item>
+          <el-col :span="14">
+            <el-row>
+              <el-col :span="16">
+                <el-form-item label="工作站编号" prop="workstationCode">
+                  <el-input v-model="form.workstationCode" placeholder="请输入工作站编码" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item  label-width="80">
+                  <el-switch v-model="autoGenFlag"
+                      active-color="#13ce66"
+                      active-text="自动生成"
+                      @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view'">               
+                  </el-switch>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="工作站名称" prop="workstationName">
+                  <el-input v-model="form.workstationName" placeholder="请输入工作站名称" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="工作站地点" prop="workstationAddress">
+                  <el-input v-model="form.workstationAddress" placeholder="请输入工作站地点" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="所在车间" prop="workshopId">
+                    <el-select v-model="form.workshopId" placeholder="请选择车间">
+                      <el-option
+                        v-for="item in workshopOptions"
+                        :key="item.workshopId"
+                        :label="item.workshopName"
+                        :value="item.workshopId"
+                      ></el-option>
+                    </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
           </el-col>
-          <el-col :span="4">
-            <el-form-item  label-width="80">
-              <el-switch v-model="autoGenFlag"
-                  active-color="#13ce66"
-                  active-text="自动生成"
-                  @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view'">               
-              </el-switch>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="工作站名称" prop="workstationName">
-              <el-input v-model="form.workstationName" placeholder="请输入工作站名称" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="工作站地点" prop="workstationAddress">
-              <el-input v-model="form.workstationAddress" placeholder="请输入工作站地点" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="所在车间" prop="workshopId">
-                <el-select v-model="form.workshopId" placeholder="请选择车间">
-                  <el-option
-                    v-for="item in workshopOptions"
-                    :key="item.workshopId"
-                    :label="item.workshopName"
-                    :value="item.workshopId"
-                  ></el-option>
-                </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
+          <el-col :span="10">
+            <div class="flex-container">
+              <el-image class="barcodeClass" fit="scale-down" :src="form.barcodeUrl">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </div>            
+          </el-col> 
+        </el-row>       
         <el-row>
           <el-col :span="8">
             <el-form-item label="所属工序" prop="processId">
@@ -294,6 +311,7 @@ import {getTreeList} from "@/api/mes/wm/warehouse"
 import {listAllProcess} from "@/api/mes/pro/process";
 import {genCode} from "@/api/system/autocode/rule";
 import { listAllWorkshop } from "@/api/mes/md/workshop";
+import { getBarcodeUrl } from "@/api/mes/wm/barcode";
 export default {
   name: "Workstation",
   dicts: ['sys_yes_no'],
@@ -350,8 +368,36 @@ export default {
         areaId: null,
         enableFlag: null,
       },
+      //二维码查询参数
+      barcodeParams: {
+        bussinessId: null,
+        bussinessCode: null,
+        barcodeFormart: 'QR_CODE', //模式二维码
+        barcodeType: 'WORKSTATION' //类型为供应商
+      },
       // 表单参数
-      form: {},
+      form: {
+        workstationId: null,
+        workstationCode: null,
+        workstationName: null,
+        workstationAddress: null,
+        workshopId: null,
+        workshopCode: null,
+        workshopName: null,
+        processId: null,
+        processCode: null,
+        processName: null,
+        warehouseId: null,
+        locationId: null,
+        areaId: null,
+        enableFlag: 'Y',
+        remark: null,
+        barcodeUrl: null,
+        createBy: null,
+        createTime: null,
+        updateBy: null,
+        updateTime: null
+      },
       // 表单校验
       rules: {
         workstationCode: [
@@ -449,6 +495,7 @@ export default {
         areaId: null,
         enableFlag: 'Y',
         remark: null,
+        barcodeUrl: null,
         createBy: null,
         createTime: null,
         updateBy: null,
@@ -508,6 +555,7 @@ export default {
         this.open = true;
         this.title = "查看车间信息";
         this.optType = "view";
+        this.getBarcodeUrl();
       });
     },
     /** 修改按钮操作 */
@@ -520,6 +568,7 @@ export default {
         this.open = true;
         this.title = "修改工作站";
         this.optType = "edit";
+        this.getBarcodeUrl();
       });
     },
     /** 提交按钮 */
@@ -589,7 +638,32 @@ export default {
     //工装夹具资源新增
     handleToolTypeAdd(){
       this.$refs.toolList.handleAdd();
-    }
+    },
+    //获取某个供应商的二维码地址
+    getBarcodeUrl(){
+      this.barcodeParams.bussinessId = this.form.workstationId;
+      this.barcodeParams.bussinessCode = this.form.workstationCode;
+      getBarcodeUrl(this.barcodeParams).then( response =>{      
+        if(response.data != null){
+          this.$set(this.form,'barcodeUrl',response.data.barcodeUrl);//强制刷新DOM
+        }            
+      });
+    },
   }
 };
 </script>
+<style scoped>
+  .barcodeClass {
+    width: 200px;
+    height: 200px;
+    border: 1px dashed;
+    position: relative;
+    display: inline-block;
+  }
+
+  .flex-container{
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+  }
+</style>
