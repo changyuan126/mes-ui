@@ -720,7 +720,7 @@ export default {
           this.form.productCode = obj.itemCode;
           this.form.productName = obj.itemName;
           this.form.productSpc = obj.specification;
-          this.form.unitOfMeasure = obj.unitOfMeasure;  
+          this.form.unitOfMeasure = obj.unitName;  
         }
     },
     //客户选择弹出框

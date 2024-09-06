@@ -63,7 +63,7 @@
           </el-table-column>
           <el-table-column label="物料名称" min-width="120" align="left" key="itemName" prop="itemName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
           <el-table-column label="规格型号" align="left" key="specification" prop="specification" v-if="columns[2].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="单位" align="center" key="unitOfMeasure" prop="unitOfMeasure" v-if="columns[3].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="单位" align="center" key="unitName" prop="unitName" v-if="columns[3].visible" :show-overflow-tooltip="true" />
           <el-table-column label="物料/产品" align="center" key="itemOrProduct" prop="itemOrProduct" v-if="columns[4].visible" :show-overflow-tooltip="true" >
             <template slot-scope="scope">
               <dict-tag :options="dict.type.mes_item_product" :value="scope.row.itemOrProduct"/>

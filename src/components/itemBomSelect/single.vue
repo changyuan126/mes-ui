@@ -15,7 +15,7 @@
         <el-table-column label="物料编码" align="center" prop="bomItemCode" />
         <el-table-column label="物料名称" align="center" prop="bomItemName" :show-overflow-tooltip="true" />
         <el-table-column label="规格" align="center" prop="bomItemSpec" :show-overflow-tooltip="true" />
-        <el-table-column label="单位" width="60px" align="center" prop="unitOfMeasure" />
+        <el-table-column label="单位" width="60px" align="center" prop="unitName" />
         <el-table-column label="使用比例" width="90px" align="center" prop="quantity" />  
         <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />  
       </el-table>
@@ -74,6 +74,7 @@
           bomItemName: null,
           bomItemSpec: null,
           unitOfMeasure: null,
+          unitName: null,
           quantity: null,
           enableFlag: null,
           attr1: null,

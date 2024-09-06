@@ -122,7 +122,7 @@
           </el-table-column>
           <el-table-column label="物料名称" min-width="120" align="left" key="itemName" prop="itemName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
           <el-table-column label="规格型号" align="left" key="specification" prop="specification" v-if="columns[2].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="单位" align="center" key="unitOfMeasure" prop="unitOfMeasure" v-if="columns[3].visible" :show-overflow-tooltip="true" >
+          <el-table-column label="单位" align="center" key="unitName" prop="unitName" v-if="columns[3].visible" :show-overflow-tooltip="true" >
           </el-table-column>
           <el-table-column label="物料/产品" align="center" key="itemOrProduct" prop="itemOrProduct" v-if="columns[4].visible" :show-overflow-tooltip="true" >
             <template slot-scope="scope">
@@ -336,7 +336,9 @@
         </el-tab-pane>
         <el-tab-pane label="供应商"></el-tab-pane>
         <el-tab-pane label="替代品"></el-tab-pane>
-        <el-tab-pane label="SIP"></el-tab-pane>
+        <el-tab-pane label="SIP">
+          <SIPTab :itemId="form.itemId" :optType="optType"></SIPTab>
+        </el-tab-pane>
         <el-tab-pane label="SOP">
           <SOPTab :itemId="form.itemId" :optType="optType"></SOPTab>
         </el-tab-pane>
@@ -385,6 +387,7 @@ import { listMdItem, getMdItem, delMdItem, addMdItem, updateMdItem} from "@/api/
 
 import ItemBom from "./components/itembom.vue";
 import SOPTab from  "./components/sop.vue"
+import SIPTab from  "./components/sip.vue"
 import { listAllUnitmeasure} from "@/api/mes/md/unitmeasure";
 import {genCode} from "@/api/system/autocode/rule"
 import { getToken } from "@/utils/auth";
@@ -396,7 +399,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 export default {
   name: "MdItem",
   dicts: ['sys_yes_no','mes_item_product'],
-  components: { Treeselect,ItemBom,SOPTab },
+  components: { Treeselect,ItemBom,SOPTab,SIPTab },
   data() {
     return {
       // 遮罩层
@@ -552,6 +555,7 @@ export default {
         itemName: undefined,
         specification: undefined,
         unitOfMeasrue: undefined,
+        unitName: undefined,
         enableFlag: undefined,
         itemOrProduct: undefined,
         enableFlag: 'Y',
