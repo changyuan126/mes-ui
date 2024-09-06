@@ -185,65 +185,87 @@
     <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row>
-          <el-col :span="8">
-            <el-form-item label="物料编码" prop="itemCode">
-              <el-input v-model="form.itemCode" readonly="readonly" maxlength="64" v-if="optType == 'view'"/>
-              <el-input v-model="form.itemCode" placeholder="请输入物料编码" maxlength="64" v-else/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item  label-width="80">
-              <el-switch v-model="autoGenFlag"
-                  active-color="#13ce66"
-                  active-text="自动生成"
-                  @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view'">               
-              </el-switch>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="物料名称" prop="itemName">
-              <el-input v-model="form.itemName"  maxlength="255" readonly="readonly" v-if="optType=='view'" />
-              <el-input v-model="form.itemName" placeholder="请输入物料名称" maxlength="255" v-else/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="规格型号" prop="specification">
-              <el-input v-model="form.specification" type="textarea" maxlength="500" readonly="readonly" v-if="optType=='view'" />
-              <el-input v-model="form.specification" type="textarea" placeholder="请输入规格型号" maxlength="500" v-else/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="单位" prop="unitOfMeasure">    
-               <el-select v-model="form.unitOfMeasure" disabled v-if="optType=='view'">
-                <el-option
-                    v-for="item in measureOptions"
-                    :key="item.measureCode"
-                    :label="item.measureName"
-                    :value="item.measureCode"
-                    :disabled="item.enableFlag == 'N'"
-                  ></el-option>
-              </el-select>
+          <el-col :span="14">
+            <el-row>
+              <el-col :span="16">
+                <el-form-item label="物料编码" prop="itemCode">
+                  <el-input v-model="form.itemCode" readonly="readonly" maxlength="64" v-if="optType == 'view'"/>
+                  <el-input v-model="form.itemCode" placeholder="请输入物料编码" maxlength="64" v-else/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item  label-width="80">
+                  <el-switch v-model="autoGenFlag"
+                      active-color="#13ce66"
+                      active-text="自动生成"
+                      @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view'">               
+                  </el-switch>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="物料名称" prop="itemName">
+                  <el-input v-model="form.itemName"  maxlength="255" readonly="readonly" v-if="optType=='view'" />
+                  <el-input v-model="form.itemName" placeholder="请输入物料名称" maxlength="255" v-else/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="规格型号" prop="specification">
+                  <el-input v-model="form.specification" type="textarea" maxlength="500" readonly="readonly" v-if="optType=='view'" />
+                  <el-input v-model="form.specification" type="textarea" placeholder="请输入规格型号" maxlength="500" v-else/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="单位" prop="unitOfMeasure">    
+                  <el-select v-model="form.unitOfMeasure" disabled v-if="optType=='view'">
+                    <el-option
+                        v-for="item in measureOptions"
+                        :key="item.measureCode"
+                        :label="item.measureName"
+                        :value="item.measureCode"
+                        :disabled="item.enableFlag == 'N'"
+                      ></el-option>
+                  </el-select>
 
-              <el-select v-model="form.unitOfMeasure" placeholder="请选择单位" v-else>
-                <el-option
-                    v-for="item in measureOptions"
-                    :key="item.measureCode"
-                    :label="item.measureName"
-                    :value="item.measureCode"
-                    :disabled="item.enableFlag == 'N'"
-                  ></el-option>
-              </el-select>
-            </el-form-item>
+                  <el-select v-model="form.unitOfMeasure" placeholder="请选择单位" v-else>
+                    <el-option
+                        v-for="item in measureOptions"
+                        :key="item.measureCode"
+                        :label="item.measureName"
+                        :value="item.measureCode"
+                        :disabled="item.enableFlag == 'N'"
+                      ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="10">
+            <div class="flex-container">
+              <el-image class="barcodeClass" fit="scale-down" :src="form.barcodeUrl">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </div>            
+          </el-col> 
+        </el-row>
+        <el-row>
+          <el-col :span="14">
             <el-form-item  label="物料/产品分类" prop="itemTypeId">
               <treeselect v-model="form.itemTypeId" :options="itemTypeOptions" :show-count="true" disabled v-if="optType=='view'"  />
               <treeselect v-model="form.itemTypeId" :options="itemTypeOptions" :show-count="true" placeholder="请选择所属分类" v-else :disable-branch-nodes="true"/>
             </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item  label="高价值/易被盗物品" label-width="150px" prop="highValue">
+              <el-checkbox v-model="form.highValue" :true-value="'Y'" :false-value="'N'"></el-checkbox>
+            </el-form-item>            
           </el-col>
         </el-row>
         <el-row>
@@ -368,6 +390,7 @@ import {genCode} from "@/api/system/autocode/rule"
 import { getToken } from "@/utils/auth";
 import { treeselect } from "@/api/mes/md/itemtype";
 import Treeselect from "@riophae/vue-treeselect";
+import { getBarcodeUrl } from "@/api/mes/wm/barcode";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
@@ -426,6 +449,13 @@ export default {
         headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + "/mes/md/mditem/importData"
+      },
+      //二维码查询参数
+      barcodeParams: {
+        bussinessId: null,
+        bussinessCode: null,
+        barcodeFormart: 'QR_CODE', //模式二维码
+        barcodeType: 'ITEM' //类型
       },
       // 查询参数
       queryParams: {
@@ -526,6 +556,7 @@ export default {
         itemOrProduct: undefined,
         enableFlag: 'Y',
         safeStockFlag: 'N',
+        barcodeUrl: null,
         minStock: 0,
         maxStock: 0,
         optType: undefined,
@@ -560,6 +591,7 @@ export default {
         this.open = true;
         this.title = "查看物料/产品";
         this.optType = "view";
+        this.getBarcodeUrl();
       });
     },
     /** 新增按钮操作 */
@@ -583,6 +615,7 @@ export default {
         this.open = true;
         this.optType = "edit";
         this.title = "修改物料/产品";
+        this.getBarcodeUrl();
       });
     },
     /** 提交按钮 */
@@ -648,6 +681,16 @@ export default {
     submitFileForm() {
       this.$refs.upload.submit();
     },
+   //获取二维码地址
+    getBarcodeUrl(){
+      this.barcodeParams.bussinessId = this.form.itemId;
+      this.barcodeParams.bussinessCode = this.form.itemCode;
+      getBarcodeUrl(this.barcodeParams).then( response =>{      
+        if(response.data != null){
+          this.$set(this.form,'barcodeUrl',response.data.barcodeUrl);//强制刷新DOM
+        }            
+      });
+    },
     //自动生成物料编码
     handleAutoGenChange(autoGenFlag){
       debugger;
@@ -662,3 +705,18 @@ export default {
   }
 };
 </script>
+<style scoped>
+  .barcodeClass {
+    width: 200px;
+    height: 200px;
+    border: 1px dashed;
+    position: relative;
+    display: inline-block;
+  }
+
+  .flex-container{
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+  }
+</style>

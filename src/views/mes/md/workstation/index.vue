@@ -373,7 +373,7 @@ export default {
         bussinessId: null,
         bussinessCode: null,
         barcodeFormart: 'QR_CODE', //模式二维码
-        barcodeType: 'WORKSTATION' //类型为供应商
+        barcodeType: 'WORKSTATION' //类型
       },
       // 表单参数
       form: {
@@ -639,7 +639,7 @@ export default {
     handleToolTypeAdd(){
       this.$refs.toolList.handleAdd();
     },
-    //获取某个供应商的二维码地址
+    //获取某个工作站的二维码地址
     getBarcodeUrl(){
       this.barcodeParams.bussinessId = this.form.workstationId;
       this.barcodeParams.bussinessCode = this.form.workstationCode;
