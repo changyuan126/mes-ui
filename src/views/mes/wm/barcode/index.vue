@@ -63,7 +63,7 @@
           icon="el-icon-s-tools"
           size="mini"
           @click="handleConfig"
-          v-hasPermi="['mes:wm:barcode:edit']"
+          v-hasPermi="['mes:wm:barcodeconfig:list']"
         >条码设置</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -75,7 +75,7 @@
           v-hasPermi="['mes:wm:barcode:view']"
         >批量打印</el-button>
       </el-col>
-      <Barcodeconfig ref="barcodeconfig"></Barcodeconfig>
+      <Barcodeconfig v-if="checkPermission(['mes:wm:barcodeconfig:list'])" ref="barcodeconfig"></Barcodeconfig>
       <BarcodeBatchPrint ref="barcodebatchprint"></BarcodeBatchPrint>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -335,6 +335,7 @@ import StockSelect from "@/components/stockSelect/single.vue"
 import Barcodeconfig from "./config.vue"
 import BarcodeBatchPrint from "./batchprint.vue"
 import {getTreeList} from "@/api/mes/wm/warehouse"
+import { checkPermi } from "@/utils/permission.js";
 export default {
   name: "Barcode",
   dicts: ['mes_barcode_type','mes_barcode_formart','sys_yes_no'],

@@ -48,9 +48,9 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-    <ReportSelect ref="reportRef" @onSelected="onReportSelected"></ReportSelect>
+    <ReportSelect v-if="checkPermission(['mes:wm:barcodeconfig:edit'])" ref="reportRef" @onSelected="onReportSelected"></ReportSelect>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="showFlag=false">确 定</el-button>
+      <el-button type="primary" v-hasPermi="['mes:wm:barcodeconfig:edit']" @click="showFlag=false">确 定</el-button>
       <el-button @click="showFlag=false">取 消</el-button>
     </div>
   </el-dialog>
