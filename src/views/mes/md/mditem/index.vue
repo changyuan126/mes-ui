@@ -657,7 +657,7 @@ export default {
     handleExport() {
       this.download('mes/md/mditem/export', {
         ...this.queryParams
-      }, `user_${new Date().getTime()}.xlsx`)
+      }, `md_item_${new Date().getTime()}.xlsx`)
     },
     /** 导入按钮操作 */
     handleImport() {
@@ -667,7 +667,7 @@ export default {
     /** 下载模板操作 */
     importTemplate() {
       this.download('mes/md/mditem/importTemplate', {
-      }, `md_item_${new Date().getTime()}.xlsx`)
+      }, `md_item_template${new Date().getTime()}.xlsx`)
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
