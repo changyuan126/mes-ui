@@ -107,12 +107,13 @@
         </template>
       </el-table-column>
       <el-table-column label="领料单名称" align="center" prop="issueName" :show-overflow-tooltip="true"/>    
-      <el-table-column label="生产工单" align="center" prop="workorderCode" />     
+      <el-table-column label="生产工单" align="center" prop="workorderCode" />    
+      <el-table-column label="工作站" align="center" prop="workstationName" />    
       <el-table-column label="客户编号" align="center" prop="clientCode" />     
       <el-table-column label="客户名称" align="center" prop="clientName" />
       <el-table-column label="领料日期" align="center" prop="issueDate" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.issueDate, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.issueDate, '{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="单据状态" align="center" prop="status">
@@ -187,36 +188,13 @@
              <el-form-item label="领料日期" prop="issueDate">
               <el-date-picker clearable
                 v-model="form.issueDate"
-                type="date"
-                value-format="yyyy-MM-dd"
-                placeholder="请选择领料日期">
+                type="datetime"
+                default-time="12:00:00"
+                value-format="yyyy-MM-dd HH:mm"
+                placeholder="请选择领料日期时间">
               </el-date-picker>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="领料仓库">
-              <el-cascader v-model="warehouseInfo"
-                :options="warehouseOptions"
-                :props="warehouseProps"
-                @change="handleWarehouseChanged"
-              >                  
-              </el-cascader>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="单据状态" prop="status">
-              <el-select v-model="form.status" disabled>
-                <el-option
-                  v-for="dict in dict.type.mes_order_status"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>        
-        <el-row>
           <el-col :span="8">
             <el-form-item label="生产工单" prop="workorderCode">
               <el-input v-model="form.workorderCode" placeholder="请选择生产工单" >
@@ -224,6 +202,22 @@
               </el-input>
             </el-form-item>
             <WorkorderSelect ref="woSelect" @onSelected="onWorkorderSelected"></WorkorderSelect>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="工作站" prop="workstationCode">
+              <el-input v-model="form.workstationCode" placeholder="请选择工作站" >
+                <el-button slot="append" icon="el-icon-search" @click="handleWorkstationSelect"></el-button>
+              </el-input>
+            </el-form-item>
+            <WorkstationSelect ref="wsSelect" @onSelected="onWorkstationSelected"> </WorkstationSelect>
+          </el-col>
+        </el-row>        
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="工作站名称" prop="workstationName">
+              <el-input v-model="form.workstationName" readonly placeholder="请选择工作站" >               
+              </el-input>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="客户编号" >
@@ -546,8 +540,7 @@ export default {
       this.$refs.woSelect.showFlag = true;
     },
     onWorkorderSelected(row){
-      if(row != undefined && row != null){
-        debugger;
+      if(row != undefined && row != null){        
         this.form.workorderId = row.workorderId;
         this.form.workorderCode = row.workorderCode;
         this.form.workorderName = row.workorderName;
