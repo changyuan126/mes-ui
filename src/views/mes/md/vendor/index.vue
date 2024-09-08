@@ -571,6 +571,7 @@ export default {
     },
     // 查询明细按钮操作
     handleView(row){
+      debugger;
       this.reset();
       const vendorId = row.vendorId || this.ids
       getVendor(vendorId).then(response => {

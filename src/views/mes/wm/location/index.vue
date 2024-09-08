@@ -116,32 +116,46 @@
     <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="140px">
       <el-row>
-        <el-col :span="8">
-          <el-form-item label="库区编码" prop="locationCode">
-            <el-input v-model="form.locationCode" placeholder="请输入库区编码" />
-          </el-form-item>
+        <el-col :span="14">
+          <el-row>
+            <el-col :span="16">
+              <el-form-item label="库区编码" prop="locationCode">
+                <el-input v-model="form.locationCode" placeholder="请输入库区编码" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item  label-width="80">
+                <el-switch v-model="autoGenFlag"
+                    active-color="#13ce66"
+                    active-text="自动生成"
+                    @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view'">               
+                </el-switch>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="库区名称" prop="locationName">
+                <el-input v-model="form.locationName" placeholder="请输入库区名称" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="面积" prop="area">
+                <el-input-number :min="0" :step="1" :percision="2" v-model="form.area" placeholder="请输入面积" />
+              </el-form-item>
+            </el-col>      
+          </el-row>
         </el-col>
-        <el-col :span="4">
-          <el-form-item  label-width="80">
-            <el-switch v-model="autoGenFlag"
-                active-color="#13ce66"
-                active-text="自动生成"
-                @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view'">               
-            </el-switch>
-          </el-form-item>
+        <el-col :span="10">
+          <BarcodeImg :bussinessId="form.locationId" :bussinessCode="form.locationCode" barcodeType="LOCATION"></BarcodeImg>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="库区名称" prop="locationName">
-            <el-input v-model="form.locationName" placeholder="请输入库区名称" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="面积" prop="area">
-            <el-input-number :min="0" :step="1" :percision="2" v-model="form.area" placeholder="请输入面积" />
-          </el-form-item>
-        </el-col>      
       </el-row>
       <el-row>
         <el-col :span="24">
@@ -163,9 +177,11 @@
 <script>
 import { listLocation, getLocation, delLocation, addLocation, updateLocation, changeFrozenState} from "@/api/mes/wm/location";
 import {genCode} from "@/api/system/autocode/rule"
+import BarcodeImg from "@/components/barcodeImg/index.vue"
 export default {
   name: "Location",
   dicts: ['sys_yes_no'],
+  components: { BarcodeImg } ,
   data() {
     return {
       //自动生成编码

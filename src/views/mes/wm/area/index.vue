@@ -172,54 +172,65 @@
     <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-row>
-          <el-col :span="8">
-            <el-form-item label="库位编码" prop="areaCode">
-              <el-input v-model="form.areaCode" placeholder="请输入库位编码" />
-            </el-form-item>
+          <el-col :span="14">
+            <el-row>
+              <el-col :span="16">
+                <el-form-item label="库位编码" prop="areaCode">
+                  <el-input v-model="form.areaCode" placeholder="请输入库位编码" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item  label-width="80">
+                  <el-switch v-model="autoGenFlag"
+                      active-color="#13ce66"
+                      active-text="自动生成"
+                      @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view'">               
+                  </el-switch>
+              </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="库位名称" prop="areaName">
+                  <el-input v-model="form.areaName" placeholder="请输入库位名称" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="面积" prop="area">
+                  <el-input-number :min="0" :step="1" :percision="2" v-model="form.area" placeholder="请输入面积" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="最大载重量" prop="maxLoa">
+                  <el-input-number v-model="form.maxLoa" :step="1" :percision="2" placeholder="请输入最大载重量" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="是否启用" prop="enableFlag">
+                  <el-radio-group v-model="form.enableFlag" disabled v-if="optType=='view'">
+                    <el-radio
+                      v-for="dict in dict.type.sys_yes_no"
+                      :key="dict.value"
+                      :label="dict.value"
+                    >{{dict.label}}</el-radio>
+                  </el-radio-group>
+                  <el-radio-group v-model="form.enableFlag" v-else>
+                    <el-radio
+                      v-for="dict in dict.type.sys_yes_no"
+                      :key="dict.value"
+                      :label="dict.value"
+                    >{{dict.label}}</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+            </el-row>
           </el-col>
-          <el-col :span="4">
-            <el-form-item  label-width="80">
-              <el-switch v-model="autoGenFlag"
-                  active-color="#13ce66"
-                  active-text="自动生成"
-                  @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view'">               
-              </el-switch>
-          </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="库位名称" prop="areaName">
-              <el-input v-model="form.areaName" placeholder="请输入库位名称" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="面积" prop="area">
-              <el-input-number :min="0" :step="1" :percision="2" v-model="form.area" placeholder="请输入面积" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="最大载重量" prop="maxLoa">
-              <el-input-number v-model="form.maxLoa" :step="1" :percision="2" placeholder="请输入最大载重量" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="是否启用" prop="enableFlag">
-              <el-radio-group v-model="form.enableFlag" disabled v-if="optType=='view'">
-                <el-radio
-                  v-for="dict in dict.type.sys_yes_no"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>
-              <el-radio-group v-model="form.enableFlag" v-else>
-                <el-radio
-                  v-for="dict in dict.type.sys_yes_no"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>
-            </el-form-item>
+          <el-col :span="10">
+            <BarcodeImg :bussinessId="form.areaId" :bussinessCode="form.areaCode" barcodeType="AREA"></BarcodeImg>
           </el-col>
         </el-row>
         <el-row>
@@ -259,9 +270,11 @@
 <script>
 import { listArea, getArea, delArea, addArea, updateArea, changeFrozenState } from "@/api/mes/wm/area";
 import {genCode} from "@/api/system/autocode/rule"
+import BarcodeImg from "@/components/barcodeImg/index.vue"
 export default {
   name: "Area",
   dicts: ['sys_yes_no'],
+  components: { BarcodeImg } ,
   data() {
     return {
       //自动生成编码
