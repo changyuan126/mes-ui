@@ -42,3 +42,16 @@ export function delArea(areaId) {
     method: 'delete'
   })
 }
+
+//更改库位的冻结状态
+export function changeFrozenState(areaId, status) {
+  const data = {
+    'areaId': areaId,
+    'frozenFlag': status
+  }
+  return request({
+    url: '/mes/wm/area',
+    method: 'put',
+    data: data
+  })
+}

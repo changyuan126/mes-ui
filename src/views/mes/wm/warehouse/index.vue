@@ -78,7 +78,19 @@
         </template>
       </el-table-column>
       <el-table-column label="负责人" align="center" prop="charge" />
-      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true"/>
+      <el-table-column label="是否冻结" align="center" width="100">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.frozenFlag"
+            active-text="是"
+            inactive-text="否"
+            active-value="Y"
+            inactive-value="N"
+            @change="handleFrozenChange(scope.row)"
+          ></el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true"/>          
       <el-table-column label="操作" align="center" width="200px" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -175,7 +187,7 @@
 </template>
 
 <script>
-import { listWarehouse, getWarehouse, delWarehouse, addWarehouse, updateWarehouse } from "@/api/mes/wm/warehouse";
+import { listWarehouse, getWarehouse, delWarehouse, addWarehouse, updateWarehouse,changeFrozenState } from "@/api/mes/wm/warehouse";
 import {genCode} from "@/api/system/autocode/rule"
 export default {
   name: "Warehouse",
@@ -329,6 +341,22 @@ export default {
           }
         }
       });
+    },
+
+    /**
+     * 冻结状态变更
+     * @param row 
+     */
+    handleFrozenChange(row){
+      let text = row.frozenFlag === "Y" ? "冻结" : "解冻";
+      this.$modal.confirm('确认要"' + text + '""' + row.warehouseName + '"仓库吗？').then(function() {
+        return changeFrozenState(row.warehouseId,row.frozenFlag);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function() {
+        row.frozenFlag = row.frozenFlag === "N" ? "Y" : "N";
+      });
+
     },
     /** 删除按钮操作 */
     handleDelete(row) {

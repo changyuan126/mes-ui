@@ -127,6 +127,18 @@
           <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.enableFlag"/>
         </template>
       </el-table-column>
+      <el-table-column label="是否冻结" align="center" width="100">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.frozenFlag"
+            active-text="是"
+            inactive-text="否"
+            active-value="Y"
+            inactive-value="N"
+            @change="handleFrozenChange(scope.row)"
+          ></el-switch>
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -245,7 +257,7 @@
 </template>
 
 <script>
-import { listArea, getArea, delArea, addArea, updateArea } from "@/api/mes/wm/area";
+import { listArea, getArea, delArea, addArea, updateArea, changeFrozenState } from "@/api/mes/wm/area";
 import {genCode} from "@/api/system/autocode/rule"
 export default {
   name: "Area",
@@ -411,6 +423,20 @@ export default {
             });
           }
         }
+      });
+    },
+    /**
+     * 冻结状态变更
+     * @param row 
+     */
+    handleFrozenChange(row){
+      let text = row.frozenFlag === "Y" ? "冻结" : "解冻";
+      this.$modal.confirm('确认要"' + text + '""' + row.areaName + '"库位吗？').then(function() {
+        return changeFrozenState(row.areaId,row.frozenFlag);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function() {
+        row.frozenFlag = row.frozenFlag === "N" ? "Y" : "N";
       });
     },
     /** 删除按钮操作 */

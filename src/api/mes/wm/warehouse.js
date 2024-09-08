@@ -49,3 +49,16 @@ export function delWarehouse(warehouseId) {
     method: 'delete'
   })
 }
+
+//更改仓库的冻结状态
+export function changeFrozenState(warehouseId, status) {
+  const data = {
+    'warehouseId': warehouseId,
+    'frozenFlag': status
+  }
+  return request({
+    url: '/mes/wm/warehouse',
+    method: 'put',
+    data: data
+  })
+}

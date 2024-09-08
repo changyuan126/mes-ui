@@ -64,6 +64,18 @@
       </el-table-column>
       <el-table-column label="库区名称" align="center" prop="locationName" />
       <el-table-column label="面积" align="center" prop="area" />
+      <el-table-column label="是否冻结" align="center" width="100">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.frozenFlag"
+            active-text="是"
+            inactive-text="否"
+            active-value="Y"
+            inactive-value="N"
+            @change="handleFrozenChange(scope.row)"
+          ></el-switch>
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -149,7 +161,7 @@
 </template>
 
 <script>
-import { listLocation, getLocation, delLocation, addLocation, updateLocation } from "@/api/mes/wm/location";
+import { listLocation, getLocation, delLocation, addLocation, updateLocation, changeFrozenState} from "@/api/mes/wm/location";
 import {genCode} from "@/api/system/autocode/rule"
 export default {
   name: "Location",
@@ -329,6 +341,21 @@ export default {
     handleArea(locationId){
       debugger;
       this.$router.push({ path: '/mes/wm/area/index', query: { locationId: locationId || 0 ,optType: this.optType} })
+    },
+    /**
+     * 冻结状态变更
+     * @param row 
+     */
+     handleFrozenChange(row){
+      let text = row.frozenFlag === "Y" ? "冻结" : "解冻";
+      this.$modal.confirm('确认要"' + text + '""' + row.locationName + '"库区吗？').then(function() {
+        return changeFrozenState(row.locationId,row.frozenFlag);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function() {
+        row.frozenFlag = row.frozenFlag === "N" ? "Y" : "N";
+      });
+
     },
     //自动生成编码
     handleAutoGenChange(autoGenFlag){

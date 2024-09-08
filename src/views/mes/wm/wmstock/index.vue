@@ -128,6 +128,18 @@
             <span>{{ parseTime(scope.row.expireDate, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="是否冻结" align="center" width="100">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.frozenFlag"
+              active-text="是"
+              inactive-text="否"
+              active-value="Y"
+              inactive-value="N"
+              @change="handleFrozenChange(scope.row)"
+            ></el-switch>
+          </template>
+        </el-table-column>
       </el-table>
     
       <pagination
@@ -143,7 +155,7 @@
 </template>
 
 <script>
-import { listWmstock, getWmstock, delWmstock, addWmstock, updateWmstock } from "@/api/mes/wm/wmstock";
+import { listWmstock, getWmstock, delWmstock, addWmstock, updateWmstock, changeFrozenState } from "@/api/mes/wm/wmstock";
 import { treeselect } from "@/api/mes/md/itemtype";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -230,6 +242,21 @@ export default {
       treeselect().then(response => {
         this.itemTypeOptions = response.data;
       });
+    },
+    /**
+     * 冻结状态变更
+     * @param row 
+     */
+    handleFrozenChange(row){
+      let text = row.frozenFlag === "Y" ? "冻结" : "解冻";
+      this.$modal.confirm('确认要"' + text + '""' + row.materialStockId + '"此库存吗？').then(function() {
+        return changeFrozenState(row.materialStockId,row.frozenFlag);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function() {
+        row.frozenFlag = row.frozenFlag === "N" ? "Y" : "N";
+      });
+
     },
     // 筛选节点
     filterNode(value, data) {

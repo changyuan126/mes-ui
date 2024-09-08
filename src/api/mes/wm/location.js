@@ -42,3 +42,16 @@ export function delLocation(locationId) {
     method: 'delete'
   })
 }
+
+//更改库区的冻结状态
+export function changeFrozenState(locationId, status) {
+  const data = {
+    'locationId': locationId,
+    'frozenFlag': status
+  }
+  return request({
+    url: '/mes/wm/location',
+    method: 'put',
+    data: data
+  })
+}

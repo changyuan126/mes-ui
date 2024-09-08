@@ -42,3 +42,16 @@ export function delWmstock(materialStockId) {
     method: 'delete'
   })
 }
+
+//更改库存的冻结状态
+export function changeFrozenState(materialStockId, status) {
+  const data = {
+    'materialStockId': materialStockId,
+    'frozenFlag': status
+  }
+  return request({
+    url: '/mes/wm/wmstock',
+    method: 'put',
+    data: data
+  })
+}
