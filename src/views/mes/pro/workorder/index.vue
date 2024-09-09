@@ -225,77 +225,76 @@
     <el-dialog :title="title" :visible.sync="open" width="960px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row>
+          <el-col :span="16">
+            <el-row>
+              <el-col :span="16">
+                <el-form-item label="工单编号" prop="workorderCode">
+                  <el-input v-model="form.workorderCode" placeholder="请输入工单编号" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item  label-width="80">
+                  <el-switch v-model="autoGenFlag"
+                      active-color="#13ce66"
+                      active-text="自动生成"
+                      @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view' && form.status =='PREPARE'">               
+                  </el-switch>
+                </el-form-item>
+              </el-col>    
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="工单名称" prop="workorderName">
+                  <el-input v-model="form.workorderName" placeholder="请输入工单名称" />
+                </el-form-item>
+              </el-col>      
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="来源类型" prop="orderSource">              
+                  <el-radio-group v-model="form.orderSource" disabled v-if="optType=='view'">
+                    <el-radio
+                      v-for="dict in dict.type.mes_workorder_sourcetype"
+                      :key="dict.value"
+                      :label="dict.value"
+                    >{{dict.label}}</el-radio>
+                  </el-radio-group>
+                  <el-radio-group v-model="form.orderSource" v-else>
+                    <el-radio
+                      v-for="dict in dict.type.mes_workorder_sourcetype"
+                      :key="dict.value"
+                      :label="dict.value"
+                    >{{dict.label}}</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>                    
+              <el-col :span="12" v-if="form.orderSource == 'ORDER'">
+                <el-form-item label="订单编号" prop="sourceCode">
+                  <el-input v-model="form.sourceCode" placeholder="请输入订单编号" />
+                </el-form-item>
+              </el-col>         
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="工单类型" prop="workorderType">
+                  <el-select v-model="form.workorderType" placeholder="请选择类型">
+                    <el-option
+                      v-for="dict in dict.type.mes_workorder_type"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-col>
           <el-col :span="8">
-            <el-form-item label="工单编号" prop="workorderCode">
-              <el-input v-model="form.workorderCode" placeholder="请输入工单编号" />
-            </el-form-item>
+            <BarcodeImg :bussinessId="form.workorderId" :bussinessCode="form.workorderCode" barcodeType="WORKORDER"></BarcodeImg>
           </el-col>
-          <el-col :span="4">
-            <el-form-item  label-width="80">
-              <el-switch v-model="autoGenFlag"
-                  active-color="#13ce66"
-                  active-text="自动生成"
-                  @change="handleAutoGenChange(autoGenFlag)" v-if="optType != 'view' && form.status =='PREPARE'">               
-              </el-switch>
-            </el-form-item>
-          </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12">
-            <el-form-item label="工单名称" prop="workorderName">
-              <el-input v-model="form.workorderName" placeholder="请输入工单名称" />
-            </el-form-item>
-          </el-col>          
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="来源类型" prop="orderSource">              
-              <el-radio-group v-model="form.orderSource" disabled v-if="optType=='view'">
-                <el-radio
-                  v-for="dict in dict.type.mes_workorder_sourcetype"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>
-              <el-radio-group v-model="form.orderSource" v-else>
-                <el-radio
-                  v-for="dict in dict.type.mes_workorder_sourcetype"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>                    
-          <el-col :span="8" v-if="form.orderSource == 'ORDER'">
-            <el-form-item label="订单编号" prop="sourceCode">
-              <el-input v-model="form.sourceCode" placeholder="请输入订单编号" />
-            </el-form-item>
-          </el-col>         
-          <el-col :span="8">
-            <el-form-item label="单据状态" prop="status">
-              <el-select v-model="form.status" disabled placeholder="请选择单据状态">
-                <el-option
-                  v-for="dict in dict.type.mes_order_status"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col> 
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="工单类型" prop="workorderType">
-              <el-select v-model="form.workorderType" placeholder="请选择类型">
-                <el-option
-                  v-for="dict in dict.type.mes_workorder_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
             <el-form-item label="产品编号" prop="productCode">
               <el-input v-model="form.productCode" placeholder="请选择产品" >
                 <el-button slot="append" @click="handleSelectProduct" icon="el-icon-search"></el-button>
@@ -303,7 +302,7 @@
               <ItemSelect ref="itemSelect" @onSelected="onItemSelected" > </ItemSelect>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="产品名称" prop="productName">
               <el-input v-model="form.productName" placeholder="请选择产品" disabled/>
             </el-form-item>
@@ -415,6 +414,7 @@ import ClientSelect from "@/components/clientSelect/single.vue";
 import VendorSelect from "@/components/vendorSelect/single.vue";
 import {genCode} from "@/api/system/autocode/rule"
 import Treeselect from "@riophae/vue-treeselect";
+import BarcodeImg from "@/components/barcodeImg/index.vue"
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
@@ -426,7 +426,8 @@ export default {
     ClientSelect,
     VendorSelect,
     Workorderbom,
-    WorkorderItemList
+    WorkorderItemList,
+    BarcodeImg
   },
   data() {
     return {
